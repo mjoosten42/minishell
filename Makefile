@@ -1,7 +1,9 @@
 NAME = minishell
 FLAGS = -Wall -Werror -Wextra -g
 LIBFT = libft/libft.a
-SRC = main.c	
+
+SRC = 	main.c		\
+		commands.c
 
 OBJ = $(SRC:.c=.o)
 
