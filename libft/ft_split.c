@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 13:21:43 by mjoosten          #+#    #+#             */
-/*   Updated: 2021/12/06 16:27:15 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/02/25 12:02:21 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,7 @@ char	**ft_split(char const *s, char c)
 	if (!s)
 		return (0);
 	if (!c)
-	{
-		strs = malloc(1);
-		*strs = 0;
-		return (strs);
-	}
+		return ((char **)ft_strdup(""));
 	while (*s == c)
 		s++;
 	strs = malloc(sizeof(*strs) * (ft_wordcount(s, c) + 1));

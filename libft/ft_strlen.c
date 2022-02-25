@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 13:22:06 by mjoosten          #+#    #+#             */
-/*   Updated: 2021/12/06 17:10:18 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/02/25 10:36:26 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ size_t	ft_strlen(const char *s)
 	if (!s)
 		return (0);
 	i = 0;
-	while (*s++)
+	while (s[i])
 		i++;
 	return (i);
 }

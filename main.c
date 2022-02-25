@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:57:34 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/02/24 16:37:21 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/02/25 12:05:04 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 int	main(void)
 {
 	char	*str;
-	char	c;
 
 	signal(SIGINT, ft_signal);
 	signal(SIGQUIT, ft_signal);
@@ -23,13 +22,8 @@ int	main(void)
 	{
 		str = readline("minishell$ ");
 		if (!str)
-		{
-			c = 8;
-			write(0, &c, 1);
-			write(0, &c, 1);
-			write(0, "\n", 1);
-			exit(EXIT_SUCCESS);
-		}
+			ft_exit();
+		printf("str: [%s]\n", str);
 		if (!*str)
 			continue ;
 		add_history(str);
@@ -42,9 +36,15 @@ void	ft_signal(int signum)
 {
 	if (signum == SIGINT)
 	{
-		ft_putstr("\nminishell$ ");
-		free(rl_line_buffer);
-		rl_line_buffer = 0;
+		ft_putchar_fd(BACKSPACE, 0);
+		ft_putchar_fd(BACKSPACE, 0);
+		ft_putchar_fd('\n', 0);
+		rl_on_new_line();
+	}
+	if (signum == SIGQUIT)
+	{
+		ft_putchar_fd(BACKSPACE, 0);
+		ft_putchar_fd(BACKSPACE, 0);
 	}
 }
 
@@ -53,16 +53,10 @@ void	ft_parse(char *str)
 	char	**strs;
 
 	strs = ft_split(str, ' ');
-	ft_builtins(strs);
-	ft_free_array((void **)strs);
-}
-
-void	ft_builtins(char **strs)
-{
-	char	*str;
-
+	if (!strs)
+		return ;
 	if (!ft_strncmp(*strs, "exit", 4))
-		exit(ft_atoi(strs[1]));
+		exit(EXIT_SUCCESS);
 	if (!ft_strncmp(*strs, "echo", 4))
 		ft_putendl_fd(strs[1], 1);
 	if (!ft_strncmp(*strs, "pwd", 3))
@@ -73,4 +67,13 @@ void	ft_builtins(char **strs)
 	}
 	if (!ft_strncmp(*strs, "cd", 2))
 		chdir(strs[1]);
+	ft_free_array((void **)strs);
+}
+
+void	ft_exit(void)
+{
+	ft_putchar_fd(BACKSPACE, 0);
+	ft_putchar_fd(BACKSPACE, 0);
+	ft_putstr_fd("exit\n", 0);
+	exit(EXIT_SUCCESS);
 }
