@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:57:10 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/03/01 13:47:46 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/03/01 14:01:50 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,6 @@
 # include <limits.h>
 
 # define BACKSPACE 8
-
-	//	main.c
-void	ft_print_error(char *str);
 
 	//	commands.c
 void	ft_execute(char *str);

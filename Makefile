@@ -3,8 +3,7 @@ CC = gcc
 FLAGS = -Wall -Werror -Wextra -g -fsanitize=address
 LIBFT = libft/libft.a
 
-SRC = 	main.c		\
-		commands.c	
+SRC = 	main.c
 
 OBJ = $(SRC:.c=.o)
 
