@@ -1,33 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_error.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/22 14:57:10 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/03/01 13:47:46 by mjoosten         ###   ########.fr       */
+/*   Created: 2022/03/01 13:43:50 by mjoosten          #+#    #+#             */
+/*   Updated: 2022/03/01 13:45:02 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include "libft/libft.h"
-# include <signal.h>
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <limits.h>
-
-# define BACKSPACE 8
-
-	//	main.c
-void	ft_print_error(char *str);
-
-	//	commands.c
-void	ft_execute(char *str);
-char	**ft_getpaths(void);
-char	*ft_getpath(char *str);
-
-#endif
+void	ft_error(char *str)
+{
+	if (str)
+		ft_putendl_fd(str, 2);
+	else
+		perror(0);
+	exit(EXIT_FAILURE);
+}

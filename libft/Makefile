@@ -54,6 +54,8 @@ SRC = 	ft_isalpha.c				\
 		ft_lstmap.c					\
 									\
 		ft_free_array.c				\
+		ft_error.c					\
+									\
 		ft_get_next_line.c			\
 		ft_get_next_line_utils.c	\
 									\

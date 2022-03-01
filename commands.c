@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 14:24:41 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/03/01 11:49:57 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/03/01 13:59:29 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void	ft_execute(char *str)
 		if (execve(path, strs, 0) < 0)
 			ft_error(NULL);
 	waitpid(pid, 0, 0);
+	ft_free_array(strs);
 	free(path);
-	ft_free_array((void **)strs);
 }
 
 char	*ft_getpath(char *str)
