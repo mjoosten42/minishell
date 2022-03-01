@@ -1,4 +1,5 @@
 NAME = minishell
+CC = gcc
 FLAGS = -Wall -Werror -Wextra -g -fsanitize=address
 LIBFT = libft/libft.a
 
@@ -10,14 +11,14 @@ OBJ = $(SRC:.c=.o)
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJ)
-	gcc $(FLAGS) $^ $(LIBFT) -o $@ -lreadline #-L/Users/mjoosten/.brew/opt/readline/lib
+	$(CC) $(FLAGS) $^ $(LIBFT) -o $@ -lreadline #-L/Users/mjoosten/.brew/opt/readline/lib
 
 $(LIBFT):
 	make -C libft
 	make clean -C libft
 
 %.o: %.c
-	gcc $(FLAGS) -c $^ #-I/Users/mjoosten/.brew/opt/readline/include/
+	$(CC) $(FLAGS) -c $^ #-I/Users/mjoosten/.brew/opt/readline/include/
 
 clean:
 	make fclean -C libft
