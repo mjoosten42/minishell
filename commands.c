@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 14:24:41 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/03/01 11:30:38 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/03/01 11:49:57 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,14 @@ void	ft_execute(char *str)
 
 char	*ft_getpath(char *str)
 {
-	static char	**paths;
-	char		*path;
-	int			i;
+	char	**paths;
+	char	*path;
+	int		i;
 
 	i = 0;
 	if (!access(str, F_OK))
 		return (ft_strdup(str));
-	if (!paths)
-		paths = ft_getpaths();
+	paths = ft_getpaths();
 	while (paths[i])
 	{
 		path = ft_strjoin(paths[i], str);
