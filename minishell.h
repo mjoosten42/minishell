@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:57:10 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/02/25 15:03:51 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/03/01 11:30:42 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,9 @@
 # define BACKSPACE 8
 
 	//	main.c
-void	ft_eof(void);
 void	ft_error(char *str);
+void	ft_print_error(char *str);
+void	ft_env(void);
 
 	//	commands.c
 void	ft_execute(char *str);

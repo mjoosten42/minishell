@@ -1,9 +1,9 @@
 NAME = minishell
-FLAGS = -Wall -Werror -Wextra -g
+FLAGS = -Wall -Werror -Wextra -g -fsanitize=address
 LIBFT = libft/libft.a
 
 SRC = 	main.c		\
-		commands.c
+		commands.c	
 
 OBJ = $(SRC:.c=.o)
 

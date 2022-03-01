@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:57:34 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/02/25 15:53:49 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/03/01 11:33:58 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,22 @@
 
 int	main(void)
 {
-	char	*str;
+	char		*str;
 
 	while (1)
 	{
 		str = readline("minishell$ ");
 		if (!str)
-			ft_eof();
+			break ;
 		if (!*str)
 			continue ;
 		add_history(str);
 		ft_execute(str);
 		free(str);
 	}
-}
-
-void	ft_eof(void)
-{
-	char	str[8];
-
-	str[0] = BACKSPACE;
-	str[1] = BACKSPACE;
-	ft_strlcat(str, "exit\n", 8);
-	ft_putstr_fd(str, 0);
+	ft_putchar_fd(BACKSPACE, 0);
+	ft_putchar_fd(BACKSPACE, 0);
+	ft_putstr("exit\n");
 	exit(EXIT_SUCCESS);
 }
 
@@ -47,4 +40,21 @@ void	ft_error(char *str)
 	else
 		perror(0);
 	exit(EXIT_FAILURE);
+}
+
+void	ft_print_error(char *str)
+{
+	rl_line_buffer[ft_strlen(rl_line_buffer) - 1] = 0;
+	ft_putstr_fd(rl_line_buffer, 2);
+	ft_putstr_fd(str, 2);
+}
+
+void	ft_env(void)
+{
+	extern char	**environ;
+	int			i;
+
+	i = 0;
+	while (environ[i])
+		ft_putendl_fd(environ[i++], 1);
 }
