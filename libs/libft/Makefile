@@ -70,16 +70,17 @@ OBJ = $(SRC:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	ar -crs $@ $^
+	@ar -crs $@ $^
 
 %.o : %.c
-	$(CC) $(FLAGS) $^
+	@$(CC) $(FLAGS) $^
+	@echo "🔨 Compiling: $^"
 
 clean:
-	rm -f $(OBJ) $(BONUS_OBJ)
+	@rm -f $(OBJ) $(BONUS_OBJ)
 
 fclean: clean
-	rm -f $(NAME)
+	@rm -f $(NAME)
 
 re: fclean all
 
