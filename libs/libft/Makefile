@@ -6,7 +6,7 @@
 #    By: rubennijhuis <rubennijhuis@student.coda      +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/03/12 15:41:57 by rubennijhui   #+#    #+#                  #
-#    Updated: 2022/03/12 15:49:27 by rubennijhui   ########   odam.nl          #
+#    Updated: 2022/03/12 16:17:12 by rubennijhui   ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ SRCS =  ft_atoi.c \
 		ft_calloc.c \
 		ft_isalnum.c \
 		ft_isalpha.c \
+		ft_error.c \
 		ft_isascii.c \
 		ft_isdigit.c \
 		ft_isprint.c \
