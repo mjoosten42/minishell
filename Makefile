@@ -3,14 +3,12 @@
 #                                                         ::::::::             #
 #    Makefile                                           :+:    :+:             #
 #                                                      +:+                     #
-#    By: rubennijhuis <rubennijhuis@student.coda      +#+                      #
+#    By: rnijhuis <rnijhuis@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
-#    Created: 2022/03/12 11:05:57 by rubennijhui   #+#    #+#                  #
-#    Updated: 2022/03/12 16:11:21 by rubennijhui   ########   odam.nl          #
+#    Created: 2022/03/12 11:05:57 by rnijhuis      #+#    #+#                  #
+#    Updated: 2022/03/12 16:26:32 by rubennijhui   ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
-
-#-I/Users/mjoosten/.brew/opt/readline/include/
 
 #=====================================#
 #========= General variables =========#
@@ -65,11 +63,11 @@ $(NAME):$(OBJS) $(LIBS)
 $(LIBS_DIR)/LibFT/libft.a:
 	@make -C $(LIBS_DIR)/LibFT
 
-run: $(NAME)
-	./$(NAME)
-
 install_submodules:
 	@git submodule update --init --recursive
+
+run: $(NAME)
+	./$(NAME)
 
 clean:
 	@make clean -C $(LIBS_DIR)/LibFT

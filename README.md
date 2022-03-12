@@ -6,6 +6,7 @@ Small shell built in C for the exercise "Minishell" at Codam Coding College (42 
 This project is dependent on "Readline"
 [ How to install readline ]
 ```bash
+$ make install_submodules
 $ make run
 ```
 
