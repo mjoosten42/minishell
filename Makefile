@@ -6,15 +6,16 @@
 #    By: rubennijhuis <rubennijhuis@student.coda      +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/03/12 11:05:57 by rubennijhui   #+#    #+#                  #
-#    Updated: 2022/03/12 12:19:02 by rubennijhui   ########   odam.nl          #
+#    Updated: 2022/03/12 12:25:01 by rubennijhui   ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 #-I/Users/mjoosten/.brew/opt/readline/include/
 
 #=====================================#
-#============ General vars ===========#
+#========= General variables =========#
 #=====================================#
+
 NAME := minishell
 INCLUDE_DIR := include
 SRC_DIR := src
@@ -24,6 +25,7 @@ OBJS_DIR := objs
 #=====================================#
 #============ Input files ============#
 #=====================================#
+
 READLINE_DIR = /usr/local/Cellar/readline/8.1.2
 
 LIBS := $(LIBS_DIR)/libft/libft.a
