@@ -6,7 +6,7 @@
 #    By: rubennijhuis <rubennijhuis@student.coda      +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/03/12 11:05:57 by rubennijhui   #+#    #+#                  #
-#    Updated: 2022/03/12 12:25:01 by rubennijhui   ########   odam.nl          #
+#    Updated: 2022/03/12 16:11:21 by rubennijhui   ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,8 +28,8 @@ OBJS_DIR := objs
 
 READLINE_DIR = /usr/local/Cellar/readline/8.1.2
 
-LIBS := $(LIBS_DIR)/libft/libft.a
-LIBS_HEADERS := -I$(LIBS_DIR)/libft/ \
+LIBS := $(LIBS_DIR)/LibFT/libft.a
+LIBS_HEADERS := -I$(LIBS_DIR)/LibFT/include/ \
 				-I $(READLINE_DIR)/include/ \
 				-I/Users/mjoosten/.brew/opt/readline/include/
 
@@ -62,18 +62,21 @@ $(NAME):$(OBJS) $(LIBS)
 	@$(CC) $(OBJS) $(LDFLAGS) $(LIBS) -o $(NAME)
 	@echo "✅ Built $(NAME)"
 
-$(LIBS_DIR)/libft/libft.a:
-	@make -C $(LIBS_DIR)/libft
+$(LIBS_DIR)/LibFT/libft.a:
+	@make -C $(LIBS_DIR)/LibFT
 
 run: $(NAME)
 	./$(NAME)
 
+install_submodules:
+	@git submodule update --init --recursive
+
 clean:
-	@make clean -C $(LIBS_DIR)/libft
+	@make clean -C $(LIBS_DIR)/LibFT
 	@rm -rf $(OBJS_DIR)
 
 fclean: clean
-	@make fclean -C $(LIBS_DIR)/libft
+	@make fclean -C $(LIBS_DIR)/LibFT
 	@rm -f $(NAME)
 
 re: fclean all
