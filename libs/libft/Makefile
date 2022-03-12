@@ -6,7 +6,7 @@
 #    By: rubennijhuis <rubennijhuis@student.coda      +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/03/12 15:41:57 by rubennijhui   #+#    #+#                  #
-#    Updated: 2022/03/12 16:17:12 by rubennijhui   ########   odam.nl          #
+#    Updated: 2022/03/12 16:28:16 by rubennijhui   ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,7 +75,7 @@ objs/%.o:src/%.c
 	@echo "🔨 Compiling: $<"
 
 $(NAME):$(OBJS)
-	@ar -cr $(NAME) $(OBJS)
+	@ar -cr $(NAME).a $(OBJS)
 	@echo "✅ Built LibFT"
 
 clean:

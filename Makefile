@@ -6,7 +6,7 @@
 #    By: rnijhuis <rnijhuis@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/03/12 11:05:57 by rnijhuis      #+#    #+#                  #
-#    Updated: 2022/03/12 16:26:32 by rubennijhui   ########   odam.nl          #
+#    Updated: 2022/03/12 16:50:14 by rubennijhui   ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,9 +27,10 @@ OBJS_DIR := objs
 READLINE_DIR = /usr/local/Cellar/readline/8.1.2
 
 LIBS := $(LIBS_DIR)/LibFT/libft.a
-LIBS_HEADERS := -I$(LIBS_DIR)/LibFT/include/ \
+
+LIBS_HEADERS := -I $(LIBS_DIR)/LibFT/include/ \
 				-I $(READLINE_DIR)/include/ \
-				-I/Users/mjoosten/.brew/opt/readline/include/
+				-I /Users/mjoosten/.brew/opt/readline/include/
 
 INC := -I $(INCLUDE_DIR) $(LIBS_HEADERS)
 
@@ -63,8 +64,9 @@ $(NAME):$(OBJS) $(LIBS)
 $(LIBS_DIR)/LibFT/libft.a:
 	@make -C $(LIBS_DIR)/LibFT
 
-install_submodules:
+submodules:
 	@git submodule update --init --recursive
+	@cd $(LIBS_DIR)/LibFt/ && git pull
 
 run: $(NAME)
 	./$(NAME)
