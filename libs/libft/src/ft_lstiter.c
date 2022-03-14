@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   ft_lstiter.c                                       :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: rubennijhuis <rubennijhuis@student.coda      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/03/12 15:50:15 by rubennijhui   #+#    #+#                 */
-/*   Updated: 2022/03/12 15:59:32 by rubennijhui   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   ft_lstiter_bonus.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/28 13:21:01 by mjoosten          #+#    #+#             */
+/*   Updated: 2021/10/28 13:21:01 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_lstiter(t_list *lst, void (*f)(void *))
 {
-	if (!lst || !f)
+	if (!lst)
 		return ;
 	while (lst)
 	{

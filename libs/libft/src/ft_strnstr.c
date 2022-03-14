@@ -1,31 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   ft_strnstr.c                                       :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: rubennijhuis <rubennijhuis@student.coda      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/03/12 15:50:58 by rubennijhui   #+#    #+#                 */
-/*   Updated: 2022/03/12 15:59:07 by rubennijhui   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   ft_strnstr.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/28 13:22:15 by mjoosten          #+#    #+#             */
+/*   Updated: 2021/12/06 17:22:18 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strnstr(const char *h, const char *n, size_t len)
+char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {
-	size_t	l;
+	size_t	i;
 
-	l = *h;
-	if (*n == '\0')
-		return ((char *)h);
-	l = ft_strlen(n);
-	while (len >= l)
+	if (!haystack || !needle)
+		return (0);
+	if (!(*needle))
+		return ((char *)haystack);
+	while (*haystack && len--)
 	{
-		len--;
-		if (ft_strncmp(h, n, l) == 0)
-			return ((char *)h);
-		h++;
+		i = 0;
+		while (haystack[i] == needle[i])
+		{
+			if (!needle[i + 1])
+				return ((char *)haystack);
+			if (i > len)
+				break ;
+			i++;
+		}
+		haystack++;
 	}
-	return (NULL);
+	return (0);
 }

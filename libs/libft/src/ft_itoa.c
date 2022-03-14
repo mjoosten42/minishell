@@ -1,41 +1,48 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   ft_itoa.c                                          :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: rubennijhuis <rubennijhuis@student.coda      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/03/12 15:50:06 by rubennijhui   #+#    #+#                 */
-/*   Updated: 2022/03/12 15:59:37 by rubennijhui   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/28 13:20:45 by mjoosten          #+#    #+#             */
+/*   Updated: 2021/12/06 16:26:27 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+static void	ft_recitoa(int n, char *str);
+
 char	*ft_itoa(int n)
 {
-	int		len;
 	char	*str;
-	long	nb;
+	int		min;
+	int		m;
+	int		i;
 
-	len = ft_nbrlen(n);
-	nb = n;
-	str = ft_calloc((len + 1), sizeof(char));
+	min = 0;
+	if (n == -2147483648)
+		return (ft_strdup("-2147483648"));
+	if (n < 0 && ++min)
+		n = -n;
+	m = n;
+	i = 0;
+	while (m >= 10 && ++i)
+		m /= 10;
+	str = malloc(sizeof(*str) * (i + min + 2));
 	if (!str)
-		return (NULL);
-	if (nb < 0)
-	{
-		str[0] = '-';
-		nb = -nb;
-	}
-	if (nb == 0)
-		str[0] = '0';
-	len--;
-	while (nb)
-	{
-		str[len] = nb % 10 + '0';
-		len--;
-		nb = nb / 10;
-	}
+		return (0);
+	*(str + i + min + 1) = 0;
+	if (min)
+		*str = '-';
+	ft_recitoa(n, str + i + min);
 	return (str);
+}
+
+static void	ft_recitoa(int n, char *str)
+{
+	if (n >= 10)
+		ft_recitoa(n / 10, str - 1);
+	*str = '0' + n % 10;
 }

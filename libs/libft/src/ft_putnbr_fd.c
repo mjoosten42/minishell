@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   ft_putnbr_fd.c                                     :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: rubennijhuis <rubennijhuis@student.coda      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/03/12 15:50:39 by rubennijhui   #+#    #+#                 */
-/*   Updated: 2022/03/12 15:59:24 by rubennijhui   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/28 13:21:35 by mjoosten          #+#    #+#             */
+/*   Updated: 2021/12/06 16:27:08 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,15 @@
 
 void	ft_putnbr_fd(int n, int fd)
 {
-	char	s;
-	long	nb;
+	char	c;
 
-	nb = n;
-	if (nb < 0)
-	{
-		ft_putchar_fd('-', fd);
-		nb *= -1;
-	}
-	if (nb >= 10)
-	{
-		ft_putnbr_fd(nb / 10, fd);
-		s = nb % 10 + '0';
-		ft_putchar_fd(s, fd);
-	}
-	if (nb < 10)
-		ft_putchar_fd(nb + '0', fd);
+	if (n / 10)
+		ft_putnbr_fd(n / 10, fd);
+	else if (n < 0)
+		write(fd, "-", 1);
+	if (n > 0)
+		c = '0' + n % 10;
+	else
+		c = '0' - (n % 10);
+	write(fd, &c, 1);
 }

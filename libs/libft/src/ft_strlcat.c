@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   ft_strlcat.c                                       :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: rubennijhuis <rubennijhuis@student.coda      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/03/12 15:50:50 by rubennijhui   #+#    #+#                 */
-/*   Updated: 2022/03/12 15:59:19 by rubennijhui   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   ft_strlcat.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/28 13:22:00 by mjoosten          #+#    #+#             */
+/*   Updated: 2021/12/06 17:07:48 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,13 @@
 
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 {
-	size_t	dst_len;
-	size_t	src_len;
-	size_t	offset;
+	size_t	len;
 
-	dst_len = ft_strlen(dst);
-	src_len = ft_strlen(src);
-	if (dstsize <= dst_len)
-		return (src_len + dstsize);
-	offset = dst_len;
-	while (*src && dstsize - offset - 1 > 0)
-	{
-		dst[offset] = *src;
-		++offset;
-		++src;
-	}
-	dst[offset] = '\0';
-	return (src_len + dst_len);
+	if (!dst || !src)
+		return (0);
+	len = ft_strlen(dst);
+	if (dstsize < len)
+		return (dstsize + ft_strlen(src));
+	ft_strlcpy(dst + len, src, dstsize - len);
+	return (ft_strlen(src) + len);
 }

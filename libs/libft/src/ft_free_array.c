@@ -1,20 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalpha.c                                       :+:      :+:    :+:   */
+/*   ft_free_array.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/28 13:20:34 by mjoosten          #+#    #+#             */
-/*   Updated: 2021/11/12 16:26:33 by mjoosten         ###   ########.fr       */
+/*   Created: 2021/12/06 15:51:28 by mjoosten          #+#    #+#             */
+/*   Updated: 2022/03/01 13:56:57 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_isalpha(int c)
+void	ft_free_array(void *array)
 {
-	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
-		return (1);
-	return (0);
+	void	**start;
+	void	**arr;
+
+	if (!array)
+		return ;
+	arr = array;
+	start = arr;
+	while (*arr)
+		free(*arr++);
+	free(start);
 }

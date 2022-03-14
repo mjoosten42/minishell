@@ -1,20 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalpha.c                                       :+:      :+:    :+:   */
+/*   ft_putnbr_base.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/28 13:20:34 by mjoosten          #+#    #+#             */
-/*   Updated: 2021/11/12 16:26:33 by mjoosten         ###   ########.fr       */
+/*   Created: 2022/01/24 15:46:06 by mjoosten          #+#    #+#             */
+/*   Updated: 2022/01/24 16:29:57 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_isalpha(int c)
+int	ft_putnbr_base(int nbr, char *base)
 {
-	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
-		return (1);
-	return (0);
+	int	size;
+	int	i;
+
+	i = 0;
+	size = ft_strlen(base);
+	if (nbr / size)
+		i = ft_putnbr_base(nbr / size, base);
+	else if (nbr < 0)
+		i += ft_putchar('-');
+	if (nbr > 0)
+		return (i + ft_putchar(base[nbr % size]));
+	return (i + ft_putchar(base[-nbr % size]));
 }

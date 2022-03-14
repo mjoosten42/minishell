@@ -1,30 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   ft_memchr.c                                        :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: rubennijhuis <rubennijhuis@student.coda      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/03/12 15:50:24 by rubennijhui   #+#    #+#                 */
-/*   Updated: 2022/03/12 15:59:30 by rubennijhui   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   ft_memchr.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/28 13:21:15 by mjoosten          #+#    #+#             */
+/*   Updated: 2021/10/28 13:21:15 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memchr(const void *src, int c, size_t n)
+void	*ft_memchr(const void *s, int c, size_t n)
 {
-	const unsigned char	*ptr_src;
-	unsigned char		chr;
-
-	ptr_src = (const unsigned char *)src;
-	chr = (unsigned char)c;
-	while (n > 0)
+	while (n--)
 	{
-		if (*ptr_src == chr)
-			return ((void *)ptr_src);
-		ptr_src++;
-		n--;
+		if (*(char *)s == c)
+			return ((void *)s);
+		s++;
 	}
-	return (NULL);
+	return (0);
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   ft_memcmp.c                                        :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: rubennijhuis <rubennijhuis@student.coda      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/03/12 15:50:26 by rubennijhui   #+#    #+#                 */
-/*   Updated: 2022/03/12 15:59:29 by rubennijhui   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/28 13:21:17 by mjoosten          #+#    #+#             */
+/*   Updated: 2021/12/06 16:26:50 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,12 @@
 
 int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	const unsigned char	*one;
-	const unsigned char	*two;
-
-	one = s1;
-	two = s2;
-	while (n != 0)
+	if (!n)
+		return (0);
+	while ((*(unsigned char *)s1 == *(unsigned char *)s2) && --n)
 	{
-		if (*one != *two)
-			return (*one - *two);
-		n--;
-		one++;
-		two++;
+		s1++;
+		s2++;
 	}
-	return (0);
+	return (*(unsigned char *)s1 - *(unsigned char *)s2);
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   ft_strjoin.c                                       :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: rubennijhuis <rubennijhuis@student.coda      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/03/12 15:50:48 by rubennijhui   #+#    #+#                 */
-/*   Updated: 2022/03/12 15:57:59 by rubennijhui   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/28 13:21:55 by mjoosten          #+#    #+#             */
+/*   Updated: 2021/12/06 16:50:29 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,18 @@
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	char	*string;
-	size_t	strlen1;
-	size_t	strlen2;
+	char	*str;
+	size_t	len1;
+	size_t	len2;
 
 	if (!s1 || !s2)
-		return (NULL);
-	strlen1 = ft_strlen(s1);
-	strlen2 = ft_strlen(s2);
-	string = ft_calloc((strlen1 + strlen2 + 1), sizeof(char));
-	if (string == NULL)
-		return (NULL);
-	ft_strlcpy(string, s1, strlen1 + 1);
-	ft_strlcpy(string + strlen1, s2, strlen2 + 1);
-	return (string);
+		return (0);
+	len1 = ft_strlen(s1);
+	len2 = ft_strlen(s2);
+	str = malloc(sizeof(*str) * (len1 + len2 + 1));
+	if (!str)
+		return (0);
+	ft_strlcpy(str, s1, len1 + 1);
+	ft_strlcat(str, s2, len1 + len2 + 1);
+	return (str);
 }

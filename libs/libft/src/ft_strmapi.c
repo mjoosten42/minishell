@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   ft_strmapi.c                                       :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: rubennijhuis <rubennijhuis@student.coda      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/03/12 15:50:55 by rubennijhui   #+#    #+#                 */
-/*   Updated: 2022/03/12 15:59:15 by rubennijhui   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   ft_strmapi.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/28 13:22:09 by mjoosten          #+#    #+#             */
+/*   Updated: 2021/12/06 17:12:59 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,20 @@
 
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	char			*string;
-	unsigned int	i;
+	char	*str;
+	int		i;
 
+	if (!s || !f)
+		return (0);
+	str = malloc(sizeof(*str) * (ft_strlen(s) + 1));
+	if (!str)
+		return (0);
 	i = 0;
-	if (s == NULL || f == NULL)
-		return (NULL);
-	string = ft_calloc((ft_strlen(s) + 1), sizeof(char));
-	if (string == NULL)
-		return (NULL);
-	while (s[i] != 0)
+	while (s[i])
 	{
-		string[i] = f(i, s[i]);
+		str[i] = f(i, s[i]);
 		i++;
 	}
-	return (string);
+	str[i] = 0;
+	return (str);
 }

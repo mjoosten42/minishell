@@ -1,27 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   ft_memset.c                                        :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: rubennijhuis <rubennijhuis@student.coda      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/03/12 15:50:31 by rubennijhui   #+#    #+#                 */
-/*   Updated: 2022/03/12 15:59:28 by rubennijhui   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/28 13:21:26 by mjoosten          #+#    #+#             */
+/*   Updated: 2021/12/06 16:27:00 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memset(void *dest, int val, size_t len)
+void	*ft_memset(void *b, int c, size_t len)
 {
-	unsigned char	*ptr_dest;
+	char	*str;
 
-	ptr_dest = dest;
-	while (len > 0)
-	{
-		*ptr_dest = val;
-		ptr_dest++;
-		len--;
-	}
-	return (dest);
+	str = (char *)b;
+	while (len--)
+		*str++ = (unsigned char)c;
+	return (b);
 }

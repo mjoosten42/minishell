@@ -1,66 +1,55 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   ft_atoi.c                                          :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: rubennijhuis <rubennijhuis@student.coda      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/03/12 15:49:49 by rubennijhui   #+#    #+#                 */
-/*   Updated: 2022/03/12 15:58:16 by rubennijhui   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/28 13:20:19 by mjoosten          #+#    #+#             */
+/*   Updated: 2022/01/24 15:33:54 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static	int	overflow_check(const char *str, int sign)
-{
-	int	i;
+static int	ft_isspace(char c);
 
-	i = 0;
-	while (str[i] >= '0' && str[i] <= '9')
-		++i;
-	if (i >= 20 && sign == -1)
-		return (0);
-	else if (i >= 20 && sign == 1)
-		return (-1);
-	return (2);
+int	ft_atoi(const char *str)
+{
+	long	result;
+	int		min;
+
+	str = (char *)str;
+	while (ft_isspace(*str))
+		str++;
+	min = 0;
+	if (*str == '+' || *str == '-')
+	{
+		if (*str == '-')
+			min++;
+		str++;
+	}
+	result = 0;
+	while (ft_isdigit(*str))
+		result = 10 * result + *str++ - '0';
+	if (min)
+		result = -result;
+	return (result);
 }
 
-static int	contains(const char *set, char c)
+static int	ft_isspace(char c)
 {
-	while (*set)
-	{
-		if (*set == c)
-			return (1);
-		set++;
-	}
+	if (c == '\t')
+		return (1);
+	if (c == '\n')
+		return (1);
+	if (c == '\v')
+		return (1);
+	if (c == '\f')
+		return (1);
+	if (c == '\r')
+		return (1);
+	if (c == ' ')
+		return (1);
 	return (0);
-}
-
-int	ft_atoi(const char *src)
-{
-	int				sign;
-	long			val;
-	unsigned int	i;
-
-	sign = 1;
-	val = 0;
-	i = 0;
-	while (contains("\t\n\v\f\r ", src[i]))
-		i++;
-	if (src[i] == '+' || src[i] == '-')
-	{
-		if (src[i] == '-')
-			sign = -1;
-		i++;
-	}
-	if (overflow_check(&src[i], sign) < 2)
-		return (overflow_check(&src[i], sign));
-	while (ft_isdigit(src[i]))
-	{
-		val *= 10;
-		val += src[i] - '0';
-		i++;
-	}
-	return ((int) val * sign);
 }

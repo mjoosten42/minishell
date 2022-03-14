@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   ft_strncmp.c                                       :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: rubennijhuis <rubennijhuis@student.coda      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/03/12 15:50:56 by rubennijhui   #+#    #+#                 */
-/*   Updated: 2022/03/12 15:58:10 by rubennijhui   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/28 13:22:12 by mjoosten          #+#    #+#             */
+/*   Updated: 2021/12/06 17:15:29 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,12 @@
 
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	while (n != 0)
+	if (!n)
+		return (0);
+	while (--n && *s1 == *s2 && *s1)
 	{
-		if (*s1 != *s2 || (*s1 == 0 || *s2 == 0))
-			return (*(unsigned char *)s1 - *(unsigned char *)s2);
 		s1++;
 		s2++;
-		n--;
 	}
-	return (0);
+	return ((unsigned char)*s1 - (unsigned char)*s2);
 }

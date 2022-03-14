@@ -1,39 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   ft_memmove.c                                       :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: rubennijhuis <rubennijhuis@student.coda      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/03/12 15:50:29 by rubennijhui   #+#    #+#                 */
-/*   Updated: 2022/03/12 15:59:28 by rubennijhui   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/28 13:21:22 by mjoosten          #+#    #+#             */
+/*   Updated: 2021/12/06 16:36:01 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memmove(void *dest, void *src, size_t len)
+void	*ft_memmove(void *dst, const void *src, size_t len)
 {
-	char	*d;
-	char	*s;
-
-	d = dest;
-	s = src;
-	if (dest == NULL && src == NULL)
-		return (NULL);
-	if (d < s)
-		ft_memcpy(d, s, len);
+	if (!(dst || src))
+		return (0);
+	if (dst > src && dst < src + len)
+		while (len--)
+			*((char *)dst + len) = *((char *)src + len);
 	else
-	{
-		s = src + (len - 1);
-		d = dest + (len - 1);
-		while (len > 0)
-		{
-			*d = *s;
-			d--;
-			s--;
-			len--;
-		}
-	}
-	return (dest);
+		ft_memcpy(dst, src, len);
+	return (dst);
 }

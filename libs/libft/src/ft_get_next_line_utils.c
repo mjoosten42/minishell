@@ -1,20 +1,48 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalpha.c                                       :+:      :+:    :+:   */
+/*   ft_get_next_line_utils.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/28 13:20:34 by mjoosten          #+#    #+#             */
-/*   Updated: 2021/11/12 16:26:33 by mjoosten         ###   ########.fr       */
+/*   Created: 2022/01/24 14:00:31 by mjoosten          #+#    #+#             */
+/*   Updated: 2022/01/24 14:01:14 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_isalpha(int c)
+#ifndef BUFFER_SIZE
+# define BUFFER_SIZE 42
+#endif
+
+int	ft_linelen(char *buf)
 {
-	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
-		return (1);
-	return (0);
+	int		i;
+
+	i = 0;
+	while (buf[i])
+	{
+		if (buf[i] == '\n')
+			return (i + 1);
+		if (buf[i] == 127)
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
+void	ft_rmline(char *buf)
+{
+	int	i;
+	int	len;
+
+	i = 0;
+	len = ft_linelen(buf);
+	while (len + i < BUFFER_SIZE)
+	{
+		buf[i] = buf[len + i];
+		i++;
+	}
+	buf[i] = 0;
 }

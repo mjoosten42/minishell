@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   ft_lstmap.c                                        :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: rubennijhuis <rubennijhuis@student.coda      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/03/12 15:50:19 by rubennijhui   #+#    #+#                 */
-/*   Updated: 2022/03/12 16:04:37 by rubennijhui   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   ft_lstmap.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/28 13:21:06 by mjoosten          #+#    #+#             */
+/*   Updated: 2021/12/06 16:26:40 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,24 @@
 
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
-	t_list	*copy_list;
-	t_list	*mapped_block;
+	t_list	*ret;
+	t_list	*new;
 
-	copy_list = NULL;
-	while (lst != NULL && f != NULL)
+	if (!lst)
+		return (0);
+	ret = ft_lstnew(f(lst->content));
+	if (!ret)
+		return (0);
+	while (lst->next)
 	{
-		mapped_block = ft_lstnew(f(lst->content));
-		if (mapped_block == NULL)
+		new = ft_lstnew(f(lst->content));
+		if (!new)
 		{
-			ft_lstclear(&copy_list, del);
-			return (NULL);
+			ft_lstclear(&ret, del);
+			return (0);
 		}
-		ft_lstadd_back(&copy_list, mapped_block);
+		ft_lstadd_back(&ret, new);
 		lst = lst->next;
 	}
-	return (copy_list);
+	return (ret);
 }

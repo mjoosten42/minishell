@@ -1,106 +1,86 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   ft_split.c                                         :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: rubennijhuis <rubennijhuis@student.coda      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/03/12 15:50:42 by rubennijhui   #+#    #+#                 */
-/*   Updated: 2022/03/12 16:04:27 by rubennijhui   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   ft_split.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/28 13:21:43 by mjoosten          #+#    #+#             */
+/*   Updated: 2022/02/25 12:02:21 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static void	free_everything(char ***string, unsigned int word_amount)
+static int	ft_wordcount(char const *s, char c);
+static int	ft_wordlength(char const *s, char c);
+static int	ft_wordcpy(char **strs, char const *s, char c);
+
+char	**ft_split(char const *s, char c)
 {
-	while (word_amount > 0)
-	{
-		--word_amount;
-		free((*string)[word_amount]);
-	}
-	free((*string));
-	(*string) = NULL;
+	char	**strs;
+
+	if (!s)
+		return (0);
+	if (!c)
+		return ((char **)ft_strdup(""));
+	while (*s == c)
+		s++;
+	strs = malloc(sizeof(*strs) * (ft_wordcount(s, c) + 1));
+	if (!strs)
+		return (0);
+	if (ft_wordcpy(strs, s, c))
+		return (0);
+	*(strs + ft_wordcount(s, c)) = 0;
+	return (strs);
 }
 
-static unsigned int	word_len(char const *s, char c)
+static int	ft_wordcount(char const *s, char c)
 {
-	unsigned int	i;
+	int	i;
 
 	i = 0;
-	while (*s != c && *s != 0)
+	while (*s)
 	{
-		s++;
+		while (*s && *s != c)
+			s++;
+		while (*s == c)
+			s++;
 		i++;
 	}
 	return (i);
 }
 
-static unsigned int	get_amount_of_words(char const *s, char c)
+static int	ft_wordlength(char const *s, char c)
 {
-	unsigned int	amount_words;
-	unsigned int	new_word;
-	unsigned int	i;
+	int	i;
 
-	amount_words = 0;
-	new_word = 0;
 	i = 0;
-	while (*s != 0)
-	{
-		if (new_word == 0 && *s != c)
-		{
-			amount_words++;
-			new_word = !new_word;
-		}
-		if (*s == c)
-			new_word = 0;
+	while (s[i] && s[i] != c)
 		i++;
-		s++;
-	}
-	return (amount_words);
+	return (i);
 }
 
-static void	add_words_to_string(const char *s, char c, char ***string)
+static int	ft_wordcpy(char **strs, char const *s, char c)
 {
-	unsigned int	new_word;
-	unsigned int	n_words;
-	unsigned int	word_length;
+	int	i;
+	int	len;
 
-	new_word = 0;
-	n_words = 0;
-	while (*s != 0)
+	i = 0;
+	while (*s)
 	{
-		if (new_word == 0 && *s != c)
+		len = ft_wordlength(s, c);
+		strs[i] = malloc(sizeof(*strs[i]) * len + 1);
+		if (!strs[i])
 		{
-			new_word = !new_word;
-			(*string)[n_words] = ft_calloc((word_len(s, c) + 1), sizeof(char));
-			if ((*string)[n_words] == NULL)
-			{
-				free_everything(string, n_words);
-				return ;
-			}
-			ft_strlcpy((*string)[n_words], s, word_len(s, c) + 1);
-			n_words++;
-			word_length = 0;
+			ft_free_array((void **)strs);
+			return (1);
 		}
-		if (*s == c)
-			new_word = 0;
-		s++;
+		ft_strlcpy(strs[i], s, len + 1);
+		s += len;
+		while (*s == c)
+			s++;
+		i++;
 	}
-}
-
-char	**ft_split(char const *s, char c)
-{
-	char			**string;
-	unsigned int	amount_of_words;
-
-	if (s == NULL)
-		return (NULL);
-	amount_of_words = get_amount_of_words(s, c);
-	string = ft_calloc((amount_of_words + 1), sizeof(char *));
-	if (string == NULL)
-		return (NULL);
-	string[amount_of_words] = NULL;
-	add_words_to_string(s, c, &string);
-	return (string);
+	return (0);
 }

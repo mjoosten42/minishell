@@ -1,91 +1,92 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         ::::::::             #
-#    Makefile                                           :+:    :+:             #
-#                                                      +:+                     #
-#    By: rubennijhuis <rubennijhuis@student.coda      +#+                      #
-#                                                    +#+                       #
-#    Created: 2022/03/12 15:41:57 by rubennijhui   #+#    #+#                  #
-#    Updated: 2022/03/12 16:28:16 by rubennijhui   ########   odam.nl          #
-#                                                                              #
-# **************************************************************************** #
-
-NAME := libft
+NAME := libft.a
+CC := gcc
+FLAGS := -Wall -Werror -Wextra
 INCLUDE_DIR := include
-SRC_DIR := src
 
 INC = -I $(INCLUDE_DIR)
 
-SRCS =  ft_atoi.c \
-		ft_bzero.c \
-		ft_calloc.c \
-		ft_isalnum.c \
-		ft_isalpha.c \
-		ft_error.c \
-		ft_isascii.c \
-		ft_isdigit.c \
-		ft_isprint.c \
-		ft_itoa.c \
-		ft_memchr.c \
-		ft_memcmp.c \
-		ft_memcpy.c \
-		ft_memmove.c \
-		ft_memset.c \
-		ft_putchar_fd.c \
-		ft_putendl_fd.c \
-		ft_putnbr_fd.c \
-		ft_putstr_fd.c \
-		ft_split.c \
-		ft_strchr.c \
-		ft_strdup.c \
-		ft_striteri.c \
-		ft_strjoin.c \
-		ft_strlcat.c \
-		ft_strlcpy.c \
-		ft_strlen.c \
-		ft_strmapi.c \
-		ft_strncmp.c \
-		ft_strnstr.c \
-		ft_strrchr.c \
-		ft_strtrim.c \
-		ft_substr.c \
-		ft_tolower.c \
-		ft_nbrlen.c \
-		ft_toupper.c \
-		ft_lstadd_back.c \
-		ft_lstadd_front.c \
-		ft_lstclear.c \
-		ft_lstdelone.c \
-		ft_lstiter.c \
-		ft_lstlast.c \
-		ft_lstmap.c \
-		ft_lstnew.c \
-		ft_lstsize.c
+SRC = 	ft_isalpha.c				\
+		ft_isdigit.c				\
+		ft_isalnum.c				\
+		ft_isascii.c				\
+		ft_isprint.c				\
+		ft_toupper.c				\
+		ft_tolower.c				\
+									\
+		ft_strlen.c					\
+		ft_strchr.c					\
+		ft_strrchr.c				\
+		ft_strncmp.c				\
+									\
+		ft_memset.c					\
+		ft_memchr.c					\
+		ft_memcmp.c					\
+		ft_memcpy.c					\
+		ft_memmove.c				\
+		ft_bzero.c					\
+									\
+		ft_strlcpy.c				\
+		ft_strlcat.c				\
+		ft_strnstr.c				\
+		ft_atoi.c					\
+									\
+		ft_calloc.c					\
+		ft_strdup.c					\
+									\
+		ft_substr.c					\
+		ft_strjoin.c				\
+		ft_strtrim.c				\
+		ft_split.c					\
+		ft_itoa.c					\
+									\
+		ft_strmapi.c				\
+		ft_striteri.c				\
+									\
+		ft_putchar_fd.c				\
+		ft_putstr_fd.c				\
+		ft_putendl_fd.c				\
+		ft_putnbr_fd.c				\
+									\
+		ft_lstnew.c					\
+		ft_lstadd_front.c			\
+		ft_lstsize.c				\
+		ft_lstlast.c				\
+		ft_lstadd_back.c			\
+		ft_lstclear.c				\
+		ft_lstdelone.c				\
+		ft_lstiter.c				\
+		ft_lstmap.c					\
+									\
+		ft_free_array.c				\
+		ft_error.c					\
+									\
+		ft_get_next_line.c			\
+		ft_get_next_line_utils.c	\
+									\
+		ft_putchar.c				\
+		ft_putstr.c					\
+		ft_putnbr.c					\
+		ft_putnbr_base.c			\
+		ft_printf.c
 
-OBJS = $(addprefix objs/,$(notdir $(SRCS:.c=.o)))
-
-CC = gcc
-CFLAGS = -Wall -Wextra -g $(INC)
+OBJ = $(addprefix obj/, $(SRC:.c=.o))
 
 all: $(NAME)
 
-objs/%.o:src/%.c
-	@mkdir -p $(dir $@)
-	@$(CC) -c $(CFLAGS) -o $@ $^
-	@echo "🔨 Compiling: $<"
+$(NAME): $(OBJ)
+	ar -crs $@ $^
 
-$(NAME):$(OBJS)
-	@ar -cr $(NAME).a $(OBJS)
-	@echo "✅ Built LibFT"
+obj/%.o: src/%.c
+	@mkdir -p $(dir $@)
+	$(CC) $(FLAGS) $(INC) -c $^ -o $@
 
 clean:
-	@rm -f $(OBJS)
-	@echo "🧹 Done cleaning objects"
+	rm -f $(OBJ)
+	rmdir obj
 
 fclean: clean
-	@rm -f $(NAME)
-	@echo "🧹 Done cleaning archive"
+	rm -f $(NAME)
 
 re: fclean all
 
-.PHONY: all clean fclean re 
+.PHONY = all clean fclean re
