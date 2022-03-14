@@ -2,6 +2,7 @@ NAME := libft.a
 CC := gcc
 FLAGS := -Wall -Werror -Wextra
 INCLUDE_DIR := include
+OBJ_DIR := obj
 
 INC = -I $(INCLUDE_DIR)
 
@@ -69,23 +70,24 @@ SRC = 	ft_isalpha.c				\
 		ft_putnbr_base.c			\
 		ft_printf.c
 
-OBJ = $(addprefix obj/, $(SRC:.c=.o))
+OBJ = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	ar -crs $@ $^
+	@ar -crs $@ $^
+	@echo "✅ Built $(NAME) \n"
 
-obj/%.o: src/%.c
+$(OBJ_DIR)/%.o: src/%.c
 	@mkdir -p $(dir $@)
-	$(CC) $(FLAGS) $(INC) -c $^ -o $@
+	@$(CC) $(FLAGS) $(INC) -c $^ -o $@
+	@echo "🔨 Compiling: $<"
 
 clean:
-	rm -f $(OBJ)
-	rmdir obj
+	@rm -rf $(OBJ_DIR)
 
 fclean: clean
-	rm -f $(NAME)
+	@rm -f $(NAME)
 
 re: fclean all
 

@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
-#                                                         ::::::::             #
-#    Makefile                                           :+:    :+:             #
-#                                                      +:+                     #
-#    By: rnijhuis <rnijhuis@student.codam.nl>         +#+                      #
-#                                                    +#+                       #
-#    Created: 2022/03/12 11:05:57 by rnijhuis      #+#    #+#                  #
-#    Updated: 2022/03/12 16:50:14 by rubennijhui   ########   odam.nl          #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2022/03/12 11:05:57 by rnijhuis          #+#    #+#              #
+#    Updated: 2022/03/14 14:50:39 by mjoosten         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,9 +26,9 @@ OBJS_DIR := objs
 
 READLINE_DIR = /usr/local/Cellar/readline/8.1.2
 
-LIBS := $(LIBS_DIR)/LibFT/libft.a
+LIBS := $(LIBS_DIR)/libft/libft.a
 
-LIBS_HEADERS := -I $(LIBS_DIR)/LibFT/include/ \
+LIBS_HEADERS := -I $(LIBS_DIR)/libft/include/ \
 				-I $(READLINE_DIR)/include/ \
 				-I /Users/mjoosten/.brew/opt/readline/include/
 
@@ -57,26 +57,26 @@ objs/%.o:src/%.c
 	
 all: $(NAME)
 
-$(NAME):$(OBJS) $(LIBS)
+$(NAME): $(OBJS) $(LIBS)
 	@$(CC) $(OBJS) $(LDFLAGS) $(LIBS) -o $(NAME)
 	@echo "✅ Built $(NAME)"
 
-$(LIBS_DIR)/LibFT/libft.a:
-	@make -C $(LIBS_DIR)/LibFT
+$(LIBS_DIR)/libft/libft.a:
+	@make -C $(LIBS_DIR)/libft
 
 submodules:
 	@git submodule update --init --recursive
-	@cd $(LIBS_DIR)/LibFt/ && git pull
+	@cd $(LIBS_DIR)/libft/ && git pull
 
 run: $(NAME)
 	./$(NAME)
 
 clean:
-	@make clean -C $(LIBS_DIR)/LibFT
+	@make clean -C $(LIBS_DIR)/libft
 	@rm -rf $(OBJS_DIR)
 
 fclean: clean
-	@make fclean -C $(LIBS_DIR)/LibFT
+	@make fclean -C $(LIBS_DIR)/libft
 	@rm -f $(NAME)
 
 re: fclean all
