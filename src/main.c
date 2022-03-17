@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:57:34 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/03/17 11:08:13 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/03/17 14:07:31 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ void	ft_signal(int signum)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
-	if (signum == SIGQUIT)
-		system("leaks minishell");
 }
 
 int	main(void)
@@ -46,8 +44,6 @@ int	main(void)
 		ft_execute(str);
 		free(str);
 	}
-	ft_putchar_fd(BACKSPACE, 0);
-	ft_putchar_fd(BACKSPACE, 0);
 	ft_putstr("exit\n");
 	exit(EXIT_SUCCESS);
 }
@@ -63,8 +59,10 @@ void	ft_execute(char *str)
 		ft_error(NULL);
 	path = ft_getpath(*strs);
 	if (!path)
-		return ;
+		return (ft_free_array(strs));
 	pid = fork();
+	if (pid < 0)
+		ft_error(NULL);
 	if (!pid)
 		if (execve(path, strs, 0) < 0)
 			ft_error(NULL);

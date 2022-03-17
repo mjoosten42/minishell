@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:57:10 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/03/14 15:25:27 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/03/17 13:52:19 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <limits.h>
-
-# define BACKSPACE 8
 
 	//	readline
 void	rl_replace_line(const char *text, int clear_undo);
