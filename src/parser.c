@@ -4,7 +4,7 @@
 void	ft_parse_word(t_token **head);
 void	ft_parse_quote(t_token **head);
 void	ft_remove_token(t_token **head);
-void	ft_remove_spaces(t_token **head);
+void	ft_spaces(t_token **head);
 
 void	ft_parse(t_token *head)
 {
