@@ -134,7 +134,6 @@ char	*get_space_value(char *str)
 	while (*str && str[len] == ' ')
 		len++;
 	spaces = ft_strndup(str, len);
-	printf("[%s]\n", spaces);
 	return (spaces);
 }
 

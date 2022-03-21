@@ -8,14 +8,13 @@ void	ft_spaces(t_token **head);
 
 void	ft_parse(t_token *head)
 {
-	print_tokens(head);
 	ft_spaces(&head);
-	print_tokens(head);
 	while (head)
 	{
+		print_tokens(head);
 		if (head->type == word)
 			ft_parse_word(&head);
-		else if (head->type == quote)
+		else if (head->type == dquote)
 			ft_parse_quote(&head);
 		else
 			head = head->next;
