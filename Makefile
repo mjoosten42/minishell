@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/03/12 11:05:57 by rnijhuis          #+#    #+#              #
-#    Updated: 2022/03/14 14:50:39 by mjoosten         ###   ########.fr        #
+#                                                         ::::::::             #
+#    Makefile                                           :+:    :+:             #
+#                                                      +:+                     #
+#    By: mjoosten <mjoosten@student.42.fr>            +#+                      #
+#                                                    +#+                       #
+#    Created: 2022/03/12 11:05:57 by rnijhuis      #+#    #+#                  #
+#    Updated: 2022/03/21 10:29:33 by rnijhuis      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,13 +24,13 @@ OBJS_DIR := objs
 #============ Input files ============#
 #=====================================#
 
-READLINE_DIR = /usr/local/Cellar/readline/8.1.2
+READLINE_DIR = -L/Users/$(USER)/.brew/opt/readline/lib
 
 LIBS := $(LIBS_DIR)/libft/libft.a
 
-LIBS_HEADERS := -I $(LIBS_DIR)/libft/include/ \
+LIBS_HEADERS := -I $(LIBS_DIR)/libft/ \
 				-I $(READLINE_DIR)/include/ \
-				-I /Users/mjoosten/.brew/opt/readline/include/
+				-I /Users/$(USER)/.brew/opt/readline/include/
 
 INC := -I $(INCLUDE_DIR) $(LIBS_HEADERS)
 
@@ -44,7 +44,7 @@ OBJS = $(addprefix $(OBJS_DIR)/,$(SRCS:.c=.o))
 
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra -g $(INC)
-LDFLAGS = -L $(READLINE_DIR)/lib/ -lreadline
+LDFLAGS = $(READLINE_DIR) -lreadline
 
 #=====================================#
 #=============== Rules ===============#
