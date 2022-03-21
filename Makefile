@@ -6,7 +6,7 @@
 #    By: mjoosten <mjoosten@student.42.fr>            +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/03/12 11:05:57 by rnijhuis      #+#    #+#                  #
-#    Updated: 2022/03/21 10:29:33 by rnijhuis      ########   odam.nl          #
+#    Updated: 2022/03/21 12:09:29 by rnijhuis      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ LIBS_HEADERS := -I $(LIBS_DIR)/libft/ \
 
 INC := -I $(INCLUDE_DIR) $(LIBS_HEADERS)
 
-SRCS := main.c
+SRCS := main.c lexer.c
 
 OBJS = $(addprefix $(OBJS_DIR)/,$(SRCS:.c=.o))
 
