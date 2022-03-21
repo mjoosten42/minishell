@@ -6,7 +6,8 @@ Small shell built in C for the exercise "Minishell" at Codam Coding College (42 
 This project is dependent on "Readline"
 [ How to install readline ]
 ```bash
-$ git clone --recursively git@github.com:mjoosten42/libft.git
+$ git clone --recurse-submodules git@github.com:mjoosten42/minishell.git
+
 $ make run
 ```
 
@@ -14,23 +15,23 @@ $ make run
 
 ## ✅ Todo List
 
-[ ] - Lexer
-	- Turn input into blocks
+Lexer <br>
+	[ ] - Turn input into blocks
 
-[ ] - Pipex
-	- HERE_DOC
-	- Multiple Pipes
-	- Redirections
+Pipex <br>
+	[ ] - HERE_DOC <br>
+	[ ] - Multiple Pipes <br>
+	[ ] - Redirections <br>
 
-[ ] - Env
-	- Set variables
-	- Remove variables
+Env <br>
+	[ ] - Set variables <br>
+	[ ] - Remove variables <br>
 
-[ ] - Built-ins
-	- cd
-	- echo
-	- pwd
-	- export
-	- unset
-	- env
-	- exit
+Built-ins <br>
+	[ ] - cd <br>
+	[ ] - echo <br>
+	[ ] - pwd <br>
+	[ ] - export <br>
+	[ ] - unset <br>
+	[ ] - env <br>
+	[ ] - exit <br>
