@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/22 14:57:34 by mjoosten      #+#    #+#                 */
-/*   Updated: 2022/03/21 12:09:40 by rnijhuis      ########   odam.nl         */
+/*   Updated: 2022/03/21 14:19:36 by rnijhuis      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int	main(void)
 {
 	char	*str;
 
-	signal(SIGINT, ft_signal);
-	signal(SIGQUIT, ft_signal);
+	//signal(SIGINT, ft_signal);
+	//signal(SIGQUIT, ft_signal);
 	while (1)
 	{
 		str = readline("minishell$ ");
@@ -41,7 +41,7 @@ int	main(void)
 			continue ;
 		}
 		add_history(str);
-		lexer(str);
+		get_tokens(str);
 		free(str);
 	}
 	ft_putstr("exit\n");

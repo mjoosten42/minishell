@@ -4,20 +4,7 @@
 #define SPECIAL_CHARS "\"\'><|$"
 #define WORD_END "\t \"\'><|$"
 
-/**
- * ls
- * start
- * 	empty_token_list
- * 
- * get first token
- * token is a word/cmd (example)
- * 
- * first token != SPECIAL_CHARS
- * 
- * 
- */
-
-void	token_add_back(t_token **head, t_token *new_token)
+int	token_add_back(t_token **head, t_token *new_token)
 {
 	t_token	*token;
 	int		i;
@@ -37,6 +24,7 @@ void	token_add_back(t_token **head, t_token *new_token)
 	}
 	else
 		*head = new_token;
+	return (ft_strlen(new_token->value));
 }
 
 t_token	*token_new(void)
@@ -79,7 +67,7 @@ t_token	*special_char_token(char *str)
 	char	c;
 	int		len;
 
-	len = 0;
+	len = 1;
 	c = *str;
 	token = token_new();
 	if (c == '\'')
@@ -87,15 +75,29 @@ t_token	*special_char_token(char *str)
 	if (c == '\"')
 		token->type = dquote;
 	if (c == '>')
-		token->type = red_out;
+	{
+		if (str[1] == '>')
+		{
+			len++;
+			token->type = red_out_app;
+		}
+		else
+			token->type = red_out;
+	}
 	if (c == '<')
-		token->type = red_in;
+	{
+		if (str[1] == '<')
+		{
+			len++;
+			token->type = here_doc;
+		}
+		else
+			token->type = red_in;
+	}
 	if (c == '|')
 		token->type = pipe_char;
 	if (c == '$')
 		token->type = dollar;
-	while (ft_strchr(SPECIAL_CHARS, str[len]))
-		len++;
 	new = ft_malloc(len + 1);
 	ft_strlcpy(new, str, len + 1);
 	token->value = new;
@@ -110,29 +112,37 @@ void	print_tokens(t_token *token)
 		printf("|  %2i |  %i   | %s\n", token->position, token->type, token->value);
 		token = token->next;
 	}
+	printf("\n");
 }
 
-void	lexer(char *str)
+int	ft_isword(int c)
+{
+	if (ft_isalpha(c))
+		return (1);
+	if (c == '-')
+		return (1);
+	return (0);
+}
+
+void	lexer(t_token **head, char *str)
+{
+	int	i;
+
+	if (!*str)
+		return ;
+	if (ft_isword(*str))
+		i = token_add_back(head, word_token(str));
+	else if (ft_strchr(SPECIAL_CHARS, *str))
+		i = token_add_back(head, special_char_token(str));
+	else
+		i = 1;
+	lexer(head, str + i);
+}
+
+void	get_tokens(char *str)
 {
 	t_token	*head;
-	int		i;
-	int		in_word;
 
-	i = 0;
-	head = 0;
-	in_word = 0;
-	while (str[i] != '\0')
-	{
-		if (in_word == 0 && ft_isalpha(str[i]))
-		{
-			token_add_back(&head, word_token(str + i));
-			in_word = 1;
-		}
-		if (in_word == 1 && !ft_isalpha(str[i]))
-			in_word = 0;
-		if (ft_strchr(SPECIAL_CHARS, str[i]))
-			token_add_back(&head, special_char_token(str + i));
-		i++;
-	}
+	lexer(&head, str);
 	print_tokens(head);
 }
