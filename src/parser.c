@@ -3,7 +3,7 @@
 
 void	ft_parse_word(t_token **head);
 void	ft_parse_quote(t_token **head);
-void	ft_remove_token(t_token **head);
+void	ft_remove_token(t_token *head);
 void	ft_spaces(t_token **head);
 
 void	ft_parse(t_token *head)
@@ -28,8 +28,8 @@ void	ft_spaces(t_token **head)
 	int		in_quote;
 	int		in_dquote;
 
-	in_quote = 0;
 	in_dquote = 0;
+	in_quote = 0;
 	ptr = *head;
 	while (ptr)
 	{
@@ -38,20 +38,20 @@ void	ft_spaces(t_token **head)
 		if (ptr->type == dquote)
 			in_dquote = !in_dquote;
 		if (ptr->type == space && !(in_quote || in_dquote))
-			ft_remove_token(&ptr);
+			ft_remove_token(ptr);
 		ptr = ptr->next;
 	}
 }
 
-void	ft_remove_token(t_token **head)
+void	ft_remove_token(t_token *head)
 {
 	t_token	*prev;
 	t_token	*next;
 
-	prev = head[0]->prev;
-	next = head[0]->next;
-	free(head[0]->value);
-	free(head[0]);
+	prev = head->prev;
+	next = head->next;
+	free(head->value);
+	free(head);
 	if (prev)
 		prev->next = next;
 	if (next)
@@ -69,7 +69,6 @@ void	ft_parse_word(t_token **head)
 	char	**strs;
 	char	*path;
 	int		i;
-	int		j;
 
 	i = 1;
 	ptr = *head;
@@ -80,7 +79,6 @@ void	ft_parse_word(t_token **head)
 	}
 	*head = ptr->next;
 	strs = ft_calloc(i + 1, (sizeof(void *)));
-	j = 0;
 	while (i--)
 	{
 		strs[i] = ptr->value;
@@ -93,4 +91,6 @@ void	ft_parse_word(t_token **head)
 		if (execve(path, strs, 0) < 0)
 			ft_error(NULL);
 	wait(0);
+	free(path);
+	ft_free_array(strs);
 }

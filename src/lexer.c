@@ -73,8 +73,6 @@ t_token	*special_char_token(char *str)
 	len = 1;
 	c = *str;
 	token = token_new();
-	if (c == ' ')
-		token->type = space;
 	if (c == '\'')
 		token->type = quote;
 	if (c == '\"')
@@ -127,6 +125,29 @@ int	ft_isword(int c)
 	return (0);
 }
 
+char	*get_space_value(char *str)
+{
+	char	*spaces;
+	int		len;
+
+	len = 0;
+	while (*str && str[len] == ' ')
+		len++;
+	spaces = ft_strndup(str, len);
+	printf("[%s]\n", spaces);
+	return (spaces);
+}
+
+t_token	*space_token(char *str)
+{
+	t_token	*token;
+
+	token = token_new();
+	token->type = space;
+	token->value = get_space_value(str);
+	return (token);
+}
+
 void	lexer(t_token **head, char *str)
 {
 	int	i;
@@ -137,6 +158,8 @@ void	lexer(t_token **head, char *str)
 		i = token_add_back(head, word_token(str));
 	else if (ft_strchr(SPECIAL_CHARS, *str))
 		i = token_add_back(head, special_char_token(str));
+	else if (*str == ' ')
+		i = token_add_back(head, space_token(str));
 	else
 		i = 1;
 	lexer(head, str + i);

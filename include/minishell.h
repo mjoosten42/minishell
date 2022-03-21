@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   minishell.h                                        :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: mjoosten <mjoosten@student.42.fr>            +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/02/22 14:57:10 by mjoosten      #+#    #+#                 */
-/*   Updated: 2022/03/21 15:39:23 by rnijhuis      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/22 14:57:10 by mjoosten          #+#    #+#             */
+/*   Updated: 2022/03/21 17:26:23 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <limits.h>
 
 // Special chars
-#define SPECIAL_CHARS " \"\'><|$"
+#define SPECIAL_CHARS "\"\'><|$"
 #define WORD_END "\t \"\'><|$"
 
 // Token definitions
