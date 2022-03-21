@@ -4,27 +4,42 @@
 void	ft_parse_word(t_token **head);
 void	ft_parse_quote(t_token **head);
 void	ft_remove_token(t_token **head);
+void	ft_remove_spaces(t_token **head);
 
 void	ft_parse(t_token *head)
 {
-	t_token	*ptr;
-
-	ptr = head;
-	while (ptr)
-	{
-		print_tokens(head);
-		if (ptr->type == space)
-			ft_remove_token(&ptr);
-		ptr = ptr->next;
-	}
+	print_tokens(head);
+	ft_spaces(&head);
+	print_tokens(head);
 	while (head)
 	{
-		print_tokens(head);
 		if (head->type == word)
 			ft_parse_word(&head);
-		if (head->type == quote)
+		else if (head->type == quote)
 			ft_parse_quote(&head);
-		head = head->next;
+		else
+			head = head->next;
+	}
+}
+
+void	ft_spaces(t_token **head)
+{
+	t_token	*ptr;
+	int		in_quote;
+	int		in_dquote;
+
+	in_quote = 0;
+	in_dquote = 0;
+	ptr = *head;
+	while (ptr)
+	{
+		if (ptr->type == quote)
+			in_quote = !in_quote;
+		if (ptr->type == dquote)
+			in_dquote = !in_dquote;
+		if (ptr->type == space && !(in_quote || in_dquote))
+			ft_remove_token(&ptr);
+		ptr = ptr->next;
 	}
 }
 
@@ -52,6 +67,7 @@ void	ft_parse_word(t_token **head)
 {
 	t_token	*ptr;
 	char	**strs;
+	char	*path;
 	int		i;
 	int		j;
 
@@ -70,8 +86,11 @@ void	ft_parse_word(t_token **head)
 		strs[i] = ptr->value;
 		ptr = ptr->prev;
 	}
+	path = ft_getpath(*strs);
+	if (!path)
+		return ;
 	if (!fork())
-		if (execve(ft_getpath(*strs), strs, 0) < 0)
+		if (execve(path, strs, 0) < 0)
 			ft_error(NULL);
 	wait(0);
 }

@@ -59,6 +59,7 @@ t_token	*word_token(char *str)
 	t_token	*token;
 
 	token = token_new();
+	token->type = word;
 	token->value = get_token_value(str);
 	return (token);
 }
