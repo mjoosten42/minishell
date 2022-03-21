@@ -6,7 +6,7 @@
 #    By: mjoosten <mjoosten@student.42.fr>            +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/03/12 11:05:57 by rnijhuis      #+#    #+#                  #
-#    Updated: 2022/03/21 13:39:29 by rnijhuis      ########   odam.nl          #
+#    Updated: 2022/03/21 14:52:44 by rnijhuis      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ LIBS_HEADERS := -I $(LIBS_DIR)/libft/include/ \
 
 INC := -I $(INCLUDE_DIR) $(LIBS_HEADERS)
 
-SRCS := main.c lexer.c
+SRCS := main.c lexer.c parser.c path.c
 
 OBJS = $(addprefix $(OBJS_DIR)/,$(SRCS:.c=.o))
 

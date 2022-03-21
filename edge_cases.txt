@@ -1,0 +1,22 @@
+Case:
+	Command in qoutes
+Descr: 
+	Command in qoutes without flags should work
+Command:
+	"ls"
+Output:
+	files in dir
+
+Case:
+	Command in qoutes with flags
+Descr:
+	Command in qoutes with flags shouldn't work
+Command:
+	"ls -la"
+Output:
+	command not found
+
+Case:
+Descr:
+Command:
+Output:

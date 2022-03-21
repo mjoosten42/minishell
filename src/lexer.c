@@ -1,9 +1,6 @@
 #include "libft.h"
 #include "minishell.h"
 
-#define SPECIAL_CHARS "\"\'><|$"
-#define WORD_END "\t \"\'><|$"
-
 int	token_add_back(t_token **head, t_token *new_token)
 {
 	t_token	*token;
@@ -38,17 +35,23 @@ t_token	*token_new(void)
 	return (token);
 }
 
+char	*ft_strndup(char *str, int len)
+{
+	char	*dup;
+
+	dup = malloc(len + 1);
+	ft_strlcpy(dup, str, len + 1);
+	return (dup);
+}
+
 char	*get_token_value(char *str)
 {
-	char	*value;
 	int		i;
 
 	i = 0;
 	while (!ft_strchr(WORD_END, str[i]))
 		i++;
-	value = ft_malloc(i + 1);
-	ft_strlcpy(value, str, i + 1);
-	return (value);
+	return (ft_strndup(str, i));
 }
 
 t_token	*word_token(char *str)
@@ -63,13 +66,14 @@ t_token	*word_token(char *str)
 t_token	*special_char_token(char *str)
 {
 	t_token	*token;
-	char	*new;
 	char	c;
 	int		len;
 
 	len = 1;
 	c = *str;
 	token = token_new();
+	if (c == ' ')
+		token->type = space;
 	if (c == '\'')
 		token->type = quote;
 	if (c == '\"')
@@ -98,9 +102,7 @@ t_token	*special_char_token(char *str)
 		token->type = pipe_char;
 	if (c == '$')
 		token->type = dollar;
-	new = ft_malloc(len + 1);
-	ft_strlcpy(new, str, len + 1);
-	token->value = new;
+	token->value = ft_strndup(str, len);
 	return (token);
 }
 
@@ -109,7 +111,7 @@ void	print_tokens(t_token *token)
 	printf("\n- id - type - value -\n");
 	while (token)
 	{
-		printf("|  %2i |  %i   | %s\n", token->position, token->type, token->value);
+		printf("| %2i |    %i | %s\n", token->position, token->type, token->value);
 		token = token->next;
 	}
 	printf("\n");
@@ -117,7 +119,7 @@ void	print_tokens(t_token *token)
 
 int	ft_isword(int c)
 {
-	if (ft_isalpha(c))
+	if (ft_isalnum(c))
 		return (1);
 	if (c == '-')
 		return (1);
@@ -137,12 +139,4 @@ void	lexer(t_token **head, char *str)
 	else
 		i = 1;
 	lexer(head, str + i);
-}
-
-void	get_tokens(char *str)
-{
-	t_token	*head;
-
-	lexer(&head, str);
-	print_tokens(head);
 }

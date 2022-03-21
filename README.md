@@ -15,8 +15,14 @@ $ make run
 
 ## ✅ Todo List
 
+Last updated at - 21/3/2022
+
 Lexer <br>
-	[ ] - Turn input into blocks
+	[x] - Turn input into blocks
+
+Parser <br>
+	[x] - Take command + flags and run
+	[ ] - Handle pipes redirects etc..
 
 Pipex <br>
 	[ ] - HERE_DOC <br>
