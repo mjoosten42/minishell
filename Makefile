@@ -6,7 +6,7 @@
 #    By: mjoosten <mjoosten@student.42.fr>            +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/03/12 11:05:57 by rnijhuis      #+#    #+#                  #
-#    Updated: 2022/03/21 12:09:29 by rnijhuis      ########   odam.nl          #
+#    Updated: 2022/03/21 13:39:29 by rnijhuis      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ READLINE_DIR = -L/Users/$(USER)/.brew/opt/readline/lib
 
 LIBS := $(LIBS_DIR)/libft/libft.a
 
-LIBS_HEADERS := -I $(LIBS_DIR)/libft/ \
+LIBS_HEADERS := -I $(LIBS_DIR)/libft/include/ \
 				-I $(READLINE_DIR)/include/ \
 				-I /Users/$(USER)/.brew/opt/readline/include/
 
