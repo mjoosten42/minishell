@@ -1,35 +1,49 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: mjoosten <mjoosten@student.42.fr>            +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/02/22 14:57:34 by mjoosten      #+#    #+#                 */
-/*   Updated: 2022/03/12 11:14:53 by rubennijhui   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/22 14:57:34 by mjoosten          #+#    #+#             */
+/*   Updated: 2022/03/17 14:07:31 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 
+void	ft_signal(int signum)
+{
+	if (signum == SIGINT)
+	{
+		ft_putchar('\n');
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
+}
+
 int	main(void)
 {
-	char		*str;
+	char	*str;
 
+	signal(SIGINT, ft_signal);
+	signal(SIGQUIT, ft_signal);
 	while (1)
 	{
 		str = readline("minishell$ ");
 		if (!str)
 			break ;
 		if (!*str)
+		{
+			free(str);
 			continue ;
+		}
 		add_history(str);
 		ft_execute(str);
 		free(str);
 	}
-	ft_putchar_fd(BACKSPACE, 0);
-	ft_putchar_fd(BACKSPACE, 0);
 	ft_putstr("exit\n");
 	exit(EXIT_SUCCESS);
 }
@@ -45,8 +59,10 @@ void	ft_execute(char *str)
 		ft_error(NULL);
 	path = ft_getpath(*strs);
 	if (!path)
-		return ;
+		return (ft_free_array(strs));
 	pid = fork();
+	if (pid < 0)
+		ft_error(NULL);
 	if (!pid)
 		if (execve(path, strs, 0) < 0)
 			ft_error(NULL);
@@ -57,14 +73,15 @@ void	ft_execute(char *str)
 
 char	*ft_getpath(char *str)
 {
-	char	**paths;
-	char	*path;
-	int		i;
+	static char	**paths;
+	char		*path;
+	int			i;
 
 	i = 0;
+	if (!paths)
+		paths = ft_getpaths();
 	if (!access(str, F_OK))
 		return (ft_strdup(str));
-	paths = ft_getpaths();
 	while (paths[i])
 	{
 		path = ft_strjoin(paths[i], str);
@@ -73,7 +90,6 @@ char	*ft_getpath(char *str)
 		free(path);
 		i++;
 	}
-	rl_line_buffer[ft_strlen(rl_line_buffer) - 1] = 0;
 	ft_putstr_fd(rl_line_buffer, 2);
 	ft_putstr_fd(": command not found\n", 2);
 	return (NULL);
@@ -88,7 +104,7 @@ char	**ft_getpaths(void)
 	i = 0;
 	strs = ft_split(getenv("PATH"), ':');
 	if (!strs)
-		ft_error(0);
+		ft_error(NULL);
 	while (strs[i])
 	{
 		str = ft_strjoin(strs[i], "/");
