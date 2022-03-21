@@ -58,9 +58,30 @@ void	ft_remove_token(t_token *head)
 		next->prev = prev;
 }
 
+/**
+ * if input has qoutes go through list to match qoutes
+ * merge value of block in between qoutes
+ * 
+ * remove blocks
+ */
 void	ft_parse_quote(t_token **head)
 {
-	(void)head;
+	t_token	*ptr;
+	t_token	*next_block_ptr;
+	char	*total_value;
+
+	ptr = *head;
+	ptr = ptr->next;
+	total_value = ptr->value;
+	ptr = ptr->next;
+	ptr->type = word;
+	while (ptr && ptr->type != dquote)
+	{
+		total_value = ft_strjoin(total_value, ptr->value);
+		next_block_ptr = ptr->next;
+		ft_remove_token(ptr);
+		ptr = ptr->next;
+	}
 }
 
 void	ft_parse_word(t_token **head)
