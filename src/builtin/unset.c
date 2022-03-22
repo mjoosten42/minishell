@@ -15,5 +15,6 @@ void	unset(t_program_data *pd, char *str)
 	free(pd->env[i]);
 	if (i != pd->amount_env_lines)
 		pd->env[i] = pd->env[pd->amount_env_lines - 1];
-	pd->env[pd->amount_env_lines - 1] = 0;
+	pd->env[pd->amount_env_lines - 1] = NULL;
+	pd->amount_env_lines--;
 }

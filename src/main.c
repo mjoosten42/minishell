@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:57:34 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/03/22 16:39:25 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/03/22 16:43:27 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,15 @@ void	copy_env(t_program_data *pd, char **env)
 	pd->env[amount_env_lines] = NULL;
 }
 
-int	main(int argc, char *argv[], char *env[])
+int	main(void)
 {
-	t_program_data	program_data;
-	t_token	*head;
-	char	*str;
+	//t_program_data	program_data;
+	t_token				*head;
+	char				*str;
 
 	rl_catch_signals = 0;
-	ignal(SIGINT, ft_signal);
-	ignal(SIGQUIT, ft_signal);
-	copy_env(&program_data, env);
+	signal(SIGINT, ft_signal);
+	signal(SIGQUIT, ft_signal);
 	while (1)
 	{
 		head = 0;
