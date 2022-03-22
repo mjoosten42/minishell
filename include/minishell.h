@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:57:10 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/03/22 15:50:04 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/03/22 16:39:17 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ void	ft_parse(t_token **head);
 
 //	Builtins
 void	ft_echo(char **strs);
+void	export(t_program_data *pd, char *variable);
+void	unset(t_program_data *pd, char *str);
 void	ft_exit(void);
 
 #endif
