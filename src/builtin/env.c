@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	pwd(t_program_data *pd)
+void	env(t_program_data *pd)
 {
 	int	i;
 

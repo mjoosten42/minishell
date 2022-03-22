@@ -107,7 +107,7 @@ void	ft_parse_quote(t_token **head, enum e_symbol type)
 	ptr = head[0]->next;
 	ft_remove_token(*head);
 	if (!ptr)
-		ft_error("Error: solo (d)quote");
+		return ;
 	total_value = ptr->value;
 	first_block = ptr;
 	ptr->type = word;
@@ -120,7 +120,7 @@ void	ft_parse_quote(t_token **head, enum e_symbol type)
 		ptr = ptr->next;
 	}
 	if (!ptr)
-		ft_error("Error: solo (d)quote");
+		return ;
 	ft_remove_token(ptr);
 	free(first_block->value);
 	first_block->value = total_value;
