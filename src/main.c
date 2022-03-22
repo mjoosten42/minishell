@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:57:34 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/03/22 13:39:14 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/03/22 14:28:25 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,27 +16,14 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-#include <sys/ioctl.h>
-#include <termios.h>
-
-void	print_env(void)
-{
-	extern char	**environ;
-	int			i;
-
-	i = 0;
-	while (environ[i])
-		printf("%s\n", environ[i++]);
-}
-
 int	main(void)
 {
 	t_token	*head;
 	char	*str;
 
-	print_env();
-	//signal(SIGINT, ft_signal);
-	//signal(SIGQUIT, ft_signal);
+	rl_catch_signals = 0;
+	signal(SIGINT, ft_signal);
+	signal(SIGQUIT, ft_signal);
 	while (1)
 	{
 		head = 0;
