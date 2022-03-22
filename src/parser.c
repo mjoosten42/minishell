@@ -12,10 +12,8 @@ void	ft_parse(t_token **head)
 	t_token	*ptr;
 
 	ptr = *head;
-	print_tokens(ptr);
 	ft_spaces(head);
 	ft_expand_quotes(head);
-	print_tokens(ptr);
 	while (ptr)
 	{
 		if (ptr->type == word)
