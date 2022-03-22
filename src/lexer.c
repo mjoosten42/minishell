@@ -111,15 +111,6 @@ t_token	*special_char_token(char *str)
 	return (token);
 }
 
-int	ft_isword(int c)
-{
-	if (ft_isalnum(c))
-		return (1);
-	if (c == '-')
-		return (1);
-	return (0);
-}
-
 char	*get_space_value(char *str)
 {
 	char	*spaces;

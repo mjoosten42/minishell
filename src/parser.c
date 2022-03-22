@@ -98,9 +98,11 @@ void	ft_parse_quote(t_token **head, enum e_symbol type)
 	char	*total_value;
 
 	ptr = head[0]->next;
-	first_block = ptr;
-	ft_remove_token(ptr->prev);
+	ft_remove_token(*head);
+	if (!ptr)
+		return ;
 	total_value = ptr->value;
+	first_block = ptr;
 	ptr->type = word;
 	ptr = ptr->next;
 	while (ptr && ptr->type != type)
