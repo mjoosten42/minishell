@@ -1,5 +1,6 @@
 /* ************************************************************************** */
 /*                                                                            */
+<<<<<<< HEAD
 /*                                                        ::::::::            */
 /*   minishell.h                                        :+:    :+:            */
 /*                                                     +:+                    */
@@ -7,6 +8,15 @@
 /*                                                   +#+                      */
 /*   Created: 2022/02/22 14:57:10 by mjoosten      #+#    #+#                 */
 /*   Updated: 2022/03/22 14:46:29 by rnijhuis      ########   odam.nl         */
+=======
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/22 14:57:10 by mjoosten          #+#    #+#             */
+/*   Updated: 2022/03/22 15:15:01 by mjoosten         ###   ########.fr       */
+>>>>>>> 67b5e1ee961566d774c57204cff86b4fd3f41917
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +35,8 @@ enum e_symbol {
 	word,
 	pipe_char,
 	red_in,
-	here_doc,
 	red_out,
+	here_doc,
 	red_out_app,
 	dollar,
 	dquote,
@@ -71,5 +81,9 @@ void	lexer(t_token **head, char *str);
 
 //	Parser
 void	ft_parse(t_token **head);
+
+//	Builtins
+void	ft_echo(char **strs);
+void	ft_exit(void);
 
 #endif

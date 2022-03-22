@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/22 14:57:34 by mjoosten      #+#    #+#                 */
-/*   Updated: 2022/03/22 15:36:11 by rnijhuis      ########   odam.nl         */
+/*   Updated: 2022/03/22 15:38:27 by rnijhuis      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,13 +135,12 @@ void	ft_signal(int signum)
 
 void	print_tokens(t_token *token)
 {
-	char	*types[] = 
-	{
+	char	*types[] = {
 		"word",
 		"pipe_char",
 		"red_in",
-		"here_doc",
 		"red_out",
+		"here_doc",
 		"red_out_app",
 		"dollar",
 		"dquote",
@@ -153,7 +152,7 @@ void	print_tokens(t_token *token)
 	printf("\n- id -------- type - value\n");
 	while (token)
 	{
-		printf("| %2i | %11s | %s\n", token->position, types[token->type], token->value);
+		printf("| %2i | %11s | [%s]\n", token->position, types[token->type], token->value);
 		token = token->next;
 	}
 	printf("\n");
