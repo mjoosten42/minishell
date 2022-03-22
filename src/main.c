@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:57:34 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/03/22 16:46:33 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/03/22 17:32:39 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,51 +16,44 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-void	copy_env(t_program_data *pd, char **env)
-{
-	int	amount_env_lines;
-
-	amount_env_lines = 0;
-	while (env[amount_env_lines] != NULL)
-		amount_env_lines++;
-	pd->amount_env_lines = amount_env_lines;
-	pd->env = ft_malloc((amount_env_lines + 1) * sizeof(char *));
-	amount_env_lines = 0;
-	while (env[amount_env_lines] != NULL)
-	{
-		pd->env[amount_env_lines] = ft_strdup(env[amount_env_lines]);
-		amount_env_lines++;
-	}
-	pd->env[amount_env_lines] = NULL;
-}
-
 int	main(void)
 {
-	//t_program_data	program_data;
-	t_token				*head;
-	char				*str;
+	t_program_data	pd;;
+	t_token			*head;
+	char			*str;
 
 	rl_catch_signals = 0;
 	signal(SIGINT, ft_signal);
 	signal(SIGQUIT, ft_signal);
+	copy_env(&pd);
+	getcwd(pd.dir, PATH_MAX);
 	while (1)
 	{
-		head = 0;
+		head = NULL;
 		str = readline("minishell$ ");
 		if (!str)
-			break ;
-		if (!*str)
-		{
-			free(str);
-			continue ;
-		}
-		add_history(str);
+			ft_exit();
+		if (*str)
+			add_history(str);
 		lexer(&head, str);
 		ft_parse(&head);
 		free(str);
 	}
-	ft_putstr("exit\n");
-	exit(EXIT_SUCCESS);
+}
+
+void	copy_env(t_program_data *pd)
+{
+	extern char	**environ;
+	int			i;
+
+	i = 0;
+	while (environ[i])
+		i++;
+	pd->amount_env_lines = i;
+	pd->env = ft_malloc((i + 1) * sizeof(char *));
+	pd->env[i] = NULL;
+	while (i--)
+		pd->env[i] = ft_strdup(environ[i]);
 }
 
 void	ft_signal(int signum)
@@ -88,14 +81,15 @@ void	print_tokens(t_token *token)
 		"quote",
 		"space",
 		"tab",
-		"newline"
+		"newline",
+		"equals"
 	};
 	printf("### Tokens:\n");
-	printf("### - id -------- type - value\n");
+	printf("# # - id -------- type - value\n");
 	while (token)
 	{
-		printf("### | %2i | %11s | [%s]\n", token->position, types[token->type], token->value);
+		printf("# # | %2i | %11s | [%s]\n", token->position, types[token->type], token->value);
 		token = token->next;
 	}
-	printf("\n");
+	printf("###\n");
 }

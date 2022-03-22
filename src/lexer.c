@@ -122,6 +122,8 @@ t_token	*special_char_token(char *str)
 		token->type = tab;
 	else if (c == '\n')
 		token->type = newline;
+	else if (c == '=')
+		token->type = equals;
 	token->value = ft_strndup(str, len);
 	return (token);
 }

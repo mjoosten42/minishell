@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
-#                                                         ::::::::             #
-#    Makefile                                           :+:    :+:             #
-#                                                      +:+                     #
-#    By: mjoosten <mjoosten@student.42.fr>            +#+                      #
-#                                                    +#+                       #
-#    Created: 2022/03/12 11:05:57 by rnijhuis      #+#    #+#                  #
-#    Updated: 2022/03/21 14:52:44 by rnijhuis      ########   odam.nl          #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2022/03/12 11:05:57 by rnijhuis          #+#    #+#              #
+#    Updated: 2022/03/22 17:28:44 by mjoosten         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,17 @@ LIBS_HEADERS := -I $(LIBS_DIR)/libft/include/ \
 
 INC := -I $(INCLUDE_DIR) $(LIBS_HEADERS)
 
-SRCS := main.c lexer.c parser.c path.c
+SRCS :=	main.c				\
+		lexer.c				\
+		parser.c			\
+		path.c				\
+		builtin/echo.c		\
+		builtin/cd.c		\
+		builtin/pwd.c		\
+		builtin/env.c		\
+		builtin/export.c	\
+		builtin/unset.c		\
+		builtin/exit.c		\
 
 OBJS = $(addprefix $(OBJS_DIR)/,$(SRCS:.c=.o))
 

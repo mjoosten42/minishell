@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include "libft.h"
 
 void	export(t_program_data *pd, char *variable)
 {

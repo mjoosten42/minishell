@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:57:10 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/03/22 16:39:17 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/03/22 17:24:53 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <limits.h>
 
 // Special chars
-# define META_CHARS "|<>$\"\' \t\n"
+# define META_CHARS "|<>$\"\' \t\n="
 
 // Token definitions
 enum e_symbol {
@@ -33,16 +33,17 @@ enum e_symbol {
 	quote,
 	space,
 	tab,
-	newline
+	newline,
+	equals
 };
 
 // Program data
 typedef struct s_program_data
 {
 	char			**env;
-	char			*current_dir;
+	char			dir[PATH_MAX];
 	int				amount_env_lines;
-}				t_program_data;
+}					t_program_data;
 
 // Token used for lexer
 typedef struct s_token
@@ -52,13 +53,14 @@ typedef struct s_token
 	char			*value;
 	struct s_token	*prev;
 	struct s_token	*next;
-}				t_token;
+}					t_token;
 
 //	readline
 void	rl_replace_line(const char *text, int clear_undo);
 int		rl_on_new_line(void);
 
 //	Main
+void	copy_env(t_program_data *pd);
 void	ft_signal(int signum);
 void	print_tokens(t_token *token);
 
@@ -73,9 +75,12 @@ void	lexer(t_token **head, char *str);
 void	ft_parse(t_token **head);
 
 //	Builtins
-void	ft_echo(char **strs);
+void	echo(char **strs);
+void	cd(t_program_data *pd, char *path);
+void	pwd(t_program_data *pd);
 void	export(t_program_data *pd, char *variable);
 void	unset(t_program_data *pd, char *str);
+void	env(t_program_data *pd);
 void	ft_exit(void);
 
 #endif

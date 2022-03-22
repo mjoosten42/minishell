@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include "libft.h"
 
 void	env(t_program_data *pd)
 {
@@ -6,5 +7,5 @@ void	env(t_program_data *pd)
 
 	i = 0;
 	while (pd->env[i])
-		printf("%s\n", pd->env[i++]);
+		ft_putstr(pd->env[i++]);
 }

@@ -1,6 +1,6 @@
 #include "libft.h"
 
-void	ft_echo(char **strs)
+void	echo(char **strs)
 {
 	int	i;
 	int	nl;
