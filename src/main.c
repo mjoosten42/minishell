@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:57:34 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/03/22 15:11:34 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/03/22 15:29:24 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	print_tokens(t_token *token)
 	printf("\n- id -------- type - value\n");
 	while (token)
 	{
-		printf("| %2i | %11s | %s\n", token->position, types[token->type], token->value);
+		printf("| %2i | %11s | [%s]\n", token->position, types[token->type], token->value);
 		token = token->next;
 	}
 	printf("\n");

@@ -5,16 +5,16 @@ void	ft_parse_word(t_token **head);
 void	ft_expand_quotes(t_token **head);
 void	ft_parse_quote(t_token **head, enum e_symbol type);
 void	ft_remove_token(t_token *head);
-void	ft_spaces(t_token **head);
+void	ft_expand(t_token **head);
 
 void	ft_parse(t_token **head)
 {
 	t_token	*ptr;
 
-	ft_spaces(head);
+	print_tokens(*head);
+	ft_expand(head);
 	ft_expand_quotes(head);
 	ptr = *head;
-	//print_tokens(ptr);
 	while (ptr)
 	{
 		if (ptr->type == word)
@@ -26,7 +26,13 @@ void	ft_parse(t_token **head)
 	}
 }
 
-void	ft_spaces(t_token **head)
+void	ft_expand_dollar(t_token *ptr)
+{
+	if (ptr->next->type == word)
+		return ;
+}
+
+void	ft_expand(t_token **head)
 {
 	t_token	*ptr;
 	int		in_quote;
@@ -37,10 +43,12 @@ void	ft_spaces(t_token **head)
 	ptr = *head;
 	while (ptr)
 	{
-		if (ptr->type == quote)
+		if (ptr->type == quote && !in_dquote)
 			in_quote = !in_quote;
-		if (ptr->type == dquote)
+		if (ptr->type == dquote && !in_quote)
 			in_dquote = !in_dquote;
+		if (ptr->type == dollar && !in_quote)
+			ft_expand_dollar(ptr);
 		if (ptr->type == space && !(in_quote || in_dquote))
 			ft_remove_token(ptr);
 		ptr = ptr->next;
@@ -67,7 +75,6 @@ void	ft_expand_quotes(t_token **head)
 	t_token	*ptr;
 
 	ptr = *head;
-	print_tokens(ptr);
 	while (ptr)
 	{
 		if (ptr->type == dquote)
