@@ -64,6 +64,16 @@ t_token	*word_token(char *str)
 	return (token);
 }
 
+int	get_space_len(char *str)
+{
+	int		len;
+
+	len = 0;
+	while (*str && str[len] == ' ')
+		len++;
+	return (len);
+}
+
 t_token	*special_char_token(char *str)
 {
 	t_token	*token;
@@ -76,7 +86,10 @@ t_token	*special_char_token(char *str)
 	if (c == '|')
 		token->type = pipe_char;
 	else if (c == ' ')
+	{
 		token->type = space;
+		len = get_space_len(str);
+	}
 	else if (c == '<')
 	{
 		if (str[1] == '<')
@@ -110,28 +123,6 @@ t_token	*special_char_token(char *str)
 	else if (c == '\n')
 		token->type = newline;
 	token->value = ft_strndup(str, len);
-	return (token);
-}
-
-char	*get_space_value(char *str)
-{
-	char	*spaces;
-	int		len;
-
-	len = 0;
-	while (*str && str[len] == ' ')
-		len++;
-	spaces = ft_strndup(str, len);
-	return (spaces);
-}
-
-t_token	*space_token(char *str)
-{
-	t_token	*token;
-
-	token = token_new();
-	token->type = space;
-	token->value = get_space_value(str);
 	return (token);
 }
 
