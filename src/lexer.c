@@ -1,5 +1,5 @@
-#include "libft.h"
 #include "minishell.h"
+#include "libft.h"
 
 int	token_add_back(t_token **head, t_token *new_token)
 {
@@ -46,10 +46,10 @@ char	*ft_strndup(char *str, int len)
 
 char	*get_token_value(char *str)
 {
-	int		i;
+	int	i;
 
 	i = 0;
-	while (!ft_strchr(WORD_END, str[i]))
+	while (!ft_strchr(META_CHARS, str[i]))
 		i++;
 	return (ft_strndup(str, i));
 }
@@ -73,20 +73,8 @@ t_token	*special_char_token(char *str)
 	len = 1;
 	c = *str;
 	token = token_new();
-	if (c == '\'')
-		token->type = quote;
-	if (c == '\"')
-		token->type = dquote;
-	if (c == '>')
-	{
-		if (str[1] == '>')
-		{
-			len++;
-			token->type = red_out_app;
-		}
-		else
-			token->type = red_out;
-	}
+	if (c == '|')
+		token->type = pipe_char;
 	if (c == '<')
 	{
 		if (str[1] == '<')
@@ -97,23 +85,30 @@ t_token	*special_char_token(char *str)
 		else
 			token->type = red_in;
 	}
-	if (c == '|')
-		token->type = pipe_char;
+	if (c == '>')
+	{
+		if (str[1] == '>')
+		{
+			len++;
+			token->type = red_out_app;
+		}
+		else
+			token->type = red_out;
+	}
 	if (c == '$')
 		token->type = dollar;
+	if (c == '\"')
+		token->type = dquote;
+	if (c == '\'')
+		token->type = quote;
+	if (c == ' ')
+		token->type = space;
+	if (c == '\t')
+		token->type = tab;
+	if (c == '\n')
+		token->type = newline;
 	token->value = ft_strndup(str, len);
 	return (token);
-}
-
-void	print_tokens(t_token *token)
-{
-	printf("\n- id - type - value -\n");
-	while (token)
-	{
-		printf("| %2i |    %i | %s\n", token->position, token->type, token->value);
-		token = token->next;
-	}
-	printf("\n");
 }
 
 int	ft_isword(int c)
@@ -153,12 +148,12 @@ void	lexer(t_token **head, char *str)
 
 	if (!*str)
 		return ;
-	if (ft_isword(*str))
-		i = token_add_back(head, word_token(str));
-	else if (ft_strchr(SPECIAL_CHARS, *str))
-		i = token_add_back(head, special_char_token(str));
-	else if (*str == ' ')
+	if (*str == ' ')
 		i = token_add_back(head, space_token(str));
+	else if (ft_strchr(META_CHARS, *str))
+		i = token_add_back(head, special_char_token(str));
+	else if (ft_isprint(*str))
+		i = token_add_back(head, word_token(str));
 	else
 		i = 1;
 	lexer(head, str + i);

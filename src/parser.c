@@ -2,22 +2,28 @@
 #include "libft.h"
 
 void	ft_parse_word(t_token **head);
-void	ft_parse_quote(t_token **head);
+void	ft_expand_quotes(t_token **head);
+void	ft_parse_quote(t_token **head, enum e_symbol type);
 void	ft_remove_token(t_token *head);
 void	ft_spaces(t_token **head);
 
-void	ft_parse(t_token *head)
+void	ft_parse(t_token **head)
 {
-	ft_spaces(&head);
-	while (head)
+	t_token	*ptr;
+
+	ptr = *head;
+	print_tokens(ptr);
+	ft_spaces(head);
+	ft_expand_quotes(head);
+	print_tokens(ptr);
+	while (ptr)
 	{
-		print_tokens(head);
-		if (head->type == word)
-			ft_parse_word(&head);
-		else if (head->type == dquote)
-			ft_parse_quote(&head);
-		else
-			head = head->next;
+		if (ptr->type == word)
+		{
+			ft_parse_word(&ptr);
+			continue ;
+		}
+		ptr = ptr->next;
 	}
 }
 
@@ -57,30 +63,57 @@ void	ft_remove_token(t_token *head)
 		next->prev = prev;
 }
 
+void	ft_expand_quotes(t_token **head)
+{
+	t_token	*ptr;
+
+	ptr = *head;
+	while (ptr)
+	{
+		if (ptr->type == quote)
+		{
+			ft_parse_quote(&ptr, quote);
+			ptr = *head;
+		}
+		if (ptr->type == dquote)
+		{
+			ft_parse_quote(&ptr, dquote);
+			ptr = *head;
+		}
+		ptr = ptr->next;
+	}
+}
+
 /**
  * if input has qoutes go through list to match qoutes
  * merge value of block in between qoutes
  * 
  * remove blocks
  */
-void	ft_parse_quote(t_token **head)
+void	ft_parse_quote(t_token **head, enum e_symbol type)
 {
 	t_token	*ptr;
 	t_token	*next_block_ptr;
+	t_token	*first_block;
 	char	*total_value;
 
-	ptr = *head;
-	ptr = ptr->next;
+	ptr = head[0]->next;
+	first_block = ptr;
+	ft_remove_token(ptr->prev);
 	total_value = ptr->value;
-	ptr = ptr->next;
 	ptr->type = word;
-	while (ptr && ptr->type != dquote)
+	ptr = ptr->next;
+	while (ptr && ptr->type != type)
 	{
 		total_value = ft_strjoin(total_value, ptr->value);
 		next_block_ptr = ptr->next;
 		ft_remove_token(ptr);
 		ptr = ptr->next;
 	}
+	if (ptr)
+		ft_remove_token(ptr);
+	free(first_block->value);
+	first_block->value = total_value;
 }
 
 void	ft_parse_word(t_token **head)

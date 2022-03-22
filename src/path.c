@@ -1,10 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   path.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/22 11:36:15 by mjoosten          #+#    #+#             */
+/*   Updated: 2022/03/22 11:45:12 by mjoosten         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "libft.h"
 #include <unistd.h>
 #include <stdlib.h>
 #include <readline/readline.h>
-
-static char	**ft_getpaths(void);
 
 char	*ft_getpath(char *str)
 {
@@ -30,7 +40,7 @@ char	*ft_getpath(char *str)
 	return (NULL);
 }
 
-static char	**ft_getpaths(void)
+char	**ft_getpaths(void)
 {
 	char	**strs;
 	char	*str;
