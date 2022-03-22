@@ -75,7 +75,9 @@ t_token	*special_char_token(char *str)
 	token = token_new();
 	if (c == '|')
 		token->type = pipe_char;
-	if (c == '<')
+	else if (c == ' ')
+		token->type = space;
+	else if (c == '<')
 	{
 		if (str[1] == '<')
 		{
@@ -85,7 +87,7 @@ t_token	*special_char_token(char *str)
 		else
 			token->type = red_in;
 	}
-	if (c == '>')
+	else if (c == '>')
 	{
 		if (str[1] == '>')
 		{
@@ -95,17 +97,17 @@ t_token	*special_char_token(char *str)
 		else
 			token->type = red_out;
 	}
-	if (c == '$')
+	else if (c == '$')
 		token->type = dollar;
-	if (c == '\"')
+	else if (c == '\"')
 		token->type = dquote;
-	if (c == '\'')
+	else if (c == '\'')
 		token->type = quote;
-	if (c == ' ')
+	else if (c == ' ')
 		token->type = space;
-	if (c == '\t')
+	else if (c == '\t')
 		token->type = tab;
-	if (c == '\n')
+	else if (c == '\n')
 		token->type = newline;
 	token->value = ft_strndup(str, len);
 	return (token);
@@ -139,9 +141,7 @@ void	lexer(t_token **head, char *str)
 
 	if (!*str)
 		return ;
-	if (*str == ' ')
-		i = token_add_back(head, space_token(str));
-	else if (ft_strchr(META_CHARS, *str))
+	if (ft_strchr(META_CHARS, *str))
 		i = token_add_back(head, special_char_token(str));
 	else if (ft_isprint(*str))
 		i = token_add_back(head, word_token(str));
