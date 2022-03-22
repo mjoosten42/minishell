@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:57:10 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/03/22 11:56:35 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/03/22 15:12:45 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ enum e_symbol {
 	word,
 	pipe_char,
 	red_in,
-	here_doc,
 	red_out,
+	here_doc,
 	red_out_app,
 	dollar,
 	dquote,
@@ -63,5 +63,8 @@ void	lexer(t_token **head, char *str);
 
 //	Parser
 void	ft_parse(t_token **head);
+
+//	Builtins
+void	ft_echo(char **strs);
 
 #endif
