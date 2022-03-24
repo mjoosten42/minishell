@@ -2,8 +2,8 @@
 
 void	echo(char **strs)
 {
-	int	i;
 	int	nl;
+	int	i;
 
 	i = 1;
 	nl = ft_strncmp(strs[1], "-n", 3);

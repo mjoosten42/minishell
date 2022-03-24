@@ -29,9 +29,7 @@ t_token	*token_new(void)
 	t_token		*token;
 
 	token = ft_malloc(sizeof(t_token));
-	token->position = 0;
-	token->prev = NULL;
-	token->next = NULL;
+	ft_memset(token, 0, sizeof(t_token));
 	return (token);
 }
 
@@ -39,34 +37,28 @@ char	*ft_strndup(char *str, int len)
 {
 	char	*dup;
 
-	dup = malloc(len + 1);
+	dup = ft_malloc(len + 1);
 	ft_strlcpy(dup, str, len + 1);
 	return (dup);
-}
-
-char	*get_token_value(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (!ft_strchr(META_CHARS, str[i]))
-		i++;
-	return (ft_strndup(str, i));
 }
 
 t_token	*word_token(char *str)
 {
 	t_token	*token;
+	int		i;
 
+	i = 0;
 	token = token_new();
 	token->type = word;
-	token->value = get_token_value(str);
+	while (!ft_strchr(META_CHARS, str[i]))
+		i++;
+	token->value = ft_strndup(str, i);
 	return (token);
 }
 
 int	get_space_len(char *str)
 {
-	int		len;
+	int	len;
 
 	len = 0;
 	while (*str && str[len] == ' ')
@@ -74,56 +66,28 @@ int	get_space_len(char *str)
 	return (len);
 }
 
+	//	Find metachar position in META_CHARS,
+	//	and subtract it from META_CHARS itself to get type
 t_token	*special_char_token(char *str)
 {
 	t_token	*token;
-	char	c;
 	int		len;
 
 	len = 1;
-	c = *str;
 	token = token_new();
-	if (c == '|')
-		token->type = pipe_char;
-	else if (c == ' ')
-	{
-		token->type = space;
+	token->type = ft_strchr(META_CHARS, str[0]) - META_CHARS;
+	if (token->type == space)
 		len = get_space_len(str);
-	}
-	else if (c == '<')
+	else if (token->type == red_in && str[1] == '<')
 	{
-		if (str[1] == '<')
-		{
-			len++;
-			token->type = here_doc;
-		}
-		else
-			token->type = red_in;
+		token->type = here_doc;
+		len++;
 	}
-	else if (c == '>')
+	else if (token->type == red_out && str[1] == '>')
 	{
-		if (str[1] == '>')
-		{
-			len++;
-			token->type = red_out_app;
-		}
-		else
-			token->type = red_out;
+		token->type = red_out_app;
+		len++;
 	}
-	else if (c == '$')
-		token->type = dollar;
-	else if (c == '\"')
-		token->type = dquote;
-	else if (c == '\'')
-		token->type = quote;
-	else if (c == ' ')
-		token->type = space;
-	else if (c == '\t')
-		token->type = tab;
-	else if (c == '\n')
-		token->type = newline;
-	else if (c == '=')
-		token->type = equals;
 	token->value = ft_strndup(str, len);
 	return (token);
 }

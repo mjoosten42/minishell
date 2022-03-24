@@ -6,7 +6,7 @@
 #    By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/12 11:05:57 by rnijhuis          #+#    #+#              #
-#    Updated: 2022/03/22 17:28:44 by mjoosten         ###   ########.fr        #
+#    Updated: 2022/03/24 11:57:42 by mjoosten         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -79,7 +79,7 @@ submodules:
 	@cd $(LIBS_DIR)/libft/ && git pull
 
 run: $(NAME)
-	./$(NAME)
+	@./$(NAME)
 
 clean:
 	@make clean -C $(LIBS_DIR)/libft

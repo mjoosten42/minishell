@@ -13,7 +13,7 @@ void	ft_parse(t_token **head)
 
 	print_tokens(*head);
 	ft_expand(head);
-	ft_expand_quotes(head);
+	print_tokens(*head);
 	ptr = *head;
 	while (ptr)
 	{
@@ -53,6 +53,7 @@ void	ft_expand(t_token **head)
 			ft_remove_token(ptr);
 		ptr = ptr->next;
 	}
+	ft_expand_quotes(head);
 }
 
 void	ft_remove_token(t_token *head)
@@ -106,8 +107,6 @@ void	ft_parse_quote(t_token **head, enum e_symbol type)
 
 	ptr = head[0]->next;
 	ft_remove_token(*head);
-	if (!ptr)
-		return ;
 	total_value = ptr->value;
 	first_block = ptr;
 	ptr->type = word;
@@ -119,8 +118,6 @@ void	ft_parse_quote(t_token **head, enum e_symbol type)
 		ft_remove_token(ptr);
 		ptr = ptr->next;
 	}
-	if (!ptr)
-		return ;
 	ft_remove_token(ptr);
 	free(first_block->value);
 	first_block->value = total_value;

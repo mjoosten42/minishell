@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:57:10 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/03/22 17:24:53 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/03/24 11:26:24 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,19 @@
 
 // Token definitions
 enum e_symbol {
-	word,
 	pipe_char,
 	red_in,
 	red_out,
-	here_doc,
-	red_out_app,
 	dollar,
 	dquote,
 	quote,
 	space,
 	tab,
 	newline,
-	equals
+	equals,
+	here_doc,
+	red_out_app,
+	word
 };
 
 // Program data
