@@ -3,7 +3,7 @@
 
 void	ft_parse_word(t_token **head);
 void	ft_expand_quotes(t_token **head);
-void	ft_parse_quote(t_token **head, enum e_symbol type);
+void	ft_parse_quote(t_token *token, enum e_symbol type);
 void	ft_remove_token(t_token *head);
 void	ft_expand(t_token **head);
 
@@ -26,70 +26,46 @@ void	ft_parse(t_token **head)
 	}
 }
 
-void	ft_expand_dollar(t_token *ptr)
-{
-	if (ptr->next->type == word)
-		return ;
-}
-
 void	ft_expand(t_token **head)
 {
 	t_token	*ptr;
-	int		in_quote;
-	int		in_dquote;
+	t_token	*next;
 
-	in_dquote = 0;
-	in_quote = 0;
 	ptr = *head;
 	while (ptr)
 	{
-		if (ptr->type == quote && !in_dquote)
-			in_quote = !in_quote;
-		if (ptr->type == dquote && !in_quote)
-			in_dquote = !in_dquote;
-		if (ptr->type == dollar && !in_quote)
-			ft_expand_dollar(ptr);
-		if (ptr->type == space && !(in_quote || in_dquote))
+		if (ptr->type == quote)
+			ft_parse_quote(ptr, quote);
+		else if (ptr->type == dquote)
+			ft_parse_quote(ptr, dquote);
+		else if (ptr->type == space)
+		{
+			next = ptr->next;
 			ft_remove_token(ptr);
-		ptr = ptr->next;
+			if (ptr == *head)
+				*head = next;
+			ptr = next;
+		}
+		else
+			ptr = ptr->next;
 	}
-	ft_expand_quotes(head);
 }
 
-void	ft_remove_token(t_token *head)
+void	ft_remove_token(t_token *token)
 {
 	t_token	*prev;
 	t_token	*next;
 
-	prev = head->prev;
-	next = head->next;
-	free(head->value);
-	free(head);
+	if (!token)
+		return ;
+	prev = token->prev;
+	next = token->next;
+	free(token->value);
+	free(token);
 	if (prev)
 		prev->next = next;
 	if (next)
 		next->prev = prev;
-}
-
-void	ft_expand_quotes(t_token **head)
-{
-	t_token	*ptr;
-
-	ptr = *head;
-	while (ptr)
-	{
-		if (ptr->type == dquote)
-		{
-			ft_parse_quote(&ptr, dquote);
-			ptr = *head;
-		}
-		if (ptr->type == quote)
-		{
-			ft_parse_quote(&ptr, quote);
-			ptr = *head;
-		}
-		ptr = ptr->next;
-	}
 }
 
 /**
@@ -97,38 +73,38 @@ void	ft_expand_quotes(t_token **head)
  * merge value of block in between qoutes
  * 
  * remove blocks
+ * 
+ * Edit: set first (d)quote to empty string with type word
+ * then keep joining until (d)quote is reached.
  */
-void	ft_parse_quote(t_token **head, enum e_symbol type)
+void	ft_parse_quote(t_token *token, enum e_symbol type)
 {
-	t_token	*ptr;
-	t_token	*next_block_ptr;
-	t_token	*first_block;
-	char	*total_value;
+	char	*tmp;
 
-	ptr = head[0]->next;
-	ft_remove_token(*head);
-	total_value = ptr->value;
-	first_block = ptr;
-	ptr->type = word;
-	ptr = ptr->next;
-	while (ptr && ptr->type != type)
+	token->type = word;
+	free(token->value);
+	token->value = ft_strdup("");
+	if (!token->next)
+		ft_error("Error: solo (d)quote");
+	while (token->next->type != type)
 	{
-		total_value = ft_strjoin(total_value, ptr->value);
-		next_block_ptr = ptr->next;
-		ft_remove_token(ptr);
-		ptr = ptr->next;
+		tmp = token->value;
+		token->value = ft_strjoin(token->value, token->next->value);
+		free(tmp);
+		ft_remove_token(token->next);
+		if (!token->next)
+			ft_error("Error: solo (d)quote");
 	}
-	ft_remove_token(ptr);
-	free(first_block->value);
-	first_block->value = total_value;
+	ft_remove_token(token->next);
 }
 
 void	ft_parse_word(t_token **head)
 {
-	t_token	*ptr;
-	char	**strs;
-	char	*path;
-	int		i;
+	extern char	**environ;
+	t_token		*ptr;
+	char		**strs;
+	char		*path;
+	int			i;
 
 	i = 1;
 	ptr = *head;
@@ -148,7 +124,7 @@ void	ft_parse_word(t_token **head)
 	if (!path)
 		return ;
 	if (!fork())
-		if (execve(path, strs, 0) < 0)
+		if (execve(path, strs, environ) < 0)
 			ft_error(NULL);
 	wait(0);
 	free(path);

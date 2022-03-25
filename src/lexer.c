@@ -33,15 +33,6 @@ t_token	*token_new(void)
 	return (token);
 }
 
-char	*ft_strndup(char *str, int len)
-{
-	char	*dup;
-
-	dup = ft_malloc(len + 1);
-	ft_strlcpy(dup, str, len + 1);
-	return (dup);
-}
-
 t_token	*word_token(char *str)
 {
 	t_token	*token;
@@ -52,7 +43,7 @@ t_token	*word_token(char *str)
 	token->type = word;
 	while (!ft_strchr(META_CHARS, str[i]))
 		i++;
-	token->value = ft_strndup(str, i);
+	token->value = ft_substr(str, 0, i);
 	return (token);
 }
 
@@ -88,7 +79,7 @@ t_token	*special_char_token(char *str)
 		token->type = red_out_app;
 		len++;
 	}
-	token->value = ft_strndup(str, len);
+	token->value = ft_substr(str, 0, len);
 	return (token);
 }
 
