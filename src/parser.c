@@ -62,7 +62,7 @@ char	*ft_get_env_from_pd(char *str)
 	i = 0;
 	tmp = ft_strjoin(str, "=");
 	len = ft_strlen(tmp);
-	while (g_pd.env[i] && ft_strncmp(g_pd.env[i], tmp, len + 1))
+	while (g_pd.env[i] && ft_strncmp(g_pd.env[i], tmp, len))
 		i++;
 	if (!g_pd.env[i])
 		return (ft_strdup(""));
@@ -116,7 +116,6 @@ void	ft_expand_quotes(t_token *token, enum e_symbol type)
 
 void	ft_parse_word(t_token *token)
 {
-	extern char	**environ;
 	t_token		*ptr;
 	char		**strs;
 	char		*path;
@@ -138,9 +137,7 @@ void	ft_parse_word(t_token *token)
 	path = ft_getpath(*strs);
 	if (!path)
 		return ;
-	if (!fork())
-		if (execve(path, strs, environ) < 0)
-			ft_error(NULL);
+	ft_exec(path, strs, STDIN_FILENO, STDOUT_FILENO);
 	wait(0);
 	ft_free_array(strs);
 	free(path);

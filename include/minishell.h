@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   minishell.h                                        :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: mjoosten <mjoosten@student.42.fr>            +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/02/22 14:57:10 by mjoosten      #+#    #+#                 */
-/*   Updated: 2022/03/28 11:08:53 by rnijhuis      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/22 14:57:10 by mjoosten          #+#    #+#             */
+/*   Updated: 2022/03/28 11:36:54 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,10 @@
 // Includes
 # include <stdio.h>
 # include <limits.h>
+# include <unistd.h>
 
 // Special chars
-# define META_CHARS "|<>$\"\' \t\n="
+# define META_CHARS "|<>$\"\' \t\n"
 
 // Token definitions
 enum e_symbol {
@@ -31,7 +32,6 @@ enum e_symbol {
 	space,
 	tab,
 	newline,
-	equals,
 	here_doc,
 	red_out_app,
 	word
@@ -70,6 +70,7 @@ void	print_tokens(t_token *token);
 //	Path
 char	*ft_getpath(char *str);
 char	**ft_getpaths(void);
+pid_t	ft_exec(char *path, char **args, int fd0, int fd1);
 
 //	Lexer
 void	lexer(t_token **head, char *str);

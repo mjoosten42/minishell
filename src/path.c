@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 11:36:15 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/03/22 11:45:12 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/03/28 11:37:18 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,23 @@ char	**ft_getpaths(void)
 		i++;
 	}
 	return (strs);
+}
+
+pid_t	ft_exec(char *path, char **args, int fd0, int fd1)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid < 0)
+		ft_error(0);
+	if (!pid)
+	{
+		dup2(fd0, STDIN_FILENO);
+		dup2(fd1, STDOUT_FILENO);
+		execve(path, args, g_pd.env);
+		perror(0);
+	}
+	close(fd0);
+	close(fd1);
+	return (pid);
 }
