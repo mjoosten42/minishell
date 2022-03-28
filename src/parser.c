@@ -11,7 +11,6 @@ void	ft_parse(t_token **head)
 {
 	t_token	*ptr;
 
-	print_tokens(*head);
 	ft_expand(head);
 	print_tokens(*head);
 	ptr = *head;
@@ -75,7 +74,10 @@ void	ft_expand_dollar(t_token *token)
 	free(token->value);
 	if (token->next && token->next->type == word)
 	{
-		token->value = ft_get_env_from_pd(token->next->value);
+		if (!ft_strncmp(token->next->value, "?", 1))
+			token->value = ft_itoa(g_pd.last_exit_status);
+		else 
+			token->value = ft_get_env_from_pd(token->next->value);
 		ft_remove_token(token->next);
 	}
 	else

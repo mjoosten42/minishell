@@ -17,27 +17,19 @@ $ make run
 
 Last updated at - 21/3/2022
 
-Lexer <br>
-	[x] - Turn input into blocks
+Error messages <br>
+	[ ] - Command not found
+
+Memory <br>
+	[ ] - free memory
+
+Edge cases <br
+	[ ] - documentje
 
 Parser <br>
-	[x] - Take command + flags and run
 	[ ] - Handle pipes redirects etc..
 
 Pipex <br>
 	[ ] - HERE_DOC <br>
 	[ ] - Multiple Pipes <br>
 	[ ] - Redirections <br>
-
-Env <br>
-	[ ] - Set variables <br>
-	[ ] - Remove variables <br>
-
-Built-ins <br>
-	[ ] - cd <br>
-	[ ] - echo <br>
-	[ ] - pwd <br>
-	[ ] - export <br>
-	[ ] - unset <br>
-	[ ] - env <br>
-	[ ] - exit <br>
