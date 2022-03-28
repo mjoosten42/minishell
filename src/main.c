@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/22 14:57:34 by mjoosten      #+#    #+#                 */
-/*   Updated: 2022/03/28 11:38:51 by rnijhuis      ########   odam.nl         */
+/*   Updated: 2022/03/28 11:46:48 by rnijhuis      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ void	print_tokens(t_token *token)
 		"space",
 		"tab",
 		"newline",
-		"equals",
 		"here_doc",
 		"red_out_app",
 		"word"
