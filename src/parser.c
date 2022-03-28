@@ -6,30 +6,97 @@ void	ft_expand(t_token **head);
 void	ft_expand_dollar(t_token *token);
 void	ft_expand_quotes(t_token *token, enum e_symbol type);
 void	ft_remove_token(t_token *head);
-int		ft_get_fd0(t_token **head);
-int		ft_get_fd1(t_token **head);
+void	ft_get_fd0(t_token **head, int *fd0);
+int		ft_get_fd1(t_token **head, int *fd1);
 char	**ft_get_args(t_token **head);
 
-void	ft_parse(t_token **head)
+void	ft_parse(t_token **head, int pipefd)
 {
-	char		**strs;
-	char		*path;
-	int			fds[2];
+	pid_t	pid;
+	char	**strs;
+	char	*path;
+	int		fds[2];
+	int		pipe_read;
+	int		exit_status;
 
-	fds[0] = ft_get_fd0(head);
-	fds[1] = ft_get_fd1(head);
+	fds[0] = pipefd;
+	fds[1] = 1;
+	print_tokens(*head);
+	ft_get_fd0(head, &fds[0]);
+	pipe_read = ft_get_fd1(head, &fds[1]);
 	strs = ft_get_args(head);
+	print_tokens(*head);
 	if (is_builtin(strs))
 		return ;
 	path = ft_getpath(*strs);
 	if (!path)
 		return ;
-	ft_exec(path, strs, fds);
-	wait(0);
+	pid = ft_exec(path, strs, fds);
 	ft_free_array(strs);
 	free(path);
-	if (*head)
-		ft_parse(head);
+	if (pipe_read)
+	{
+		ft_parse(&(*head)->next, pipe_read);
+		ft_remove_token(*head);
+	}
+	else
+	{
+		waitpid(pid, &exit_status, 0);
+		g_pd.last_exit_status = WEXITSTATUS(exit_status);
+	}
+}
+
+void	ft_get_fd0(t_token **head, int *fd0)
+{
+	t_token	*token;
+
+	token = *head;
+	while (token && token->type != pipe_char)
+	{
+		if (token->type == red_in && token->next->type == word)
+		{
+			*fd0 = open(token->next->value, O_RDONLY);
+			if (*fd0 < 0)
+				perror("Error opening file:");
+			if (token == *head)
+				*head = token->next->next;
+			ft_remove_token(token);
+			ft_remove_token(token->next);
+		}
+		token = token->next;
+	}
+}
+
+//	Look for > and >> tokens, get fd with open() and remove the token.
+//	If followed by a pipe, make a pipe and return the read end.
+int	ft_get_fd1(t_token **head, int *fd1)
+{
+	t_token	*token;
+	int		pipefds[2];
+
+	token = *head;
+	while (token && token->type != pipe_char)
+	{
+		if ((token->type == red_out || token->type == red_out_app)
+			&& token->next->type == word)
+		{
+			if (token == *head)
+				*head = token->next->next;
+			if (token->type == red_out)
+				*fd1 = open(token->next->value, O_CREAT | O_WRONLY, 0644);
+			else
+				*fd1 = open(token->next->value,
+						O_CREAT | O_WRONLY | O_APPEND, 0644);
+			ft_remove_token(token);
+			ft_remove_token(token->next);
+		}
+		token = token->next;
+	}
+	if (!token)
+		return (0);
+	pipe(pipefds);
+	*fd1 = pipefds[1];
+	return (pipefds[0]);
 }
 
 char	**ft_get_args(t_token **head)
@@ -49,6 +116,8 @@ char	**ft_get_args(t_token **head)
 		token = token->next;
 	}
 	token = prev;
+	if (token)
+		*head = token->next;
 	strs = ft_malloc(sizeof(*strs) * (i + 1));
 	strs[i] = NULL;
 	while (i--)
@@ -59,54 +128,6 @@ char	**ft_get_args(t_token **head)
 		token = prev;
 	}
 	return (strs);
-}
-
-int	ft_get_fd0(t_token **head)
-{
-	t_token	*token;
-	int		fd;
-
-	token = *head;
-	fd = STDIN_FILENO;
-	while (token && token->type != pipe_char)
-	{
-		if (token->type == red_in && token->next->type == word)
-		{
-			fd = open(token->next->value, O_RDONLY);
-			if (fd < 0)
-				perror("Error opening file:");
-			ft_remove_token(token);
-			ft_remove_token(token->next);
-		}
-		token = token->next;
-	}
-	return (fd);
-}
-
-int	ft_get_fd1(t_token **head)
-{
-	t_token	*token;
-	int		fd;
-
-	token = *head;
-	fd = STDOUT_FILENO;
-	while (token && token->type != pipe_char)
-	{
-		if ((token->type == red_out || token->type == red_out_app)
-			&& token->next->type == word)
-		{
-			if (token->type == red_out)
-				fd = open(token->next->value, O_CREAT | O_WRONLY, 0644);
-			else
-				fd = open(token->next->value,
-						O_CREAT | O_WRONLY | O_APPEND, 0644);
-			ft_remove_token(token);
-			ft_remove_token(token->next);
-		}
-		token = token->next;
-	}
-	return (fd);
-
 }
 
 void	ft_expand(t_token **head)
@@ -160,7 +181,7 @@ void	ft_expand_dollar(t_token *token)
 	{
 		if (!ft_strncmp(token->next->value, "?", 1))
 			token->value = ft_itoa(g_pd.last_exit_status);
-		else 
+		else
 			token->value = ft_get_env_from_pd(token->next->value);
 		ft_remove_token(token->next);
 	}
