@@ -6,22 +6,20 @@ void	ft_expand(t_token **head);
 void	ft_expand_dollar(t_token *token);
 void	ft_expand_quotes(t_token *token, enum e_symbol type);
 void	ft_remove_token(t_token *head);
-int		ft_get_fd0(t_token *token);
-int		ft_get_fd1(t_token *token);
-char	**ft_get_args(t_token *token);
+int		ft_get_fd0(t_token **head);
+int		ft_get_fd1(t_token **head);
+char	**ft_get_args(t_token **head);
 
-void	ft_parse(t_token *token)
+void	ft_parse(t_token **head)
 {
 	char		**strs;
 	char		*path;
 	int			fds[2];
-	int			i;
 
-	i = 1;
-	fds[0] = ft_get_fd0(token);
-	fds[1] = ft_get_fd1(token);
-	printf("%d\n", fds[1]);
-	strs = ft_get_args(token);
+	print_tokens(*head);
+	fds[0] = ft_get_fd0(head);
+	fds[1] = ft_get_fd1(head);
+	strs = ft_get_args(head);
 	if (is_builtin(strs))
 		return ;
 	path = ft_getpath(*strs);
@@ -31,18 +29,20 @@ void	ft_parse(t_token *token)
 	wait(0);
 	ft_free_array(strs);
 	free(path);
+	if (*head)
+		ft_parse(head);
 }
 
-char	**ft_get_args(t_token *token)
+char	**ft_get_args(t_token **head)
 {
+	t_token	*token;
 	t_token	*prev;
 	char	**strs;
 	int		i;
 
-	if (!token)
-		return (NULL);
-	i = 1;
-	while (token->next && token->type != pipe_char)
+	i = 0;
+	token = *head;
+	while (token && token->next && token->type != pipe_char)
 	{
 		i++;
 		token = token->next;
@@ -59,10 +59,12 @@ char	**ft_get_args(t_token *token)
 	return (strs);
 }
 
-int	ft_get_fd0(t_token *token)
+int	ft_get_fd0(t_token **head)
 {
-	int	fd;
+	t_token	*token;
+	int		fd;
 
+	token = *head;
 	fd = STDIN_FILENO;
 	while (token && token->type != pipe_char)
 	{
@@ -79,10 +81,12 @@ int	ft_get_fd0(t_token *token)
 	return (fd);
 }
 
-int	ft_get_fd1(t_token *token)
+int	ft_get_fd1(t_token **head)
 {
-	int	fd;
+	t_token	*token;
+	int		fd;
 
+	token = *head;
 	fd = STDOUT_FILENO;
 	while (token && token->type != pipe_char)
 	{
