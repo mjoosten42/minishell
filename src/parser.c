@@ -1,29 +1,62 @@
 #include "minishell.h"
 #include "libft.h"
+#include "fcntl.h"
 
 void	ft_expand(t_token **head);
-void	ft_parse_word(t_token *token);
 void	ft_expand_dollar(t_token *token);
 void	ft_expand_quotes(t_token *token, enum e_symbol type);
 void	ft_remove_token(t_token *head);
+int		ft_get_fd0(t_token *token);
 
 void	ft_parse(t_token **head)
 {
-	t_token	*ptr;
+	t_token		*ptr;
+	char		**strs;
+	char		*path;
+	int			fds[2];
+	int			i;
 
-	print_tokens(*head);
-	ft_expand(head);
-	print_tokens(*head);
+	i = 1;
+	fds[0] = ft_get_fd0(*head);
 	ptr = *head;
-	while (ptr)
+	while (ptr->next && ptr->next->type == word)
 	{
-		if (ptr->type == word)
-		{
-			ft_parse_word(ptr);
-			return ;
-		}
 		ptr = ptr->next;
+		i++;
 	}
+	strs = ft_calloc(i + 1, (sizeof(void *)));
+	while (i--)
+	{
+		strs[i] = ptr->value;
+		ptr = ptr->prev;
+	}
+	if (is_builtin(strs))
+		return ;
+	path = ft_getpath(*strs);
+	if (!path)
+		return ;
+	ft_exec(path, strs, STDIN_FILENO, STDOUT_FILENO);
+	wait(0);
+	ft_free_array(strs);
+	free(path);
+}
+
+int	ft_get_fd0(t_token *token)
+{
+	int	fd;
+
+	fd = STDIN_FILENO;
+	while (token && token->type != pipe_char)
+	{
+		if (token->type == red_in && token->next->type == word)
+		{
+			fd = open(token->next->value, O_RDONLY);
+			ft_remove_token(token);
+			ft_remove_token(token->next);
+		}
+		token = token->next;
+	}
+	return (fd);
 }
 
 void	ft_expand(t_token **head)
@@ -112,37 +145,6 @@ void	ft_expand_quotes(t_token *token, enum e_symbol type)
 			ft_error("Error: solo (d)quote");
 	}
 	ft_remove_token(token->next);
-}
-
-void	ft_parse_word(t_token *token)
-{
-	t_token		*ptr;
-	char		**strs;
-	char		*path;
-	int			i;
-
-	i = 1;
-	ptr = token;
-	while (ptr->next && ptr->next->type == word)
-	{
-		ptr = ptr->next;
-		i++;
-	}
-	strs = ft_calloc(i + 1, (sizeof(void *)));
-	while (i--)
-	{
-		strs[i] = ptr->value;
-		ptr = ptr->prev;
-	}
-	if (is_builtin(strs))
-		return ;
-	path = ft_getpath(*strs);
-	if (!path)
-		return ;
-	ft_exec(path, strs, STDIN_FILENO, STDOUT_FILENO);
-	wait(0);
-	ft_free_array(strs);
-	free(path);
 }
 
 void	ft_remove_token(t_token *token)

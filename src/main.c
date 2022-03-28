@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: mjoosten <mjoosten@student.42.fr>            +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/02/22 14:57:34 by mjoosten      #+#    #+#                 */
-/*   Updated: 2022/03/28 11:46:48 by rnijhuis      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/22 14:57:34 by mjoosten          #+#    #+#             */
+/*   Updated: 2022/03/28 13:10:21 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_program_data	g_pd;
 
 int	main(void)
 {
+	extern int		rl_catch_signals;
 	t_token			*head;
 	char			*str;
 
@@ -37,6 +38,8 @@ int	main(void)
 		if (*str)
 			add_history(str);
 		lexer(&head, str);
+		ft_expand(&head);
+		print_tokens(head);
 		ft_parse(&head);
 		free(str);
 	}
