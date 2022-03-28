@@ -7,5 +7,5 @@ void	env(void)
 
 	i = 0;
 	while (g_pd.env[i])
-		ft_putstr(g_pd.env[i++]);
+		ft_putendl_fd(g_pd.env[i++], 1);
 }

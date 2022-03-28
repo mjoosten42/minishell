@@ -1,4 +1,5 @@
 #include "libft.h"
+#include <stdio.h>
 
 void	echo(char **strs)
 {
@@ -6,6 +7,7 @@ void	echo(char **strs)
 	int	i;
 
 	i = 1;
+		printf("HALLOOOO");
 	nl = ft_strncmp(strs[1], "-n", 3);
 	if (!nl)
 		i++;
