@@ -6,7 +6,7 @@
 /*   By: rnijhuis <rnijhuis@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/28 14:10:47 by rnijhuis      #+#    #+#                 */
-/*   Updated: 2022/03/28 14:11:04 by rnijhuis      ########   odam.nl         */
+/*   Updated: 2022/03/28 14:35:21 by rnijhuis      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,15 @@ void	print_tokens(t_token *token)
 		"word"
 	};
 
-	printf(" - id -------- type - value\n");
-	while (token)
+	if (token)
 	{
-		printf(" | %2i | %11s | [%s]\n",
-			token->position, types[token->type], token->value);
-		token = token->next;
+		printf(" - id -------- type - value\n");
+		while (token)
+		{
+			printf(" | %2i | %11s | [%s]\n",
+				token->position, types[token->type], token->value);
+			token = token->next;
+		}
+		printf("\n");
 	}
-	printf("\n");
 }

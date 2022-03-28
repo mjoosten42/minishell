@@ -11,8 +11,6 @@ $ git clone --recurse-submodules git@github.com:mjoosten42/minishell.git
 $ make run
 ```
 
-## 🗣 Comments
-
 ## ✅ Todo List
 
 Last updated at - 21/3/2022
@@ -27,7 +25,8 @@ Edge cases <br
 	[ ] - documentje
 
 Parser <br>
-	[ ] - Handle pipes redirects etc..
+	[ ] - Pipes
+	[ ] - Redirects
 
 Pipex <br>
 	[ ] - HERE_DOC <br>
