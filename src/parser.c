@@ -20,13 +20,14 @@ void	ft_parse(t_token *token)
 	i = 1;
 	fds[0] = ft_get_fd0(token);
 	fds[1] = ft_get_fd1(token);
+	printf("%d\n", fds[1]);
 	strs = ft_get_args(token);
 	if (is_builtin(strs))
 		return ;
 	path = ft_getpath(*strs);
 	if (!path)
 		return ;
-	ft_exec(path, strs, fds[0], fds[1]);
+	ft_exec(path, strs, fds);
 	wait(0);
 	ft_free_array(strs);
 	free(path);
@@ -91,7 +92,8 @@ int	ft_get_fd1(t_token *token)
 			if (token->type == red_out)
 				fd = open(token->next->value, O_CREAT | O_WRONLY, 0644);
 			else
-				fd = open(token->next->value, O_CREAT | O_APPEND, 0644);
+				fd = open(token->next->value,
+						O_CREAT | O_WRONLY | O_APPEND, 0644);
 			ft_remove_token(token);
 			ft_remove_token(token->next);
 		}

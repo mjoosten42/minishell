@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   minishell.h                                        :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: mjoosten <mjoosten@student.42.fr>            +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/02/22 14:57:10 by mjoosten      #+#    #+#                 */
-/*   Updated: 2022/03/28 14:13:57 by rnijhuis      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/22 14:57:10 by mjoosten          #+#    #+#             */
+/*   Updated: 2022/03/28 14:23:10 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	print_tokens(t_token *token);
 //	Path
 char	*ft_getpath(char *str);
 char	**ft_getpaths(void);
-pid_t	ft_exec(char *path, char **args, int fd0, int fd1);
+pid_t	ft_exec(char *path, char **args, int fds[2]);
 
 //	Lexer
 void	lexer(t_token **head, char *str);
