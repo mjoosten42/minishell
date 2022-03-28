@@ -7,38 +7,55 @@ void	ft_expand_dollar(t_token *token);
 void	ft_expand_quotes(t_token *token, enum e_symbol type);
 void	ft_remove_token(t_token *head);
 int		ft_get_fd0(t_token *token);
+int		ft_get_fd1(t_token *token);
+char	**ft_get_args(t_token *token);
 
-void	ft_parse(t_token **head)
+void	ft_parse(t_token *token)
 {
-	t_token		*ptr;
 	char		**strs;
 	char		*path;
 	int			fds[2];
 	int			i;
 
 	i = 1;
-	fds[0] = ft_get_fd0(*head);
-	ptr = *head;
-	while (ptr->next && ptr->next->type == word)
-	{
-		ptr = ptr->next;
-		i++;
-	}
-	strs = ft_calloc(i + 1, (sizeof(void *)));
-	while (i--)
-	{
-		strs[i] = ptr->value;
-		ptr = ptr->prev;
-	}
+	fds[0] = ft_get_fd0(token);
+	fds[1] = ft_get_fd1(token);
+	strs = ft_get_args(token);
 	if (is_builtin(strs))
 		return ;
 	path = ft_getpath(*strs);
 	if (!path)
 		return ;
-	ft_exec(path, strs, STDIN_FILENO, STDOUT_FILENO);
+	ft_exec(path, strs, fds[0], fds[1]);
 	wait(0);
 	ft_free_array(strs);
 	free(path);
+}
+
+char	**ft_get_args(t_token *token)
+{
+	t_token	*prev;
+	char	**strs;
+	int		i;
+
+	if (!token)
+		return (NULL);
+	i = 1;
+	while (token->next && token->type != pipe_char)
+	{
+		i++;
+		token = token->next;
+	}
+	strs = ft_malloc(sizeof(*strs) * (i + 1));
+	strs[i] = NULL;
+	while (i--)
+	{
+		prev = token->prev;
+		strs[i] = ft_strdup(token->value);
+		ft_remove_token(token);
+		token = prev;
+	}
+	return (strs);
 }
 
 int	ft_get_fd0(t_token *token)
@@ -51,12 +68,37 @@ int	ft_get_fd0(t_token *token)
 		if (token->type == red_in && token->next->type == word)
 		{
 			fd = open(token->next->value, O_RDONLY);
+			if (fd < 0)
+				perror("Error opening file:");
 			ft_remove_token(token);
 			ft_remove_token(token->next);
 		}
 		token = token->next;
 	}
 	return (fd);
+}
+
+int	ft_get_fd1(t_token *token)
+{
+	int	fd;
+
+	fd = STDOUT_FILENO;
+	while (token && token->type != pipe_char)
+	{
+		if ((token->type == red_out || token->type == red_out_app)
+			&& token->next->type == word)
+		{
+			if (token->type == red_out)
+				fd = open(token->next->value, O_CREAT | O_WRONLY, 0644);
+			else
+				fd = open(token->next->value, O_CREAT | O_APPEND, 0644);
+			ft_remove_token(token);
+			ft_remove_token(token->next);
+		}
+		token = token->next;
+	}
+	return (fd);
+
 }
 
 void	ft_expand(t_token **head)

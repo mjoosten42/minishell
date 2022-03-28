@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:57:34 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/03/28 13:10:21 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/03/28 13:43:10 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,7 @@ int	main(void)
 			add_history(str);
 		lexer(&head, str);
 		ft_expand(&head);
-		print_tokens(head);
-		ft_parse(&head);
+		ft_parse(head);
 		free(str);
 	}
 }

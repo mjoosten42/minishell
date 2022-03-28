@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:57:10 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/03/28 13:09:56 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/03/28 13:42:39 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ pid_t	ft_exec(char *path, char **args, int fd0, int fd1);
 void	lexer(t_token **head, char *str);
 
 //	Parser
-void	ft_parse(t_token **head);
+void	ft_parse(t_token *token);
 void	ft_expand(t_token **head);
 
 //	Builtins
