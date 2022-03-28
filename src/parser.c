@@ -53,13 +53,29 @@ void	ft_expand(t_token **head)
 	}
 }
 
+char	*ft_get_env_from_pd(char *str)
+{
+	char	*tmp;
+	int		len;
+	int		i;
+
+	i = 0;
+	tmp = ft_strjoin(str, "=");
+	len = ft_strlen(tmp);
+	while (g_pd.env[i] && ft_strncmp(g_pd.env[i], tmp, len + 1))
+		i++;
+	if (!g_pd.env[i])
+		return (ft_strdup(""));
+	return (ft_strdup(g_pd.env[i]));
+}
+
 void	ft_expand_dollar(t_token *token)
 {
 	token->type = word;
 	free(token->value);
 	if (token->next && token->next->type == word)
 	{
-		token->value = ft_strdup("[TODO: get from env]");
+		token->value = ft_get_env_from_pd(token->next->value);
 		ft_remove_token(token->next);
 	}
 	else
