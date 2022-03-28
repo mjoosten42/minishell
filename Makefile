@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
-#                                                         ::::::::             #
-#    Makefile                                           :+:    :+:             #
-#                                                      +:+                     #
-#    By: mjoosten <mjoosten@student.42.fr>            +#+                      #
-#                                                    +#+                       #
-#    Created: 2022/03/12 11:05:57 by rnijhuis      #+#    #+#                  #
-#    Updated: 2022/03/28 14:13:24 by rnijhuis      ########   odam.nl          #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2022/03/12 11:05:57 by rnijhuis          #+#    #+#              #
+#    Updated: 2022/03/28 16:28:50 by mjoosten         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,8 +37,8 @@ INC := -I $(INCLUDE_DIR) $(LIBS_HEADERS)
 SRCS :=	main.c					\
 		lexer.c					\
 		parser.c				\
+		expand.c				\
 		path.c					\
-		exec.c					\
 		builtin/echo.c			\
 		builtin/cd.c			\
 		builtin/pwd.c			\
@@ -56,7 +56,7 @@ OBJS = $(addprefix $(OBJS_DIR)/,$(SRCS:.c=.o))
 #=====================================#
 
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra -g $(INC)
+CFLAGS = -Wall -Werror -Wextra $(INC) -g
 LDFLAGS = $(READLINE_DIR) -lreadline
 
 #=====================================#

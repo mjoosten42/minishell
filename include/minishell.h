@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:57:10 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/03/28 15:01:16 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/03/28 16:30:31 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	rl_replace_line(const char *text, int clear_undo);
 int		rl_on_new_line(void);
 
 //	Main
+pid_t	ft_exec(char **args, int fds[2]);
 void	copy_env(void);
 void	ft_signal(int signum);
 
@@ -70,16 +71,18 @@ void	ft_signal(int signum);
 void	print_tokens(t_token *token);
 
 //	Path
-char	*ft_getpath(char *str);
+void	ft_getpath(char **strs);
 char	**ft_getpaths(void);
-pid_t	ft_exec(char *path, char **args, int fds[2]);
+
+//	Expand
+void	ft_expand(t_token **head);
 
 //	Lexer
 void	lexer(t_token **head, char *str);
 
 //	Parser
 void	ft_parse(t_token **head, int pipefd);
-void	ft_expand(t_token **head);
+void	ft_remove_token(t_token *token);
 
 //	Builtins
 void	echo(char **strs);

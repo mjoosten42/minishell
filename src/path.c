@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 11:36:15 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/03/28 11:53:28 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/03/28 16:32:32 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include <readline/readline.h>
 
-char	*ft_getpath(char *str)
+void	ft_getpath(char **strs)
 {
 	static char	**paths;
 	char		*path;
@@ -24,19 +24,20 @@ char	*ft_getpath(char *str)
 	i = 0;
 	if (!paths)
 		paths = ft_getpaths();
-	if (!access(str, F_OK))
-		return (ft_strdup(str));
+	if (!access(*strs, F_OK))
+		return ;
 	while (paths[i])
 	{
-		path = ft_strjoin(paths[i], str);
+		path = ft_strjoin(paths[i], *strs);
 		if (!access(path, F_OK))
-			return (path);
+		{
+			free(*strs);
+			*strs = path;
+			return ;
+		}
 		free(path);
 		i++;
 	}
-	ft_putstr_fd(rl_line_buffer, 2);
-	ft_putstr_fd(": command not found\n", 2);
-	return (NULL);
 }
 
 char	**ft_getpaths(void)
