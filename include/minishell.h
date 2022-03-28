@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/22 14:57:10 by mjoosten      #+#    #+#                 */
-/*   Updated: 2022/03/28 13:17:16 by rnijhuis      ########   odam.nl         */
+/*   Updated: 2022/03/28 14:13:57 by rnijhuis      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define MINISHELL_H
 
 // Includes
-# include <stdio.h>
 # include <limits.h>
 # include <unistd.h>
 
@@ -66,6 +65,8 @@ int		rl_on_new_line(void);
 //	Main
 void	copy_env(void);
 void	ft_signal(int signum);
+
+// Utils
 void	print_tokens(t_token *token);
 
 //	Path
@@ -77,7 +78,8 @@ pid_t	ft_exec(char *path, char **args, int fd0, int fd1);
 void	lexer(t_token **head, char *str);
 
 //	Parser
-void	ft_parse(t_token **head);
+void	ft_parse(t_token *token);
+void	ft_expand(t_token **head);
 
 //	Builtins
 void	echo(char **strs);
@@ -87,7 +89,6 @@ void	export(char *variable);
 void	unset(char *str);
 void	env(void);
 void	ft_exit(void);
-
 int		is_builtin(char **strs);
 
 #endif
