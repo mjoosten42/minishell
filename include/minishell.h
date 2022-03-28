@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/22 14:57:10 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/03/24 11:26:24 by mjoosten         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   minishell.h                                        :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mjoosten <mjoosten@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/02/22 14:57:10 by mjoosten      #+#    #+#                 */
+/*   Updated: 2022/03/28 11:08:53 by rnijhuis      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,15 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
+// Global var
+extern t_program_data g_pd;
+
 //	readline
 void	rl_replace_line(const char *text, int clear_undo);
 int		rl_on_new_line(void);
 
 //	Main
-void	copy_env(t_program_data *pd);
+void	copy_env(void);
 void	ft_signal(int signum);
 void	print_tokens(t_token *token);
 
@@ -76,11 +79,11 @@ void	ft_parse(t_token **head);
 
 //	Builtins
 void	echo(char **strs);
-void	cd(t_program_data *pd, char *path);
-void	pwd(t_program_data *pd);
-void	export(t_program_data *pd, char *variable);
-void	unset(t_program_data *pd, char *str);
-void	env(t_program_data *pd);
+void	cd(char *path);
+void	pwd(void);
+void	export(char *variable);
+void	unset(char *str);
+void	env(void);
 void	ft_exit(void);
 
 #endif

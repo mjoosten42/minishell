@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/22 14:57:34 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/03/24 11:13:14 by mjoosten         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   main.c                                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mjoosten <mjoosten@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/02/22 14:57:34 by mjoosten      #+#    #+#                 */
+/*   Updated: 2022/03/28 11:00:22 by rnijhuis      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,18 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+t_program_data g_pd;
+
 int	main(void)
 {
-	t_program_data	pd;
 	t_token			*head;
 	char			*str;
 
 	rl_catch_signals = 0;
 	signal(SIGINT, ft_signal);
 	signal(SIGQUIT, ft_signal);
-	copy_env(&pd);
-	getcwd(pd.dir, PATH_MAX);
+	copy_env();
+	getcwd(g_pd.dir, PATH_MAX);
 	while (1)
 	{
 		head = NULL;
@@ -41,7 +42,7 @@ int	main(void)
 	}
 }
 
-void	copy_env(t_program_data *pd)
+void	copy_env(void)
 {
 	extern char	**environ;
 	int			i;
@@ -49,11 +50,11 @@ void	copy_env(t_program_data *pd)
 	i = 0;
 	while (environ[i])
 		i++;
-	pd->amount_env_lines = i;
-	pd->env = ft_malloc((i + 1) * sizeof(char *));
-	pd->env[i] = NULL;
+	g_pd.amount_env_lines = i;
+	g_pd.env = ft_malloc((i + 1) * sizeof(char *));
+	g_pd.env[i] = NULL;
 	while (i--)
-		pd->env[i] = ft_strdup(environ[i]);
+		g_pd.env[i] = ft_strdup(environ[i]);
 }
 
 void	ft_signal(int signum)

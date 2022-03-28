@@ -1,8 +1,8 @@
 #include "minishell.h"
 #include "libft.h"
 
-void	pwd(t_program_data *pd)
+void	pwd(void)
 {
-	ft_putstr(pd->dir);
+	ft_putstr(g_pd.dir);
 	ft_putchar('\n');
 }

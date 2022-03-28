@@ -1,11 +1,11 @@
 #include "minishell.h"
 #include "libft.h"
 
-void	env(t_program_data *pd)
+void	env(void)
 {
 	int	i;
 
 	i = 0;
-	while (pd->env[i])
-		ft_putstr(pd->env[i++]);
+	while (g_pd.env[i])
+		ft_putstr(g_pd.env[i++]);
 }
