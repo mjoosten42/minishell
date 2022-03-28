@@ -16,7 +16,6 @@ void	ft_parse(t_token **head)
 	char		*path;
 	int			fds[2];
 
-	print_tokens(*head);
 	fds[0] = ft_get_fd0(head);
 	fds[1] = ft_get_fd1(head);
 	strs = ft_get_args(head);
@@ -42,11 +41,14 @@ char	**ft_get_args(t_token **head)
 
 	i = 0;
 	token = *head;
-	while (token && token->next && token->type != pipe_char)
+	prev = token;
+	while (token && token->type != pipe_char)
 	{
 		i++;
+		prev = token;
 		token = token->next;
 	}
+	token = prev;
 	strs = ft_malloc(sizeof(*strs) * (i + 1));
 	strs[i] = NULL;
 	while (i--)
