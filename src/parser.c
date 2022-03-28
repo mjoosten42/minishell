@@ -2,10 +2,6 @@
 #include "libft.h"
 #include "fcntl.h"
 
-void	ft_expand(t_token **head);
-void	ft_expand_dollar(t_token *token);
-void	ft_expand_quotes(t_token *token, enum e_symbol type);
-void	ft_remove_token(t_token *head);
 void	ft_get_fd0(t_token **head, int *fd0);
 int		ft_get_fd1(t_token **head, int *fd1);
 char	**ft_get_args(t_token **head);
@@ -34,10 +30,7 @@ void	ft_parse(t_token **head, int pipefd)
 		ft_remove_token(*head);
 	}
 	else
-	{
 		waitpid(pid, &exit_status, 0);
-		g_pd.last_exit_status = WEXITSTATUS(exit_status);
-	}
 }
 
 void	ft_get_fd0(t_token **head, int *fd0)

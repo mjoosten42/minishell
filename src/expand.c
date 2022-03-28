@@ -62,7 +62,7 @@ void	ft_expand_dollar(t_token *token)
 	if (token->next && token->next->type == word)
 	{
 		if (!ft_strncmp(token->next->value, "?", 1))
-			token->value = ft_itoa(g_pd.last_exit_status);
+			token->value = ft_itoa(WEXITSTATUS(g_pd.last_exit_status));
 		else
 			token->value = ft_get_env_from_pd(token->next->value);
 		ft_remove_token(token->next);
