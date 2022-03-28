@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/22 14:57:34 by mjoosten      #+#    #+#                 */
-/*   Updated: 2022/03/28 11:00:22 by rnijhuis      ########   odam.nl         */
+/*   Updated: 2022/03/28 11:38:51 by rnijhuis      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-t_program_data g_pd;
+t_program_data	g_pd;
 
 int	main(void)
 {

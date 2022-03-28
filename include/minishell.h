@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/22 14:57:10 by mjoosten      #+#    #+#                 */
-/*   Updated: 2022/03/28 11:08:53 by rnijhuis      ########   odam.nl         */
+/*   Updated: 2022/03/28 11:41:44 by rnijhuis      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ typedef struct s_token
 }					t_token;
 
 // Global var
-extern t_program_data g_pd;
+extern t_program_data	g_pd;
 
 //	readline
 void	rl_replace_line(const char *text, int clear_undo);
@@ -85,5 +85,7 @@ void	export(char *variable);
 void	unset(char *str);
 void	env(void);
 void	ft_exit(void);
+
+int	is_builtin(char **str);
 
 #endif

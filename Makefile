@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/03/12 11:05:57 by rnijhuis          #+#    #+#              #
-#    Updated: 2022/03/24 11:57:42 by mjoosten         ###   ########.fr        #
+#                                                         ::::::::             #
+#    Makefile                                           :+:    :+:             #
+#                                                      +:+                     #
+#    By: mjoosten <mjoosten@student.42.fr>            +#+                      #
+#                                                    +#+                       #
+#    Created: 2022/03/12 11:05:57 by rnijhuis      #+#    #+#                  #
+#    Updated: 2022/03/28 11:41:35 by rnijhuis      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,23 +28,24 @@ READLINE_DIR = -L/Users/$(USER)/.brew/opt/readline/lib
 
 LIBS := $(LIBS_DIR)/libft/libft.a
 
-LIBS_HEADERS := -I $(LIBS_DIR)/libft/include/ \
-				-I $(READLINE_DIR)/include/ \
+LIBS_HEADERS := -I $(LIBS_DIR)/libft/include/					\
+				-I $(READLINE_DIR)/include/						\
 				-I /Users/$(USER)/.brew/opt/readline/include/
 
 INC := -I $(INCLUDE_DIR) $(LIBS_HEADERS)
 
-SRCS :=	main.c				\
-		lexer.c				\
-		parser.c			\
-		path.c				\
-		builtin/echo.c		\
-		builtin/cd.c		\
-		builtin/pwd.c		\
-		builtin/env.c		\
-		builtin/export.c	\
-		builtin/unset.c		\
-		builtin/exit.c		\
+SRCS :=	main.c					\
+		lexer.c					\
+		parser.c				\
+		path.c					\
+		builtin/echo.c			\
+		builtin/cd.c			\
+		builtin/pwd.c			\
+		builtin/env.c			\
+		builtin/export.c		\
+		builtin/unset.c			\
+		builtin/exit.c			\
+		builtin/run_builtin.c	\
 
 OBJS = $(addprefix $(OBJS_DIR)/,$(SRCS:.c=.o))
 
