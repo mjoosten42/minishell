@@ -127,14 +127,14 @@ void	ft_parse_word(t_token *token)
 	{
 		ptr = ptr->next;
 		i++;
-}
+	}
 	strs = ft_calloc(i + 1, (sizeof(void *)));
 	while (i--)
 	{
 		strs[i] = ptr->value;
 		ptr = ptr->prev;
 	}
-	if (is_builtin(token->value))
+	if (is_builtin(strs))
 		return ;
 	path = ft_getpath(*strs);
 	if (!path)

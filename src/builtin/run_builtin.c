@@ -1,24 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   run_builtin.c                                      :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: rnijhuis <rnijhuis@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/03/28 11:15:04 by rnijhuis      #+#    #+#                 */
-/*   Updated: 2022/03/28 11:39:15 by rnijhuis      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   run_builtin.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/28 11:15:04 by rnijhuis          #+#    #+#             */
+/*   Updated: 2022/03/28 11:49:46 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 
-int	is_builtin(char **str)
+int	is_builtin(char **strs)
 {
 	size_t	str_len;
 
-	str_len = ft_strlen(str);
-	if (ft_strncmp(str, "cd", str_len))
+	str_len = ft_strlen(*strs);
+	if (ft_strncmp(*strs, "cd", str_len))
 		cd(str[1])
 	else if (ft_strncmp(str, "echo", str_len))
 		echo(str);
