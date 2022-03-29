@@ -61,12 +61,22 @@ void	ft_expand_quotes(t_token *token, enum e_symbol type)
 
 void	ft_expand_dollar(t_token *token)
 {
+	char	*str;
+
 	token->type = word;
 	free(token->value);
 	if (token->next && token->next->type == word)
 	{
-		if (!ft_strncmp(token->next->value, "?", 1))
+		if (token->next->value[0] == '?')
+		{
 			token->value = ft_itoa(WEXITSTATUS(g_pd.last_exit_status));
+			if (token->next->value[1])
+			{
+				str = ft_strjoin(token->value, &token->next->value[1]);
+				free(token->value);
+				token->value = str;
+			}
+		}
 		else
 			token->value = ft_get_env_from_pd(token->next->value);
 		ft_remove_token(token->next);
