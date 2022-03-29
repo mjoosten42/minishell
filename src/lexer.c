@@ -37,7 +37,11 @@ int	token_add_back(t_token **head, t_token *new_token)
 		new_token->position = i;
 	}
 	else
+	{
 		*head = new_token;
+		new_token->prev = NULL;
+		new_token->position = 0;
+	}
 	return (ft_strlen(new_token->value));
 }
 
@@ -50,6 +54,7 @@ t_token	*special_char_token(char *str)
 
 	len = 1;
 	token = ft_malloc(sizeof(t_token));
+	token->next = NULL;
 	token->type = ft_strchr(META_CHARS, str[0]) - META_CHARS;
 	if (token->type == space)
 		while (*str && str[len] == ' ')
@@ -75,6 +80,7 @@ t_token	*word_token(char *str)
 
 	i = 0;
 	token = ft_malloc(sizeof(t_token));
+	token->next = NULL;
 	token->type = word;
 	while (!ft_strchr(META_CHARS, str[i]))
 		i++;

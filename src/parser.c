@@ -10,27 +10,29 @@ void	ft_parse(t_token **head, int pipefd)
 {
 	pid_t	pid;
 	char	**strs;
+	char	*path;
 	int		fds[2];
 	int		pipe_read;
-	int		exit_status;
 
 	fds[0] = pipefd;
-	fds[1] = 1;
+	fds[1] = STDOUT_FILENO;
 	ft_get_fd0(head, &fds[0]);
 	pipe_read = ft_get_fd1(head, &fds[1]);
 	strs = ft_get_args(head);
-	ft_getpath(strs);
-	if (!*strs)
-		return ;
-	pid = ft_exec(strs, fds);
+	path = ft_getpath(*strs);
+	pid = ft_exec(path, strs, fds);
 	ft_free_array(strs);
+	free(path);
 	if (pipe_read)
 	{
 		ft_parse(&(*head)->next, pipe_read);
 		ft_remove_token(*head);
 	}
 	else
-		waitpid(pid, &exit_status, 0);
+	{
+		signal(SIGCHLD, NULL);
+		waitpid(pid, &g_pd.last_exit_status, 0);
+	}
 }
 
 void	ft_get_fd0(t_token **head, int *fd0)

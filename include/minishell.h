@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:57:10 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/03/28 16:30:31 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/03/29 11:27:35 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 // Includes
 # include <limits.h>
 # include <unistd.h>
+# include <signal.h>
 
 // Special chars
 # define META_CHARS "|<>$\"\' \t\n"
@@ -63,16 +64,14 @@ void	rl_replace_line(const char *text, int clear_undo);
 int		rl_on_new_line(void);
 
 //	Main
-pid_t	ft_exec(char **args, int fds[2]);
-void	copy_env(void);
+pid_t	ft_exec(char *path, char **args, int fds[2]);
 void	ft_signal(int signum);
 
 // Utils
 void	print_tokens(t_token *token);
 
 //	Path
-void	ft_getpath(char **strs);
-char	**ft_getpaths(void);
+char	*ft_getpath(char *str);
 
 //	Expand
 void	ft_expand(t_token **head);

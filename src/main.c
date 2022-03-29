@@ -6,29 +6,25 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:57:34 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/03/28 16:21:21 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/03/29 11:29:06 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
-#include <signal.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 
 t_program_data	g_pd;
 
+void	ft_init(void);
+
 int	main(void)
 {
-	t_token		*head;
-	extern int	rl_catch_signals;
-	char		*str;
+	t_token	*head;
+	char	*str;
 
-	rl_catch_signals = 0;
-	signal(SIGINT, ft_signal);
-	signal(SIGQUIT, ft_signal);
-	copy_env();
-	getcwd(g_pd.dir, PATH_MAX);
+	ft_init();
 	while (1)
 	{
 		head = NULL;
@@ -39,13 +35,12 @@ int	main(void)
 			add_history(str);
 		lexer(&head, str);
 		ft_expand(&head);
-		print_tokens(head);
 		ft_parse(&head, STDIN_FILENO);
 		free(str);
 	}
 }
 
-pid_t	ft_exec(char **args, int fds[2])
+pid_t	ft_exec(char *path, char **args, int fds[2])
 {
 	pid_t	pid;
 
@@ -58,7 +53,9 @@ pid_t	ft_exec(char **args, int fds[2])
 		dup2(fds[1], STDOUT_FILENO);
 		if (is_builtin(args))
 			exit(EXIT_SUCCESS);
-		execve(*args, args, g_pd.env);
+		if (!path)
+			ft_error("No such command");
+		execve(path, args, g_pd.env);
 		ft_error(0);
 	}
 	if (fds[0] > 2)
@@ -92,4 +89,18 @@ void	ft_signal(int signum)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
+	if (signum == SIGCHLD)
+		wait(NULL);
+}
+
+void	ft_init(void)
+{
+	extern int	rl_catch_signals;
+
+	copy_env();
+	rl_catch_signals = 0;
+	signal(SIGINT, ft_signal);
+	signal(SIGQUIT, ft_signal);
+	signal(SIGCHLD, ft_signal);
+	getcwd(g_pd.dir, PATH_MAX);
 }

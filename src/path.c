@@ -6,16 +6,17 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 11:36:15 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/03/28 16:32:32 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/03/29 11:07:53 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 #include <stdlib.h>
-#include <readline/readline.h>
 
-void	ft_getpath(char **strs)
+char	**ft_getpaths(void);
+
+char	*ft_getpath(char *str)
 {
 	static char	**paths;
 	char		*path;
@@ -24,20 +25,17 @@ void	ft_getpath(char **strs)
 	i = 0;
 	if (!paths)
 		paths = ft_getpaths();
-	if (!access(*strs, F_OK))
-		return ;
+	if (!access(str, F_OK))
+		return (ft_strdup(str));
 	while (paths[i])
 	{
-		path = ft_strjoin(paths[i], *strs);
+		path = ft_strjoin(paths[i], str);
 		if (!access(path, F_OK))
-		{
-			free(*strs);
-			*strs = path;
-			return ;
-		}
+			return (path);
 		free(path);
 		i++;
 	}
+	return (NULL);
 }
 
 char	**ft_getpaths(void)
