@@ -11,7 +11,6 @@ void	ft_parse(t_token **head, int pipefd)
 	char	**strs;
 	int		fds[3];
 
-	print_tokens(*head);
 	fds[0] = pipefd;
 	fds[1] = STDOUT_FILENO;
 	fds[2] = ft_get_fds(head, fds);

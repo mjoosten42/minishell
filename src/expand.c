@@ -4,6 +4,7 @@
 void	ft_expand_quotes(t_token *token, enum e_symbol type);
 void	ft_expand_dollar(t_token *token);
 char	*ft_get_env_from_pd(char *str);
+int		ft_isnumber(char *str);
 
 void	ft_expand(t_token **head)
 {
@@ -13,6 +14,9 @@ void	ft_expand(t_token **head)
 	ptr = *head;
 	while (ptr)
 	{
+		if (ptr->type == word && ft_isnumber(ptr->value))
+			if (ptr->next && ptr->next->type == red_out)
+				ptr->type = file_descriptor;
 		if (ptr->type == quote)
 			ft_expand_quotes(ptr, quote);
 		else if (ptr->type == dquote)
@@ -85,4 +89,12 @@ char	*ft_get_env_from_pd(char *str)
 	if (!g_pd.env[i])
 		return (ft_strdup(""));
 	return (ft_strdup(g_pd.env[i]));
+}
+
+int	ft_isnumber(char *str)
+{
+	while (*str)
+		if (!ft_isdigit(*str++))
+			return (0);
+	return (1);
 }

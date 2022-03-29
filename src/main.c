@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:57:34 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/03/29 13:48:17 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/03/29 14:18:17 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int	main(void)
 			add_history(str);
 		lexer(&head, str);
 		ft_expand(&head);
+		print_tokens(head);
 		ft_parse(&head, STDIN_FILENO);
 		free(str);
 	}
@@ -101,5 +102,5 @@ void	ft_signal(int signum)
 		rl_redisplay();
 	}
 	if (signum == SIGCHLD)
-		wait(&g_pd.last_exit_status);
+		wait(NULL);
 }
