@@ -47,8 +47,6 @@ int	token_add_back(t_token **head, t_token *new_token)
 	return (ft_strlen(new_token->value));
 }
 
-	//	Find metachar position in META_CHARS,
-	//	and subtract it from META_CHARS itself to get type
 t_token	*special_char_token(char *str)
 {
 	t_token	*token;

@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:57:34 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/03/29 13:10:49 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/03/29 13:48:17 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,21 +47,23 @@ int	main(void)
 	}
 }
 
-pid_t	ft_exec(char *path, char **args, int fds[2])
+pid_t	ft_exec(char **args, int fds[2])
 {
 	pid_t	pid;
+	char	*path;
 
 	if (!ft_strncmp(*args, "exit", 5))
 		ft_exit(args[1]);
 	pid = fork();
 	if (pid < 0)
-		ft_error(0);
+		ft_error(NULL);
 	if (!pid)
 	{
 		dup2(fds[0], STDIN_FILENO);
 		dup2(fds[1], STDOUT_FILENO);
 		if (is_builtin(args))
 			exit(EXIT_SUCCESS);
+		path = ft_getpath(*args);
 		if (!path)
 			ft_error(ft_strjoin(*args, ": command not found"));
 		execve(path, args, g_pd.env);

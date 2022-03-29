@@ -2,30 +2,27 @@
 #include "libft.h"
 #include "fcntl.h"
 
-void	ft_get_fd0(t_token **head, int *fd0);
-int		ft_get_fd1(t_token **head, int *fd1);
+int		ft_get_fds(t_token **head, int fds[2]);
 char	**ft_get_args(t_token **head);
 
 void	ft_parse(t_token **head, int pipefd)
 {
 	pid_t	pid;
 	char	**strs;
-	char	*path;
-	int		fds[2];
-	int		pipe_read;
+	int		fds[3];
 
+	print_tokens(*head);
 	fds[0] = pipefd;
 	fds[1] = STDOUT_FILENO;
-	ft_get_fd0(head, &fds[0]);
-	pipe_read = ft_get_fd1(head, &fds[1]);
+	fds[2] = ft_get_fds(head, fds);
 	strs = ft_get_args(head);
-	path = ft_getpath(*strs);
-	pid = ft_exec(path, strs, fds);
+	pid = ft_exec(strs, fds);
 	ft_free_array(strs);
-	free(path);
-	if (pipe_read)
+	if (fds[2])
 	{
-		ft_parse(&(*head)->next, pipe_read);
+		while ((*head)->type != pipe_char)
+			*head = (*head)->next;
+		ft_parse(&(*head)->next, fds[2]);
 		ft_remove_token(*head);
 	}
 	else
@@ -35,30 +32,7 @@ void	ft_parse(t_token **head, int pipefd)
 	}
 }
 
-void	ft_get_fd0(t_token **head, int *fd0)
-{
-	t_token	*token;
-
-	token = *head;
-	while (token && token->type != pipe_char)
-	{
-		if (token->type == red_in && token->next->type == word)
-		{
-			*fd0 = open(token->next->value, O_RDONLY);
-			if (*fd0 < 0)
-				perror(token->next->value);
-			if (token == *head)
-				*head = token->next->next;
-			ft_remove_token(token);
-			ft_remove_token(token->next);
-		}
-		token = token->next;
-	}
-}
-
-//	Look for > and >> tokens, get fd with open() and remove the token.
-//	If followed by a pipe, make a pipe and return the read end.
-int	ft_get_fd1(t_token **head, int *fd1)
+int	ft_get_fds(t_token **head, int fds[2])
 {
 	t_token	*token;
 	int		pipefds[2];
@@ -69,7 +43,7 @@ int	ft_get_fd1(t_token **head, int *fd1)
 		if (token->type == pipe_char)
 		{
 			pipe(pipefds);
-			*fd1 = pipefds[1];
+			fds[1] = pipefds[1];
 			return (pipefds[0]);
 		}
 		if ((token->type == red_out || token->type == red_out_app)
@@ -78,12 +52,22 @@ int	ft_get_fd1(t_token **head, int *fd1)
 			if (token == *head)
 				*head = token->next->next;
 			if (token->type == red_out)
-				*fd1 = open(token->next->value, O_CREAT | O_WRONLY, 0644);
+				fds[1] = open(token->next->value, O_CREAT | O_WRONLY, 0644);
 			else
-				*fd1 = open(token->next->value,
+				fds[1] = open(token->next->value,
 						O_CREAT | O_WRONLY | O_APPEND, 0644);
-			if (*fd1 < 0)
+			if (fds[1] < 0)
 				perror(token->next->value);
+			ft_remove_token(token);
+			ft_remove_token(token->next);
+		}
+		if (token->type == red_in && token->next->type == word)
+		{
+			fds[0] = open(token->next->value, O_RDONLY);
+			if (fds[0] < 0)
+				perror(token->next->value);
+			if (token == *head)
+				*head = token->next->next;
 			ft_remove_token(token);
 			ft_remove_token(token->next);
 		}
