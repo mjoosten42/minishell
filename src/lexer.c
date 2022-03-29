@@ -11,10 +11,8 @@ void	lexer(t_token **head, char *str)
 	{
 		if (ft_strchr(META_CHARS, *str))
 			str += token_add_back(head, special_char_token(str));
-		else if (ft_isprint(*str))
-			str += token_add_back(head, word_token(str));
 		else
-			str++;
+			str += token_add_back(head, word_token(str));
 	}
 }
 
