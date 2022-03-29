@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:57:10 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/03/29 14:11:09 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/03/29 14:57:49 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,21 +67,18 @@ int		rl_on_new_line(void);
 //	Main
 pid_t	ft_exec(char **args, int fds[2]);
 
-// Utils
-void	print_tokens(t_token *token);
-
-//	Path
-char	*ft_getpath(char *str);
+//	Lexer
+void	lexer(t_token **head, char *str);
 
 //	Expand
 void	ft_expand(t_token **head);
 
-//	Lexer
-void	lexer(t_token **head, char *str);
-
 //	Parser
 void	ft_parse(t_token **head, int pipefd);
 void	ft_remove_token(t_token *token);
+
+//	Path
+char	*ft_getpath(char *str);
 
 //	Builtins
 void	echo(char **strs);
@@ -92,5 +89,8 @@ void	unset(char *str);
 void	env(void);
 void	ft_exit(char *str);
 int		is_builtin(char **strs);
+
+// Utils
+void	print_tokens(t_token *token);
 
 #endif
