@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:57:34 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/03/29 11:29:06 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/03/29 13:10:49 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,27 @@
 
 t_program_data	g_pd;
 
-void	ft_init(void);
+void	copy_env(void);
+void	ft_signal(int signum);
 
 int	main(void)
 {
-	t_token	*head;
-	char	*str;
+	extern int	rl_catch_signals;
+	t_token		*head;
+	char		*str;
 
-	ft_init();
+	copy_env();
+	rl_catch_signals = 0;
+	signal(SIGINT, ft_signal);
+	signal(SIGQUIT, ft_signal);
+	signal(SIGCHLD, ft_signal);
+	getcwd(g_pd.dir, PATH_MAX);
 	while (1)
 	{
 		head = NULL;
 		str = readline("minishell$ ");
 		if (!str)
-			ft_exit();
+			ft_exit(NULL);
 		if (*str)
 			add_history(str);
 		lexer(&head, str);
@@ -44,6 +51,8 @@ pid_t	ft_exec(char *path, char **args, int fds[2])
 {
 	pid_t	pid;
 
+	if (!ft_strncmp(*args, "exit", 5))
+		ft_exit(args[1]);
 	pid = fork();
 	if (pid < 0)
 		ft_error(0);
@@ -54,7 +63,7 @@ pid_t	ft_exec(char *path, char **args, int fds[2])
 		if (is_builtin(args))
 			exit(EXIT_SUCCESS);
 		if (!path)
-			ft_error("No such command");
+			ft_error(ft_strjoin(*args, ": command not found"));
 		execve(path, args, g_pd.env);
 		ft_error(0);
 	}
@@ -90,17 +99,5 @@ void	ft_signal(int signum)
 		rl_redisplay();
 	}
 	if (signum == SIGCHLD)
-		wait(NULL);
-}
-
-void	ft_init(void)
-{
-	extern int	rl_catch_signals;
-
-	copy_env();
-	rl_catch_signals = 0;
-	signal(SIGINT, ft_signal);
-	signal(SIGQUIT, ft_signal);
-	signal(SIGCHLD, ft_signal);
-	getcwd(g_pd.dir, PATH_MAX);
+		wait(&g_pd.last_exit_status);
 }

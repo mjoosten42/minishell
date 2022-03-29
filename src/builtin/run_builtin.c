@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   run_builtin.c                                      :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: mjoosten <mjoosten@student.42.fr>            +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/03/28 11:15:04 by rnijhuis      #+#    #+#                 */
-/*   Updated: 2022/03/28 11:58:12 by rnijhuis      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   run_builtin.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/28 11:15:04 by rnijhuis          #+#    #+#             */
+/*   Updated: 2022/03/29 13:04:35 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ int	is_builtin(char **strs)
 		echo(strs);
 	else if (!ft_strncmp(*strs, "env", str_len))
 		env();
-	else if (!ft_strncmp(*strs, "exit", str_len))
-		ft_exit();
 	else if (!ft_strncmp(*strs, "export", str_len))
 		export(strs[1]);
 	else if (!ft_strncmp(*strs, "pwd", str_len))

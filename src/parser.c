@@ -64,8 +64,14 @@ int	ft_get_fd1(t_token **head, int *fd1)
 	int		pipefds[2];
 
 	token = *head;
-	while (token && token->type != pipe_char)
+	while (token)
 	{
+		if (token->type == pipe_char)
+		{
+			pipe(pipefds);
+			*fd1 = pipefds[1];
+			return (pipefds[0]);
+		}
 		if ((token->type == red_out || token->type == red_out_app)
 			&& token->next->type == word)
 		{
@@ -83,11 +89,7 @@ int	ft_get_fd1(t_token **head, int *fd1)
 		}
 		token = token->next;
 	}
-	if (!token)
-		return (0);
-	pipe(pipefds);
-	*fd1 = pipefds[1];
-	return (pipefds[0]);
+	return (0);
 }
 
 char	**ft_get_args(t_token **head)
