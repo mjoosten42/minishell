@@ -47,6 +47,11 @@ int	ft_get_fds(t_token **head, int fds[2])
 			fds[1] = pipefds[1];
 			return (pipefds[0]);
 		}
+		if (token->type == here_doc)
+		{
+			fds[0] = ft_atoi(token->value);
+			ft_remove_token(token);
+		}
 		if ((token->type == red_out || token->type == red_out_app)
 			&& token->next->type == word)
 		{

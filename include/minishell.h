@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   minishell.h                                        :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: mjoosten <mjoosten@student.42.fr>            +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/02/22 14:57:10 by mjoosten      #+#    #+#                 */
-/*   Updated: 2022/04/01 13:30:38 by rnijhuis      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/22 14:57:10 by mjoosten          #+#    #+#             */
+/*   Updated: 2022/04/01 16:47:07 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ enum e_symbol {
 	space,
 	tab,
 	newline,
-	here_doc,
+	heredoc,
 	red_out_app,
 	file_descriptor,
 	word
@@ -80,6 +80,9 @@ void	ft_remove_token(t_token *token);
 //	Path
 char	*ft_getpath(char *str);
 
+//	Heredoc
+void	ft_heredoc(t_token *head);
+
 //	Builtins
 void	echo(char **strs);
 void	cd(char *path);
@@ -89,7 +92,6 @@ void	unset(char *str);
 void	env(void);
 void	ft_exit(char *str);
 int		is_builtin(char **strs);
-void	ft_here_doc(t_token **head);
 
 // Utils
 void	print_tokens(t_token *token);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: mjoosten <mjoosten@student.42.fr>            +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/02/22 14:57:34 by mjoosten      #+#    #+#                 */
-/*   Updated: 2022/04/01 15:17:47 by rnijhuis      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/22 14:57:34 by mjoosten          #+#    #+#             */
+/*   Updated: 2022/04/01 16:33:50 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ int	main(void)
 			add_history(str);
 		lexer(&head, str);
 		ft_expand(&head);
-		print_tokens(head);
 		ft_parse(&head, STDIN_FILENO);
 		free(str);
 	}

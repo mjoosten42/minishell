@@ -14,7 +14,6 @@ void	ft_expand(t_token **head)
 	int		type;
 
 	ptr = *head;
-	print_tokens(ptr);
 	if (ptr->type == space)
 	{
 		next = ptr->next;
@@ -37,8 +36,8 @@ void	ft_expand(t_token **head)
 			ptr = ptr->prev;
 			ft_remove_token(ptr->next);
 		}
-		if (ptr->type == here_doc)
-			ft_here_doc(&ptr);
+		if (ptr->type == heredoc)
+			ft_heredoc(ptr);
 		ptr = ptr->next;
 	}
 }

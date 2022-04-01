@@ -58,7 +58,7 @@ t_token	*special_char_token(char *str)
 			len++;
 	else if (token->type == red_in && str[1] == '<')
 	{
-		token->type = here_doc;
+		token->type = heredoc;
 		len++;
 	}
 	else if (token->type == red_out && str[1] == '>')
