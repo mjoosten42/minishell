@@ -10,16 +10,9 @@ int		ft_isnumber(char *str);
 void	ft_expand(t_token **head)
 {
 	t_token	*ptr;
-	t_token	*next;
 	int		type;
 
 	ptr = *head;
-	if (ptr->type == space)
-	{
-		next = ptr->next;
-		ft_remove_token(*head);
-		ptr = next;
-	}
 	while (ptr)
 	{
 		type = ptr->type;
@@ -35,8 +28,17 @@ void	ft_expand(t_token **head)
 			ft_heredoc(ptr);
 		if (type == space)
 		{
-			ptr = ptr->prev;
-			ft_remove_token(ptr->next);
+			if (ptr == *head)
+			{
+				*head = ptr->next;
+				ft_remove_token(ptr);
+				ptr = *head;
+			}
+			else
+			{
+				ptr = ptr->prev;
+				ft_remove_token(ptr->next);
+			}
 		}
 		ptr = ptr->next;
 	}
