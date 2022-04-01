@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/03/12 11:05:57 by rnijhuis          #+#    #+#              #
-#    Updated: 2022/03/28 16:28:50 by mjoosten         ###   ########.fr        #
+#                                                         ::::::::             #
+#    Makefile                                           :+:    :+:             #
+#                                                      +:+                     #
+#    By: mjoosten <mjoosten@student.42.fr>            +#+                      #
+#                                                    +#+                       #
+#    Created: 2022/03/12 11:05:57 by rnijhuis      #+#    #+#                  #
+#    Updated: 2022/04/01 13:30:58 by rnijhuis      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,6 +47,7 @@ SRCS :=	main.c					\
 		builtin/unset.c			\
 		builtin/exit.c			\
 		builtin/run_builtin.c	\
+		builtin/here_doc.c	\
 		utils/print_tokens.c	\
 
 OBJS = $(addprefix $(OBJS_DIR)/,$(SRCS:.c=.o))

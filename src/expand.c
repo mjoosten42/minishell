@@ -37,6 +37,8 @@ void	ft_expand(t_token **head)
 			ptr = ptr->prev;
 			ft_remove_token(ptr->next);
 		}
+		if (ptr->type == here_doc)
+			ft_here_doc(&ptr);
 		ptr = ptr->next;
 	}
 }
