@@ -9,21 +9,21 @@ void	ft_parse(t_token **head, int pipefd)
 {
 	pid_t	pid;
 	char	**strs;
-	int		fds[3];
+	int		fds[2];
 
 	if (!*head)
 		return ;
 	fds[0] = pipefd;
 	fds[1] = STDOUT_FILENO;
-	fds[2] = ft_get_fds(head, fds);
+	pipefd = ft_get_fds(head, fds);
 	strs = ft_get_args(head);
 	pid = ft_exec(strs, fds);
 	ft_free_array(strs);
-	if (fds[2])
+	if (pipefd)
 	{
 		while ((*head)->type != pipe_char)
 			*head = (*head)->next;
-		ft_parse(&(*head)->next, fds[2]);
+		ft_parse(&(*head)->next, pipefd);
 		ft_remove_token(*head);
 	}
 	else
@@ -37,27 +37,31 @@ int	ft_get_fds(t_token **head, int fds[2])
 {
 	t_token	*token;
 	int		pipefds[2];
+	int		type;
 
 	token = *head;
 	while (token)
 	{
-		if (token->type == pipe_char)
+		type = token->type;
+		if (type == pipe_char)
 		{
 			pipe(pipefds);
 			fds[1] = pipefds[1];
 			return (pipefds[0]);
 		}
-		if (token->type == here_doc)
+		if (type == heredoc)
 		{
 			fds[0] = ft_atoi(token->value);
+			if (token == *head)
+				*head = token->next;
 			ft_remove_token(token);
 		}
-		if ((token->type == red_out || token->type == red_out_app)
+		if ((type == red_out || type == red_out_app)
 			&& token->next->type == word)
 		{
 			if (token == *head)
 				*head = token->next->next;
-			if (token->type == red_out)
+			if (type == red_out)
 				fds[1] = open(token->next->value, O_CREAT | O_WRONLY, 0644);
 			else
 				fds[1] = open(token->next->value,
@@ -67,7 +71,7 @@ int	ft_get_fds(t_token **head, int fds[2])
 			ft_remove_token(token);
 			ft_remove_token(token->next);
 		}
-		if (token->type == red_in && token->next->type == word)
+		if (type == red_in && token->next->type == word)
 		{
 			fds[0] = open(token->next->value, O_RDONLY);
 			if (fds[0] < 0)

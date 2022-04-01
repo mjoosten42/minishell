@@ -31,13 +31,13 @@ void	ft_expand(t_token **head)
 			ft_expand_dollar(ptr);
 		if (type == red_in)
 			ft_expand_red_in(ptr);
+		if (type == heredoc)
+			ft_heredoc(ptr);
 		if (type == space)
 		{
 			ptr = ptr->prev;
 			ft_remove_token(ptr->next);
 		}
-		if (ptr->type == heredoc)
-			ft_heredoc(ptr);
 		ptr = ptr->next;
 	}
 }
