@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:57:34 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/03/29 14:18:17 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/04/01 14:31:58 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	main(void)
 
 	copy_env();
 	rl_catch_signals = 0;
-	signal(SIGINT, ft_signal);
+	//signal(SIGINT, ft_signal);
 	signal(SIGQUIT, ft_signal);
 	signal(SIGCHLD, ft_signal);
 	getcwd(g_pd.dir, PATH_MAX);

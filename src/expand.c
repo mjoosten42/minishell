@@ -1,9 +1,9 @@
 #include "minishell.h"
 #include "libft.h"
 
-void	ft_set_fd(t_token *token);
 void	ft_expand_quotes(t_token *token, enum e_symbol type);
 void	ft_expand_dollar(t_token *token);
+void	ft_expand_red_in(t_token *token);
 char	*ft_get_env_from_pd(char *str);
 int		ft_isnumber(char *str);
 
@@ -11,45 +11,62 @@ void	ft_expand(t_token **head)
 {
 	t_token	*ptr;
 	t_token	*next;
+	int		type;
 
 	ptr = *head;
+	print_tokens(ptr);
 	while (ptr)
 	{
-		if (ptr->type == red_out)
-			ft_set_fd(ptr);
-		if (ptr->type == quote)
+		next = ptr->next;
+		type = ptr->type;
+		if (type == quote)
 			ft_expand_quotes(ptr, quote);
-		else if (ptr->type == dquote)
+		if (type == dquote)
 			ft_expand_quotes(ptr, dquote);
-		else if (ptr->type == dollar)
+		if (type == dollar)
 			ft_expand_dollar(ptr);
-		else if (ptr->type == space)
+		if (type == red_in)
+			ft_expand_red_in(ptr);
+		if (type == space)
 		{
-			next = ptr->next;
 			ft_remove_token(ptr);
 			if (ptr == *head)
 				*head = next;
-			ptr = next;
 		}
-		else
-			ptr = ptr->next;
+		ptr = next;
 	}
 }
 
-void	ft_set_fd(t_token *token)
+void	ft_expand_red_in(t_token *token)
 {
-	char	*tmp;
+	t_token	*next;
+	t_token	*prev;
 
-	if (token->prev && token->prev->type == word
-		&& ft_isnumber(token->prev->value))
-			token->prev->type = file_descriptor;
-	if (token->next && token->next->type == word && token->next->value[0] == '&'
-		&& ft_isnumber(&token->next->value[1]))
+	prev = token->prev;
+	if (prev)
 	{
-		token->next->type = file_descriptor;
-		tmp = token->next->value;
-		token->next->value = ft_strdup(&token->next->value[1]);
-		free(tmp);
+		if (prev->type == word && ft_isnumber(prev->value))
+			prev->type = file_descriptor;
+		else if (prev->type == space)
+		{
+			prev->type = file_descriptor;
+			free(prev->value);
+			prev->value = ft_strdup("0");
+		}
+		else
+			ft_error("Metacharacter before input redirection");
+	}
+	next = token->next;
+	if (next)
+	{
+		if (next->type == word)
+		{
+			next->type = file_descriptor;
+			if (!ft_isnumber(next->value))
+			{
+				free(next->value);
+			}
+		}
 	}
 }
 
