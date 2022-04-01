@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 11:15:04 by rnijhuis          #+#    #+#             */
-/*   Updated: 2022/03/29 13:04:35 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/04/01 11:12:13 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	is_builtin(char **strs)
 {
 	size_t	str_len;
 
+	if (!strs)
+		return (0);
 	str_len = ft_strlen(*strs);
 	if (!ft_strncmp(*strs, "cd", str_len))
 		cd(strs[1]);

@@ -1,6 +1,7 @@
 #include "minishell.h"
 #include "libft.h"
 
+void	ft_set_fd(t_token *token);
 void	ft_expand_quotes(t_token *token, enum e_symbol type);
 void	ft_expand_dollar(t_token *token);
 char	*ft_get_env_from_pd(char *str);
@@ -14,9 +15,8 @@ void	ft_expand(t_token **head)
 	ptr = *head;
 	while (ptr)
 	{
-		if (ptr->type == word && ft_isnumber(ptr->value))
-			if (ptr->next && ptr->next->type == red_out)
-				ptr->type = file_descriptor;
+		if (ptr->type == red_out)
+			ft_set_fd(ptr);
 		if (ptr->type == quote)
 			ft_expand_quotes(ptr, quote);
 		else if (ptr->type == dquote)
@@ -33,6 +33,23 @@ void	ft_expand(t_token **head)
 		}
 		else
 			ptr = ptr->next;
+	}
+}
+
+void	ft_set_fd(t_token *token)
+{
+	char	*tmp;
+
+	if (token->prev && token->prev->type == word
+		&& ft_isnumber(token->prev->value))
+			token->prev->type = file_descriptor;
+	if (token->next && token->next->type == word && token->next->value[0] == '&'
+		&& ft_isnumber(&token->next->value[1]))
+	{
+		token->next->type = file_descriptor;
+		tmp = token->next->value;
+		token->next->value = ft_strdup(&token->next->value[1]);
+		free(tmp);
 	}
 }
 
@@ -103,6 +120,8 @@ char	*ft_get_env_from_pd(char *str)
 
 int	ft_isnumber(char *str)
 {
+	if (!str)
+		return (0);
 	while (*str)
 		if (!ft_isdigit(*str++))
 			return (0);
