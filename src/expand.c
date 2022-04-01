@@ -15,9 +15,14 @@ void	ft_expand(t_token **head)
 
 	ptr = *head;
 	print_tokens(ptr);
-	while (ptr)
+	if (ptr->type == space)
 	{
 		next = ptr->next;
+		ft_remove_token(*head);
+		ptr = next;
+	}
+	while (ptr)
+	{
 		type = ptr->type;
 		if (type == quote)
 			ft_expand_quotes(ptr, quote);
@@ -29,11 +34,10 @@ void	ft_expand(t_token **head)
 			ft_expand_red_in(ptr);
 		if (type == space)
 		{
-			ft_remove_token(ptr);
-			if (ptr == *head)
-				*head = next;
+			ptr = ptr->prev;
+			ft_remove_token(ptr->next);
 		}
-		ptr = next;
+		ptr = ptr->next;
 	}
 }
 
