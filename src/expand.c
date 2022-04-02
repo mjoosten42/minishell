@@ -3,7 +3,6 @@
 
 void	ft_expand_quotes(t_token *token, enum e_symbol type);
 void	ft_expand_dollar(t_token *token);
-void	ft_expand_red_in(t_token *token);
 char	*ft_get_env_from_pd(char *str);
 int		ft_isnumber(char *str);
 
@@ -22,8 +21,6 @@ void	ft_expand(t_token **head)
 			ft_expand_quotes(ptr, dquote);
 		if (type == dollar)
 			ft_expand_dollar(ptr);
-		if (type == red_in)
-			ft_expand_red_in(ptr);
 		if (type == heredoc)
 			ft_heredoc(ptr);
 		if (type == space)
@@ -41,39 +38,6 @@ void	ft_expand(t_token **head)
 			}
 		}
 		ptr = ptr->next;
-	}
-}
-
-void	ft_expand_red_in(t_token *token)
-{
-	t_token	*next;
-	t_token	*prev;
-
-	prev = token->prev;
-	if (prev)
-	{
-		if (prev->type == word && ft_isnumber(prev->value))
-			prev->type = file_descriptor;
-		else if (prev->type == space)
-		{
-			prev->type = file_descriptor;
-			free(prev->value);
-			prev->value = ft_strdup("0");
-		}
-		else
-			ft_error("Metacharacter before input redirection");
-	}
-	next = token->next;
-	if (next)
-	{
-		if (next->type == word)
-		{
-			next->type = file_descriptor;
-			if (!ft_isnumber(next->value))
-			{
-				free(next->value);
-			}
-		}
 	}
 }
 
@@ -137,6 +101,7 @@ char	*ft_get_env_from_pd(char *str)
 	len = ft_strlen(tmp);
 	while (g_pd.env[i] && ft_strncmp(g_pd.env[i], tmp, len))
 		i++;
+	free(tmp);
 	if (!g_pd.env[i])
 		return (ft_strdup(""));
 	return (ft_strdup(g_pd.env[i]));

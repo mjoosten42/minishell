@@ -6,7 +6,7 @@
 #    By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/12 11:05:57 by rnijhuis          #+#    #+#              #
-#    Updated: 2022/04/01 16:47:42 by mjoosten         ###   ########.fr        #
+#    Updated: 2022/04/02 15:23:06 by mjoosten         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,7 @@ SRCS :=	main.c					\
 		parser.c				\
 		expand.c				\
 		path.c					\
-		here_doc.c				\
+		heredoc.c				\
 		builtin/echo.c			\
 		builtin/cd.c			\
 		builtin/pwd.c			\
@@ -49,6 +49,7 @@ SRCS :=	main.c					\
 		builtin/exit.c			\
 		builtin/run_builtin.c	\
 		utils/print_tokens.c	\
+		utils/syscalls.c		\
 
 OBJS = $(addprefix $(OBJS_DIR)/,$(SRCS:.c=.o))
 

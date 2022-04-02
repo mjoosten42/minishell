@@ -15,9 +15,7 @@ void	ft_heredoc(t_token *ptr)
 		ft_error("No heredoc end");
 	end_doc = ptr->next->value;
 	pipe(fds);
-	pid = fork();
-	if (pid < 0)
-		ft_error(NULL);
+	pid = ft_fork();
 	if (!pid)
 	{
 		close(fds[0]);

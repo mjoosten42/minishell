@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/22 14:57:34 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/04/01 16:33:50 by mjoosten         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 #include "libft.h"
 #include <readline/readline.h>
@@ -31,7 +19,7 @@ int	main(void)
 	//signal(SIGINT, ft_signal);
 	signal(SIGQUIT, ft_signal);
 	signal(SIGCHLD, ft_signal);
-	getcwd(g_pd.dir, PATH_MAX);
+	g_pd.dir = getcwd(g_pd.dir, 0);
 	while (1)
 	{
 		head = NULL;
@@ -54,9 +42,7 @@ pid_t	ft_exec(char **args, int fds[2])
 
 	if (!ft_strncmp(*args, "exit", 5))
 		ft_exit(args[1]);
-	pid = fork();
-	if (pid < 0)
-		ft_error(NULL);
+	pid = ft_fork();
 	if (!pid)
 	{
 		dup2(fds[0], STDIN_FILENO);

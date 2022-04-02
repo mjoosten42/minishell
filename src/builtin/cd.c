@@ -4,5 +4,7 @@
 void	cd(char *path)
 {
 	chdir(path);
-	getcwd(g_pd.dir, PATH_MAX);
+	free(g_pd.dir);
+	g_pd.dir = NULL;
+	g_pd.dir = getcwd(g_pd.dir, 0);
 }

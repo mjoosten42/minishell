@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:57:10 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/04/01 16:47:07 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/04/02 15:23:18 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ enum e_symbol {
 typedef struct s_program_data
 {
 	char			**env;
-	char			dir[PATH_MAX];
+	char			*dir;
 	int				amount_env_lines;
 	int				last_exit_status;
 }					t_program_data;
@@ -95,5 +95,8 @@ int		is_builtin(char **strs);
 
 // Utils
 void	print_tokens(t_token *token);
+pid_t	ft_fork(void);
+int		ft_open(const char *path, int oflag, mode_t mode);
+
 
 #endif
