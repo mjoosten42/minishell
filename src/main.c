@@ -55,9 +55,9 @@ pid_t	ft_exec(char **args, int fds[2])
 		execve(path, args, g_pd.env);
 		ft_error(0);
 	}
-	if (fds[0] > 2)
+	if (fds[0] > STDERR_FILENO)
 		close(fds[0]);
-	if (fds[1] > 2)
+	if (fds[1] > STDERR_FILENO)
 		close(fds[1]);
 	return (pid);
 }
