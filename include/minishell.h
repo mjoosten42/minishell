@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:57:10 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/04/04 15:04:21 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/04/04 15:07:16 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ enum e_symbol {
 	newline,
 	heredoc,
 	red_out_app,
-	file_descriptor,
 	word,
 	start
 };

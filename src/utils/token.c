@@ -59,7 +59,6 @@ void	print_tokens(t_token *token)
 		"newline",
 		"here_doc",
 		"red_out_app",
-		"file_descriptor",
 		"word",
 		"start"
 	};
