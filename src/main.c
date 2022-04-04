@@ -45,19 +45,15 @@ pid_t	ft_exec(char **args, int fds[2])
 
 	if (!*args)
 		return (0);
-	if (!ft_strncmp(*args, "exit", 5))
-		ft_exit(args[1]);
-	else if (!ft_strncmp(*args, "cd", 3))
-		cd(args[1]);
-	else if (!ft_strncmp(*args, "pwd", 4))
-		pwd();
+	if (is_builtin_unforked(args))
+		return (0);
 	pid = ft_fork();
 	if (!pid)
 	{
 		dup2(fds[0], STDIN_FILENO);
 		dup2(fds[1], STDOUT_FILENO);
 		dup2(fds[2], STDERR_FILENO);
-		if (is_builtin(args))
+		if (is_builtin_forked(args))
 			exit(EXIT_SUCCESS);
 		path = ft_getpath(*args);
 		if (!path)

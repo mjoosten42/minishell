@@ -1,7 +1,20 @@
 #include "minishell.h"
 #include "libft.h"
 
-int	is_builtin(char **strs)
+int	is_builtin_forked(char **strs)
+{
+	if (!ft_strncmp(*strs, "exit", 5))
+		ft_exit(strs[1]);
+	else if (!ft_strncmp(*strs, "cd", 3))
+		cd(strs[1]);
+	else if (!ft_strncmp(*strs, "pwd", 4))
+		pwd();
+	else
+		return (0);
+	return (1);
+}
+
+int	is_builtin_unforked(char **strs)
 {
 	size_t	str_len;
 

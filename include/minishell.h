@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/22 14:57:10 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/04/04 13:18:41 by mjoosten         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   minishell.h                                        :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mjoosten <mjoosten@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/02/22 14:57:10 by mjoosten      #+#    #+#                 */
+/*   Updated: 2022/04/04 14:02:15 by rubennijhui   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,8 @@ void	export(char *variable);
 void	unset(char *str);
 void	env(void);
 void	ft_exit(char *str);
-int		is_builtin(char **strs);
+int		is_builtin_forked(char **strs);
+int		is_builtin_unforked(char **strs);
 
 // Utils
 void	print_tokens(t_token *token);
