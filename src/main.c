@@ -47,6 +47,10 @@ pid_t	ft_exec(char **args, int fds[2])
 		return (0);
 	if (!ft_strncmp(*args, "exit", 5))
 		ft_exit(args[1]);
+	else if (!ft_strncmp(*args, "cd", 3))
+		cd(args[1]);
+	else if (!ft_strncmp(*args, "pwd", 4))
+		pwd();
 	pid = ft_fork();
 	if (!pid)
 	{
