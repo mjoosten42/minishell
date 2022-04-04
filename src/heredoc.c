@@ -2,30 +2,40 @@
 #include "libft.h"
 #include <readline/readline.h>
 
-int	ft_heredoc(t_token *ptr)
+void	ft_heredoc_child(int fds[2], char *end);
+
+int	ft_heredoc(t_token *token)
 {
 	pid_t	pid;
 	int		fds[2];
-	char	*end_doc;
-	char	*str;
 
-	pipe(fds);
+	token = token->prev;
+	ft_remove_token(token->next);
+	token = token->next;
+	if (!token || token->type != word)
+		ft_error("Syntax error: expected redirect target");
+	ft_pipe(fds);
 	pid = ft_fork();
 	if (!pid)
-	{
-		close(fds[0]);
-		end_doc = ptr->next->value;
-		while (1)
-		{
-			str = readline("> ");
-			if (!str || !ft_strncmp(end_doc, str, ft_strlen(end_doc)))
-				break ;
-			write(fds[1], str, ft_strlen(str));
-			write(fds[1], "\n", 1);
-		}
-		exit(EXIT_SUCCESS);
-	}
+		ft_heredoc_child(fds, token->value);
 	close(fds[1]);
 	waitpid(pid, NULL, 0);
+	ft_remove_token(token);
 	return (fds[0]);
+}
+
+void	ft_heredoc_child(int fds[2], char *end)
+{
+	char	*str;
+
+	close(fds[0]);
+	while (1)
+	{
+		str = readline("> ");
+		if (!str || !ft_strncmp(str, end, ft_strlen(end)))
+			break ;
+		write(fds[1], str, ft_strlen(str));
+		write(fds[1], "\n", 1);
+	}
+	exit(EXIT_SUCCESS);
 }

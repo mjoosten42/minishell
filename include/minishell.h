@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/22 14:57:10 by mjoosten      #+#    #+#                 */
-/*   Updated: 2022/04/04 14:02:15 by rubennijhui   ########   odam.nl         */
+/*   Updated: 2022/04/04 14:05:19 by rubennijhui   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,8 @@ int		is_builtin_unforked(char **strs);
 
 // Utils
 void	print_tokens(t_token *token);
-pid_t	ft_fork(void);
 int		ft_open(const char *path, int oflag, mode_t mode);
+pid_t	ft_fork(void);
+int		ft_pipe(int fildes[2]);
 
 #endif
