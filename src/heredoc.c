@@ -6,7 +6,7 @@ void	ft_heredoc(t_token *ptr)
 {
 	pid_t	pid;
 	int		fds[2];
-	char 	*end_doc;
+	char	*end_doc;
 	char	*str;
 
 	if (ptr->next && ptr->next->type == space)
@@ -33,4 +33,5 @@ void	ft_heredoc(t_token *ptr)
 	ft_remove_token(ptr->next);
 	free(ptr->value);
 	ptr->value = ft_strdup(ft_itoa(fds[0]));
+	waitpid(pid, NULL, 0);
 }
