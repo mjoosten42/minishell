@@ -51,7 +51,6 @@ int	ft_dup2(int fildes, int fildes2)
 		exit(EXIT_FAILURE);
 	}
 	return (ret);
-
 }
 
 int	ft_close(int fildes)

@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:57:10 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/04/04 15:13:25 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/04/04 15:49:52 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	ft_expand(t_token *token);
 void	ft_parse(t_token *head, int pipefd);
 
 //	Heredoc
-int		ft_heredoc(t_token *head);
+void	ft_heredoc(t_token *head, int *fd);
 
 //	Builtins
 int		is_builtin_unforked(char **strs);
