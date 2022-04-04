@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 14:10:47 by rnijhuis          #+#    #+#             */
-/*   Updated: 2022/03/29 14:11:21 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/04/04 10:42:46 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ void	print_tokens(t_token *token)
 		"here_doc",
 		"red_out_app",
 		"file_descriptor",
-		"word"
+		"word",
+		"start"
 	};
 
 	if (token)

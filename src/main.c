@@ -5,6 +5,7 @@
 
 t_program_data	g_pd;
 
+t_token	*token_start(void);
 void	copy_env(void);
 void	ft_signal(int signum);
 
@@ -22,15 +23,17 @@ int	main(void)
 	g_pd.dir = getcwd(g_pd.dir, 0);
 	while (1)
 	{
-		head = NULL;
+		head = token_start();
 		str = readline("minishell$ ");
 		if (!str)
 			ft_exit(NULL);
 		if (*str)
 			add_history(str);
-		lexer(&head, str);
-		ft_expand(&head);
-		ft_parse(&head, STDIN_FILENO);
+		lexer(head, str);
+		ft_expand(head);
+		print_tokens(head);
+		ft_parse(head, STDIN_FILENO);
+		ft_remove_token(head);
 		free(str);
 	}
 }
@@ -88,4 +91,17 @@ void	ft_signal(int signum)
 	}
 	if (signum == SIGCHLD)
 		wait(NULL);
+}
+
+t_token	*token_start(void)
+{
+	t_token	*token;
+
+	token = ft_malloc(sizeof(t_token));
+	token->position = 0;
+	token->next = NULL;
+	token->prev = NULL;
+	token->value = NULL;
+	token->type = start;
+	return (token);
 }

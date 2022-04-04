@@ -1,11 +1,11 @@
 #include "minishell.h"
 #include "libft.h"
 
-int		token_add_back(t_token **head, t_token *new_token);
+int		token_add_back(t_token *token, t_token *new_token);
 t_token	*special_char_token(char *str);
 t_token	*word_token(char *str);
 
-void	lexer(t_token **head, char *str)
+void	lexer(t_token *head, char *str)
 {
 	while (*str)
 	{
@@ -16,55 +16,43 @@ void	lexer(t_token **head, char *str)
 	}
 }
 
-int	token_add_back(t_token **head, t_token *new_token)
+int	token_add_back(t_token *token, t_token *new_token)
 {
-	t_token	*token;
 	int		i;
 
 	i = 1;
-	token = *head;
-	if (token)
+	while (token->next)
 	{
-		while (token->next)
-		{
-			i++;
-			token = token->next;
-		}
-		token->next = new_token;
-		new_token->prev = token;
-		new_token->next = NULL;
-		new_token->position = i;
+		i++;
+		token = token->next;
 	}
-	else
-	{
-		*head = new_token;
-		new_token->prev = NULL;
-		new_token->next = NULL;
-		new_token->position = 0;
-	}
+	token->next = new_token;
+	new_token->prev = token;
+	new_token->next = NULL;
+	new_token->position = i;
 	return (ft_strlen(new_token->value));
 }
 
 t_token	*special_char_token(char *str)
 {
 	t_token	*token;
+	int		type;
 	int		len;
 
 	len = 1;
 	token = ft_malloc(sizeof(t_token));
 	token->type = ft_strchr(META_CHARS, str[0]) - META_CHARS;
-	if (token->type == space)
-		while (*str && str[len] == ' ')
+	type = token->type;
+	if (type == space || type == tab)
+		while (*str && (str[len] == ' ' || str[len] == '\t'))
 			len++;
-	else if (token->type == red_in && str[1] == '<')
+	if ((type == red_in && str[1] == '<') || (type == red_out && str[1] == '>'))
 	{
-		token->type = heredoc;
 		len++;
-	}
-	else if (token->type == red_out && str[1] == '>')
-	{
-		token->type = red_out_app;
-		len++;
+		if (type == red_in)
+			token->type = heredoc;
+		else
+			token->type = red_out_app;
 	}
 	token->value = ft_substr(str, 0, len);
 	return (token);

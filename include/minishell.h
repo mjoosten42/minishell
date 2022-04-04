@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:57:10 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/04/02 15:23:18 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/04/04 11:06:35 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ enum e_symbol {
 	heredoc,
 	red_out_app,
 	file_descriptor,
-	word
+	word,
+	start
 };
 
 // Program data
@@ -68,13 +69,13 @@ int		rl_on_new_line(void);
 pid_t	ft_exec(char **args, int fds[2]);
 
 //	Lexer
-void	lexer(t_token **head, char *str);
+void	lexer(t_token *head, char *str);
 
 //	Expand
-void	ft_expand(t_token **head);
+void	ft_expand(t_token *token);
 
 //	Parser
-void	ft_parse(t_token **head, int pipefd);
+void	ft_parse(t_token *head, int pipefd);
 void	ft_remove_token(t_token *token);
 
 //	Path
@@ -97,6 +98,5 @@ int		is_builtin(char **strs);
 void	print_tokens(t_token *token);
 pid_t	ft_fork(void);
 int		ft_open(const char *path, int oflag, mode_t mode);
-
 
 #endif

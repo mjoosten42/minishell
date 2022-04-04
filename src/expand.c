@@ -6,38 +6,27 @@ void	ft_expand_dollar(t_token *token);
 char	*ft_get_env_from_pd(char *str);
 int		ft_isnumber(char *str);
 
-void	ft_expand(t_token **head)
+void	ft_expand(t_token *token)
 {
-	t_token	*ptr;
-	int		type;
+	int	type;
 
-	ptr = *head;
-	while (ptr)
+	while (token)
 	{
-		type = ptr->type;
+		type = token->type;
 		if (type == quote)
-			ft_expand_quotes(ptr, quote);
+			ft_expand_quotes(token, quote);
 		if (type == dquote)
-			ft_expand_quotes(ptr, dquote);
+			ft_expand_quotes(token, dquote);
 		if (type == dollar)
-			ft_expand_dollar(ptr);
+			ft_expand_dollar(token);
 		if (type == heredoc)
-			ft_heredoc(ptr);
+			ft_heredoc(token);
 		if (type == space)
 		{
-			if (ptr == *head)
-			{
-				*head = ptr->next;
-				ft_remove_token(ptr);
-				ptr = *head;
-			}
-			else
-			{
-				ptr = ptr->prev;
-				ft_remove_token(ptr->next);
-			}
+			token = token->prev;
+			ft_remove_token(token->next);
 		}
-		ptr = ptr->next;
+		token = token->next;
 	}
 }
 
@@ -70,6 +59,12 @@ void	ft_expand_dollar(t_token *token)
 
 	token->type = word;
 	free(token->value);
+	if (token->next && token->next->type == dollar)
+	{
+		token->value = ft_itoa(getpid());
+		ft_remove_token(token->next);
+		return ;
+	}
 	if (token->next && token->next->type == word)
 	{
 		if (token->next->value[0] == '?')

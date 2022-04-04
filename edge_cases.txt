@@ -1,3 +1,6 @@
+To get open file descriptors:
+	lsof -p $$ -a -d 0-256
+
 Case:
 	Command in qoutes
 Descr: 
