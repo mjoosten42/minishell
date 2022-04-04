@@ -100,13 +100,3 @@ char	*ft_get_env_from_pd(char *str)
 		return (ft_strdup(""));
 	return (ft_strdup(g_pd.env[i]));
 }
-
-int	ft_isnumber(char *str)
-{
-	if (!str)
-		return (0);
-	while (*str)
-		if (!ft_isdigit(*str++))
-			return (0);
-	return (1);
-}

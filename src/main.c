@@ -5,7 +5,6 @@
 
 t_program_data	g_pd;
 
-t_token	*token_start(void);
 void	copy_env(void);
 void	ft_signal(int signum);
 
@@ -38,36 +37,6 @@ int	main(void)
 	}
 }
 
-pid_t	ft_exec(char **args, int fds[2])
-{
-	pid_t	pid;
-	char	*path;
-
-	if (is_builtin_unforked(args))
-		return (0);
-	pid = ft_fork();
-	if (!pid)
-	{
-		dup2(fds[0], STDIN_FILENO);
-		dup2(fds[1], STDOUT_FILENO);
-		dup2(fds[2], STDERR_FILENO);
-		if (is_builtin_forked(args))
-			exit(EXIT_SUCCESS);
-		path = ft_getpath(*args);
-		if (!path)
-			ft_error(ft_strjoin(*args, ": command not found"));
-		execve(path, args, g_pd.env);
-		ft_error(0);
-	}
-	if (fds[0] > STDERR_FILENO)
-		close(fds[0]);
-	if (fds[1] > STDERR_FILENO)
-		close(fds[1]);
-	if (fds[2] > STDERR_FILENO)
-		close(fds[2]);
-	return (pid);
-}
-
 void	copy_env(void)
 {
 	extern char	**environ;
@@ -94,17 +63,4 @@ void	ft_signal(int signum)
 	}
 	if (signum == SIGCHLD)
 		wait(&g_pd.last_exit_status);
-}
-
-t_token	*token_start(void)
-{
-	t_token	*token;
-
-	token = ft_malloc(sizeof(t_token));
-	token->position = 0;
-	token->next = NULL;
-	token->prev = NULL;
-	token->value = NULL;
-	token->type = start;
-	return (token);
 }

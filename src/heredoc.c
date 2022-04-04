@@ -4,7 +4,7 @@
 
 void	ft_heredoc_child(int fds[2], char *end);
 
-int	ft_heredoc(t_token *token)
+void	ft_heredoc(t_token *token, int *fd)
 {
 	pid_t	pid;
 	int		fds[2];
@@ -21,7 +21,9 @@ int	ft_heredoc(t_token *token)
 	close(fds[1]);
 	waitpid(pid, NULL, 0);
 	ft_remove_token(token);
-	return (fds[0]);
+	if (*fd > STDERR_FILENO)
+		ft_close(*fd);
+	*fd = fds[0];
 }
 
 void	ft_heredoc_child(int fds[2], char *end)

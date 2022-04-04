@@ -2,22 +2,19 @@
 #include "libft.h"
 #include "fcntl.h"
 
-#define MODE 0644
-
-int		ft_get_fds(t_token *token, int fds[3]);
-int		ft_redirect(t_token *token, int flags);
-char	**ft_get_args(t_token *head);
-int		ft_argsize(t_token *token);
+char	**ft_get_args(t_token *token);
+int		ft_get_fds(t_token *token, int fds[2]);
+void	ft_redirect(t_token *token, int *fd, int flags);
+int		ft_get_pipe(int *fd);
 
 void	ft_parse(t_token *head, int pipefd)
 {
 	pid_t	pid;
 	char	**strs;
-	int		fds[3];
+	int		fds[2];
 
 	fds[0] = pipefd;
 	fds[1] = STDOUT_FILENO;
-	fds[2] = STDERR_FILENO;
 	pipefd = ft_get_fds(head, fds);
 	strs = ft_get_args(head);
 	pid = ft_exec(strs, fds);
@@ -31,9 +28,8 @@ void	ft_parse(t_token *head, int pipefd)
 		waitpid(pid, NULL, 0);
 }
 
-int	ft_get_fds(t_token *token, int fds[3])
+int	ft_get_fds(t_token *token, int fds[2])
 {
-	int	pipefds[2];
 	int	type;
 
 	token = token->next;
@@ -41,80 +37,62 @@ int	ft_get_fds(t_token *token, int fds[3])
 	{
 		type = token->type;
 		if (type == pipe_char)
-		{
-			ft_pipe(pipefds);
-			fds[1] = pipefds[1];
-			return (pipefds[0]);
-		}
+			return (ft_get_pipe(&fds[1]));
 		if (type == heredoc)
-			fds[0] = ft_heredoc(token);
+			ft_heredoc(token, &fds[0]);
 		if (type == red_in)
-			fds[0] = ft_redirect(token, O_RDONLY);
+			ft_redirect(token, &fds[0], O_RDONLY);
 		if (type == red_out)
-			fds[1] = ft_redirect(token, O_CREAT | O_WRONLY);
+			ft_redirect(token, &fds[1], O_WRONLY | O_CREAT);
 		if (type == red_out_app)
-			fds[1] = ft_redirect(token, O_CREAT | O_WRONLY | O_APPEND);
+			ft_redirect(token, &fds[1], O_WRONLY | O_CREAT | O_APPEND);
 		token = token->next;
 	}
 	return (0);
 }
 
-int	ft_redirect(t_token *token, int flags)
+void	ft_redirect(t_token *token, int *fd, int flags)
 {
-	int	fd;
-
 	token = token->prev;
 	ft_remove_token(token->next);
 	token = token->next;
+	if (*fd > STDERR_FILENO)
+		ft_close(*fd);
 	if (!token)
 		ft_error("Syntax error: expected redirect target");
-	fd = ft_open(token->value, flags, MODE);
-	if (fd < 0)
-		perror(token->value);
+	*fd = ft_open(token->value, flags, 0644);
 	ft_remove_token(token);
-	return (fd);
 }
 
-int	ft_argsize(t_token *token)
+int	ft_get_pipe(int *fd)
 {
-	int	size;
+	int	pipefds[2];
 
-	size = 0;
-	while (token && token->type != pipe_char)
-	{
-		size++;
-		token = token->next;
-	}
-	return (size);
+	ft_pipe(pipefds);
+	if (*fd > STDERR_FILENO)
+		ft_close(*fd);
+	*fd = pipefds[1];
+	return (pipefds[0]);
 }
 
 char	**ft_get_args(t_token *token)
 {
 	char	**strs;
 	int		size;
-	int		i;
 
-	i = 0;
-	size = ft_argsize(token->next);
+	size = 0;
+	while (token->next && token->next->type != pipe_char)
+	{
+		size++;
+		token = token->next;
+	}
 	strs = ft_malloc(sizeof(*strs) * (size + 1));
 	strs[size] = NULL;
-	while (i < size)
+	while (size--)
 	{
-		strs[i] = ft_strdup(token->next->value);
+		strs[size] = ft_strdup(token->value);
+		token = token->prev;
 		ft_remove_token(token->next);
-		i++;
 	}
 	return (strs);
-}
-
-void	ft_remove_token(t_token *token)
-{
-	if (!token)
-		return ;
-	if (token->prev)
-		token->prev->next = token->next;
-	if (token->next)
-		token->next->prev = token->prev;
-	free(token->value);
-	free(token);
 }
