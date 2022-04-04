@@ -42,23 +42,18 @@ int	ft_get_fds(t_token *token, int fds[3])
 		type = token->type;
 		if (type == pipe_char)
 		{
-			pipe(pipefds);
+			ft_pipe(pipefds);
 			fds[1] = pipefds[1];
 			return (pipefds[0]);
 		}
-		if (type == heredoc && token->next && token->next->type == word)
-		{
+		if (type == heredoc)
 			fds[0] = ft_heredoc(token);
-			token = token->prev;
-			ft_remove_token(token->next);
-			ft_remove_token(token->next);
-		}
+		if (type == red_in)
+			fds[0] = ft_redirect(token, O_RDONLY);
 		if (type == red_out)
 			fds[1] = ft_redirect(token, O_CREAT | O_WRONLY);
 		if (type == red_out_app)
 			fds[1] = ft_redirect(token, O_CREAT | O_WRONLY | O_APPEND);
-		if (type == red_in)
-			fds[0] = ft_redirect(token, O_RDONLY);
 		token = token->next;
 	}
 	return (0);
