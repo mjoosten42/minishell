@@ -43,8 +43,6 @@ pid_t	ft_exec(char **args, int fds[2])
 	pid_t	pid;
 	char	*path;
 
-	if (!*args)
-		return (0);
 	if (is_builtin_unforked(args))
 		return (0);
 	pid = ft_fork();
