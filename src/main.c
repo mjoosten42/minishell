@@ -43,6 +43,8 @@ pid_t	ft_exec(char **args, int fds[2])
 	pid_t	pid;
 	char	*path;
 
+	if (!*args)
+		return (0);
 	if (!ft_strncmp(*args, "exit", 5))
 		ft_exit(args[1]);
 	pid = ft_fork();
@@ -50,6 +52,7 @@ pid_t	ft_exec(char **args, int fds[2])
 	{
 		dup2(fds[0], STDIN_FILENO);
 		dup2(fds[1], STDOUT_FILENO);
+		dup2(fds[2], STDERR_FILENO);
 		if (is_builtin(args))
 			exit(EXIT_SUCCESS);
 		path = ft_getpath(*args);
@@ -62,6 +65,8 @@ pid_t	ft_exec(char **args, int fds[2])
 		close(fds[0]);
 	if (fds[1] > STDERR_FILENO)
 		close(fds[1]);
+	if (fds[2] > STDERR_FILENO)
+		close(fds[2]);
 	return (pid);
 }
 
@@ -90,7 +95,7 @@ void	ft_signal(int signum)
 		rl_redisplay();
 	}
 	if (signum == SIGCHLD)
-		wait(NULL);
+		wait(&g_pd.last_exit_status);
 }
 
 t_token	*token_start(void)
