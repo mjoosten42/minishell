@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   minishell.h                                        :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: mjoosten <mjoosten@student.42.fr>            +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/02/22 14:57:10 by mjoosten      #+#    #+#                 */
-/*   Updated: 2022/04/04 14:05:19 by rubennijhui   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/22 14:57:10 by mjoosten          #+#    #+#             */
+/*   Updated: 2022/04/04 14:20:30 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ void	ft_expand(t_token *token);
 
 //	Parser
 void	ft_parse(t_token *head, int pipefd);
-void	ft_remove_token(t_token *token);
 
 //	Path
 char	*ft_getpath(char *str);
@@ -94,10 +93,15 @@ void	ft_exit(char *str);
 int		is_builtin_forked(char **strs);
 int		is_builtin_unforked(char **strs);
 
-// Utils
+// Token
+t_token	*token_start(void);
+int		token_add_back(t_token *token, t_token *new_token);
+void	ft_remove_token(t_token *token);
 void	print_tokens(t_token *token);
-int		ft_open(const char *path, int oflag, mode_t mode);
+
+// Syscalls
 pid_t	ft_fork(void);
 int		ft_pipe(int fildes[2]);
+int		ft_open(const char *path, int oflag, mode_t mode);
 
 #endif

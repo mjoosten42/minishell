@@ -106,15 +106,3 @@ char	**ft_get_args(t_token *token)
 	}
 	return (strs);
 }
-
-void	ft_remove_token(t_token *token)
-{
-	if (!token)
-		return ;
-	if (token->prev)
-		token->prev->next = token->next;
-	if (token->next)
-		token->next->prev = token->prev;
-	free(token->value);
-	free(token);
-}

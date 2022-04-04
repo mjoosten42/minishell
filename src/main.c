@@ -5,7 +5,6 @@
 
 t_program_data	g_pd;
 
-t_token	*token_start(void);
 void	copy_env(void);
 void	ft_signal(int signum);
 
@@ -96,17 +95,4 @@ void	ft_signal(int signum)
 	}
 	if (signum == SIGCHLD)
 		wait(&g_pd.last_exit_status);
-}
-
-t_token	*token_start(void)
-{
-	t_token	*token;
-
-	token = ft_malloc(sizeof(t_token));
-	token->position = 0;
-	token->next = NULL;
-	token->prev = NULL;
-	token->value = NULL;
-	token->type = start;
-	return (token);
 }
