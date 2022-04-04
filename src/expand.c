@@ -19,9 +19,7 @@ void	ft_expand(t_token *token)
 			ft_expand_quotes(token, dquote);
 		if (type == dollar)
 			ft_expand_dollar(token);
-		if (type == heredoc)
-			ft_heredoc(token);
-		if (type == space)
+		if (type == space || type == tab)
 		{
 			token = token->prev;
 			ft_remove_token(token->next);
@@ -59,6 +57,7 @@ void	ft_expand_dollar(t_token *token)
 
 	token->type = word;
 	free(token->value);
+	//	Temporary: $$ expands to pid
 	if (token->next && token->next->type == dollar)
 	{
 		token->value = ft_itoa(getpid());

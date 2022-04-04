@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:57:10 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/04/04 11:06:35 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/04/04 13:18:41 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define MINISHELL_H
 
 // Includes
-# include <limits.h>
 # include <unistd.h>
 # include <signal.h>
 
@@ -82,7 +81,7 @@ void	ft_remove_token(t_token *token);
 char	*ft_getpath(char *str);
 
 //	Heredoc
-void	ft_heredoc(t_token *head);
+int		ft_heredoc(t_token *head);
 
 //	Builtins
 void	echo(char **strs);

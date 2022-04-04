@@ -2,23 +2,19 @@
 #include "libft.h"
 #include <readline/readline.h>
 
-void	ft_heredoc(t_token *ptr)
+int	ft_heredoc(t_token *ptr)
 {
 	pid_t	pid;
 	int		fds[2];
 	char	*end_doc;
 	char	*str;
 
-	if (ptr->next && ptr->next->type == space)
-		ft_remove_token(ptr->next);
-	if (!ptr->next || ptr->next->type != word)
-		ft_error("No heredoc end");
-	end_doc = ptr->next->value;
 	pipe(fds);
 	pid = ft_fork();
 	if (!pid)
 	{
 		close(fds[0]);
+		end_doc = ptr->next->value;
 		while (1)
 		{
 			str = readline("> ");
@@ -30,8 +26,6 @@ void	ft_heredoc(t_token *ptr)
 		exit(EXIT_SUCCESS);
 	}
 	close(fds[1]);
-	ft_remove_token(ptr->next);
-	free(ptr->value);
-	ptr->value = ft_strdup(ft_itoa(fds[0]));
 	waitpid(pid, NULL, 0);
+	return (fds[0]);
 }

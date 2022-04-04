@@ -1,6 +1,7 @@
 To get open file descriptors:
 	lsof -p $$ -a -d 0-256
 
+
 Case:
 	Command in qoutes
 Descr: 
@@ -18,6 +19,16 @@ Command:
 	"ls -la"
 Output:
 	command not found
+
+Case:
+	last exit status of process that finished first despite being piped in to.
+Descr:
+	^
+Command:
+	lsof | ls nonexistingfile
+	echo $?
+Output:
+	1
 
 Case:
 Descr:
