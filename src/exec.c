@@ -1,9 +1,6 @@
 #include "minishell.h"
 #include "libft.h"
 
-void	ft_dup_fds(int fds[2]);
-void	ft_close_fds(int fds[2]);
-
 pid_t	ft_exec(char **args, int fds[2])
 {
 	pid_t	pid;
@@ -14,7 +11,8 @@ pid_t	ft_exec(char **args, int fds[2])
 	pid = ft_fork();
 	if (!pid)
 	{
-		ft_dup_fds(fds);
+		ft_dup2(fds[0], STDIN_FILENO);
+		ft_dup2(fds[1], STDOUT_FILENO);
 		if (is_builtin_forked(args))
 			exit(EXIT_SUCCESS);
 		path = ft_getpath(*args);
@@ -23,32 +21,9 @@ pid_t	ft_exec(char **args, int fds[2])
 		execve(path, args, g_pd.env);
 		ft_error(0);
 	}
-	ft_close_fds(fds);
+	if (fds[0] > STDERR_FILENO)
+		ft_close(fds[0]);
+	if (fds[1] > STDERR_FILENO)
+		ft_close(fds[1]);
 	return (pid);
-}
-
-void	ft_dup_fds(int fds[2])
-{
-	int	i;
-
-	i = 0;
-	while (i < 3)
-	{
-		if (dup2(fds[i], i) < 0)
-			ft_error("dup2");
-		i++;
-	}
-}
-
-void	ft_close_fds(int fds[2])
-{
-	int	i;
-
-	i = 0;
-	while (i < 3)
-	{
-		if (fds[i] > STDERR_FILENO)
-			close(fds[i]);
-		i++;
-	}
 }

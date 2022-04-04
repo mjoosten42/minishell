@@ -34,7 +34,7 @@ int	ft_pipe(int fildes[2])
 	ret = pipe(fildes);
 	if (ret < 0)
 	{
-		perror("open");
+		perror("pipe");
 		exit(EXIT_FAILURE);
 	}
 	return (ret);
@@ -52,4 +52,17 @@ int	ft_dup2(int fildes, int fildes2)
 	}
 	return (ret);
 
+}
+
+int	ft_close(int fildes)
+{
+	int	ret;
+
+	ret = close(fildes);
+	if (ret < 0)
+	{
+		perror("close");
+		exit(EXIT_FAILURE);
+	}
+	return (ret);
 }

@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:57:10 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/04/04 14:43:06 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/04/04 15:04:21 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ char	*ft_getpath(char *str);
 int		ft_heredoc(t_token *head);
 
 //	Builtins
+int		is_builtin_unforked(char **strs);
+int		is_builtin_forked(char **strs);
 void	echo(char **strs);
 void	cd(char *path);
 void	pwd(void);
@@ -90,8 +92,6 @@ void	export(char *variable);
 void	unset(char *str);
 void	env(void);
 void	ft_exit(char *str);
-int		is_builtin_forked(char **strs);
-int		is_builtin_unforked(char **strs);
 
 // Token
 t_token	*token_start(void);
@@ -102,7 +102,8 @@ void	print_tokens(t_token *token);
 // Syscalls
 pid_t	ft_fork(void);
 int		ft_pipe(int fildes[2]);
-int		ft_open(const char *path, int oflag, mode_t mode);
 int		ft_dup2(int fildes, int fildes2);
+int		ft_open(const char *path, int oflag, mode_t mode);
+int		ft_close(int fildes);
 
 #endif

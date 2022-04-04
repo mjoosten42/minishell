@@ -4,20 +4,19 @@
 
 #define MODE 0644
 
-int		ft_get_fds(t_token *token, int fds[3]);
-int		ft_redirect(t_token *token, int flags);
-char	**ft_get_args(t_token *head);
+char	**ft_get_args(t_token *token);
 int		ft_argsize(t_token *token);
+int		ft_get_fds(t_token *token, int fds[2]);
+int		ft_redirect(t_token *token, int flags);
 
 void	ft_parse(t_token *head, int pipefd)
 {
 	pid_t	pid;
 	char	**strs;
-	int		fds[3];
+	int		fds[2];
 
 	fds[0] = pipefd;
 	fds[1] = STDOUT_FILENO;
-	fds[2] = STDERR_FILENO;
 	pipefd = ft_get_fds(head, fds);
 	strs = ft_get_args(head);
 	pid = ft_exec(strs, fds);
@@ -31,7 +30,7 @@ void	ft_parse(t_token *head, int pipefd)
 		waitpid(pid, NULL, 0);
 }
 
-int	ft_get_fds(t_token *token, int fds[3])
+int	ft_get_fds(t_token *token, int fds[2])
 {
 	int	pipefds[2];
 	int	type;
