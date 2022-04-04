@@ -39,3 +39,17 @@ int	ft_pipe(int fildes[2])
 	}
 	return (ret);
 }
+
+int	ft_dup2(int fildes, int fildes2)
+{
+	int	ret;
+
+	ret = dup2(fildes, fildes2);
+	if (ret < 0)
+	{
+		perror("dup2");
+		exit(EXIT_FAILURE);
+	}
+	return (ret);
+
+}

@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:57:10 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/04/04 14:20:30 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/04/04 14:43:06 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ extern t_program_data	g_pd;
 void	rl_replace_line(const char *text, int clear_undo);
 int		rl_on_new_line(void);
 
-//	Main
+//	Exec
 pid_t	ft_exec(char **args, int fds[2]);
 
 //	Lexer
@@ -103,5 +103,6 @@ void	print_tokens(t_token *token);
 pid_t	ft_fork(void);
 int		ft_pipe(int fildes[2]);
 int		ft_open(const char *path, int oflag, mode_t mode);
+int		ft_dup2(int fildes, int fildes2);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/12 11:05:57 by rnijhuis          #+#    #+#              #
-#    Updated: 2022/04/04 14:21:22 by mjoosten         ###   ########.fr        #
+#    Updated: 2022/04/04 14:42:10 by mjoosten         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,7 @@ SRCS :=	main.c					\
 		expand.c				\
 		path.c					\
 		heredoc.c				\
+		exec.c					\
 		builtin/echo.c			\
 		builtin/cd.c			\
 		builtin/pwd.c			\

@@ -37,38 +37,6 @@ int	main(void)
 	}
 }
 
-pid_t	ft_exec(char **args, int fds[2])
-{
-	pid_t	pid;
-	char	*path;
-
-	if (!*args)
-		return (0);
-	if (is_builtin_unforked(args))
-		return (0);
-	pid = ft_fork();
-	if (!pid)
-	{
-		dup2(fds[0], STDIN_FILENO);
-		dup2(fds[1], STDOUT_FILENO);
-		dup2(fds[2], STDERR_FILENO);
-		if (is_builtin_forked(args))
-			exit(EXIT_SUCCESS);
-		path = ft_getpath(*args);
-		if (!path)
-			ft_error(ft_strjoin(*args, ": command not found"));
-		execve(path, args, g_pd.env);
-		ft_error(0);
-	}
-	if (fds[0] > STDERR_FILENO)
-		close(fds[0]);
-	if (fds[1] > STDERR_FILENO)
-		close(fds[1]);
-	if (fds[2] > STDERR_FILENO)
-		close(fds[2]);
-	return (pid);
-}
-
 void	copy_env(void)
 {
 	extern char	**environ;
