@@ -27,12 +27,12 @@ enum e_symbol {
 // Program data
 typedef struct s_program_data
 {
-	char			**env;
-	char			*pwd;
-	char			*oldpwd;
-	int				amount_env_lines;
-	int				last_exit_status;
-}					t_program_data;
+	char	**env;
+	char	*pwd;
+	char	*oldpwd;
+	int		amount_env_lines;
+	int		last_exit_status;
+}			t_program_data;
 
 // Token used for lexer
 typedef struct s_token

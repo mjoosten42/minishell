@@ -12,9 +12,10 @@ void	echo(char **strs)
 		i++;
 	while (strs[i])
 	{
-		ft_putstr(strs[i++]);
-		if (strs[i])
+		ft_putstr(strs[i]);
+		if (strs[i + 1])
 			ft_putchar(' ');
+		i++;
 	}
 	if (nl)
 		putchar('\n');

@@ -3,6 +3,8 @@
 #include <readline/readline.h>
 
 void	ft_heredoc_child(int fds[2], char *end);
+void	ft_heredoc_signal(int signum);
+void	ft_signal(int signum);
 
 int	ft_heredoc(t_token *token, int *fd)
 {
@@ -24,21 +26,37 @@ int	ft_heredoc(t_token *token, int *fd)
 	waitpid(pid, NULL, 0);
 	ft_remove_token(token);
 	*fd = fds[0];
-	return (0);
+	return (WEXITSTATUS(g_pd.last_exit_status));
 }
 
 void	ft_heredoc_child(int fds[2], char *end)
 {
 	char	*str;
+	int		len;
 
 	close(fds[0]);
+	len = ft_strlen(end);
+	signal(SIGINT, ft_heredoc_signal);
 	while (1)
 	{
 		str = readline("> ");
-		if (!str || !ft_strncmp(str, end, ft_strlen(end)))
+		printf("str: %s\n", str);
+		if (!str || !ft_strncmp(str, end, len))
 			break ;
 		write(fds[1], str, ft_strlen(str));
 		write(fds[1], "\n", 1);
 	}
 	exit(EXIT_SUCCESS);
+}
+
+void	ft_heredoc_signal(int signum)
+{
+	int	fd;
+
+	if (signum == SIGINT)
+	{
+		fd = ft_open("/dev/null", 0, 0);
+		printf("%d\n", fd);
+		ft_dup2(fd, STDIN_FILENO);
+	}
 }
