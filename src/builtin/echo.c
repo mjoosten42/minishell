@@ -13,7 +13,8 @@ void	echo(char **strs)
 	while (strs[i])
 	{
 		ft_putstr(strs[i++]);
-		ft_putchar(' ');
+		if (strs[i])
+			ft_putchar(' ');
 	}
 	if (nl)
 		putchar('\n');

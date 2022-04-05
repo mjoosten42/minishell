@@ -17,15 +17,5 @@ Now you've got a shell running. You can use all the commands that you can use in
 
 Last updated at - 21/3/2022
 
-Error messages <br>
-	[ ] - Command not found <br>
-
-Memory <br>
-	[ ] - free memory <br>
-
 Edge cases <br>
 	[ ] - documentje <br>
-
-Parser <br>
-	[ ] - Redirects <br>
-	[ ] - HERE_DOC <br>

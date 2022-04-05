@@ -6,19 +6,16 @@ void	replace_pwd(char *path)
 {
 	char *new_str;
 
-	printf("le first printf");
 	free(g_pd.oldpwd);
 	g_pd.oldpwd = ft_get_env_from_pd("PWD");
 	unset("OLDPWD");
-	new_str = ft_strjoin("OLDPWD=", ft_get_env_from_pd("PWD"));
+	new_str = ft_strjoin("OLDPWD=", g_pd.pwd);
 	export(new_str);
 	free(new_str);
-	printf("le second printf");
 	unset("PWD");
 	new_str = ft_strjoin("PWD=", path);
 	export(new_str);
 	free(new_str);
-	printf("le third printf");
 }
 
 void	cd(char *path)

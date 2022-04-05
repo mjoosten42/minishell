@@ -77,11 +77,11 @@ int	ft_get_pipe(t_token *token, int fds[2])
 
 	if (fds[1] > STDERR_FILENO)
 		ft_close(fds[1]);
-	if (token->prev->type != word)
+	if (token->prev->type != word || !token->next || token->next->type != word)
 	{
 		if (fds[0] > STDERR_FILENO)
 			ft_close(fds[0]);
-		return (ft_return_error("Syntax error: pipe without input"));
+		return (ft_return_error("Syntax error: pipe missing commands"));
 	}
 	ft_pipe(pipefds);
 	fds[1] = pipefds[1];

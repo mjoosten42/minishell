@@ -10,9 +10,9 @@ int	is_builtin_unforked(char **strs)
 	str_len = ft_strlen(*strs);
 	if (!ft_strncmp(*strs, "unset", str_len))
 		unset(strs[1]);
-	else if (!ft_strncmp(*strs, "cd", 3))
+	else if (!ft_strncmp(*strs, "cd", str_len))
 		cd(strs[1]);
-	else if (!ft_strncmp(*strs, "exit", 5))
+	else if (!ft_strncmp(*strs, "exit", str_len))
 		ft_exit(strs[1]);
 	else if (!ft_strncmp(*strs, "export", str_len))
 		export(strs[1]);
@@ -32,7 +32,7 @@ int	is_builtin_forked(char **strs)
 		env();
 	else if (!ft_strncmp(*strs, "echo", str_len))
 		echo(strs);
-	else if (!ft_strncmp(*strs, "pwd", 4))
+	else if (!ft_strncmp(*strs, "pwd", str_len))
 		pwd();
 	else
 		return (0);
