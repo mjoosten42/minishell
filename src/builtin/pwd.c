@@ -3,6 +3,5 @@
 
 void	pwd(void)
 {
-	ft_putstr(g_pd.dir);
-	ft_putchar('\n');
+	ft_putendl_fd(g_pd.dir, 1);
 }
