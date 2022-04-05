@@ -51,7 +51,7 @@ extern t_program_data	g_pd;
 void	rl_replace_line(const char *text, int clear_undo);
 int		rl_on_new_line(void);
 
-int	ft_return_error(char *str);
+int		ft_return_error(char *str);
 
 //	Exec
 pid_t	ft_exec(char **args, int fds[2]);
@@ -67,7 +67,7 @@ char	*ft_get_env_from_pd(char *str);
 void	ft_parse(t_token *head, int pipefd);
 
 //	Heredoc
-int	ft_heredoc(t_token *head, int *fd);
+int		ft_heredoc(t_token *head, int *fd);
 
 //	Builtins
 int		is_builtin_unforked(char **strs);

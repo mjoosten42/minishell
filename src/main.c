@@ -37,6 +37,7 @@ int	ft_return_error(char *str)
 	ft_putendl_fd(str, 2);
 	return (-1);
 }
+
 void	ft_increment_shlvl(void)
 {
 	char	*join;
