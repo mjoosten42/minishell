@@ -28,7 +28,8 @@ enum e_symbol {
 typedef struct s_program_data
 {
 	char			**env;
-	char			*dir;
+	char			*pwd;
+	char			*old_pwd;
 	int				amount_env_lines;
 	int				last_exit_status;
 }					t_program_data;

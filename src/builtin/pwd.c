@@ -3,5 +3,5 @@
 
 void	pwd(void)
 {
-	ft_putendl_fd(g_pd.dir, 1);
+	ft_putendl_fd(g_pd.pwd, 1);
 }
