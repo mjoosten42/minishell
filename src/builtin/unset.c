@@ -13,9 +13,9 @@ void	unset(char *var)
 	while (g_pd.env[i] && ft_strncmp(str, g_pd.env[i], len))
 		i++;
 	free(str);
-	free(g_pd.env[i]);
 	if (!g_pd.env[i])
 		return ;
+	free(g_pd.env[i]);
 	if (i != g_pd.amount_env_lines)
 		g_pd.env[i] = g_pd.env[g_pd.amount_env_lines - 1];
 	g_pd.env[g_pd.amount_env_lines - 1] = NULL;

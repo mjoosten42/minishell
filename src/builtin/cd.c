@@ -1,12 +1,12 @@
 #include "minishell.h"
+#include "libft.h"
 #include <libc.h>
 
 void	cd(char *path)
 {
 	if (!path)
 	{
-		free(path);
-		path = ft_substr(ft_get_env_from_pd("HOME"), 5);
+		path = ft_substr(ft_get_env_from_pd("HOME"), 5, 64);
 		printf("%s", path);
 	}
 	chdir(path);
