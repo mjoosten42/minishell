@@ -46,14 +46,10 @@ void	ft_init(void)
 	while (i--)
 		g_pd.env[i] = ft_strdup(environ[i]);
 	rl_catch_signals = 0;
-	//signal(SIGINT, ft_signal);
+	signal(SIGINT, ft_signal);
 	signal(SIGQUIT, ft_signal);
 	signal(SIGCHLD, ft_signal);
 	g_pd.dir = getcwd(g_pd.dir, 0);
-}
-
-void	copy_env(void)
-{
 }
 
 void	ft_signal(int signum)

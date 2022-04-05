@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:57:10 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/04/04 15:49:52 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/04/05 10:41:22 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 // Includes
 # include <unistd.h>
-# include <signal.h>
 
 // Special chars
 # define META_CHARS "|<>$\"\' \t\n"
