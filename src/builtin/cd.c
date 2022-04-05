@@ -3,18 +3,33 @@
 #include <libc.h>
 
 void	replace_oldpwd(void);
+char	*cd_path(char *path);
 
 void	cd(char *path)
 {
 	char	*str;
 
+	path = cd_path(path);
+	replace_oldpwd();
+	free(g_pd.pwd);
+	g_pd.pwd = NULL;
+	g_pd.pwd = getcwd(g_pd.pwd, 0);
+	unset("PWD");
+	str = ft_strjoin("PWD=", g_pd.pwd);
+	export(str);
+	free(str);
+}
+
+char	*cd_path(char *path)
+{
 	if (!path)
 	{
 		path = ft_get_env_from_pd("HOME");
 		if (!*path)
 		{
 			free(path);
-			return (ft_putendl_fd("cd: HOME not set", 2));
+			ft_putendl_fd("cd: HOME not set", 2);
+			return (NULL);
 		}
 	}
 	if (!ft_strncmp(path, "-", ft_strlen(path)))
@@ -23,22 +38,14 @@ void	cd(char *path)
 	{
 		ft_putstr_fd("cd: ", 2);
 		perror(path);
-		return ;
+		return (NULL);
 	}
-	replace_oldpwd();
-	free(g_pd.pwd);
-	g_pd.pwd = NULL;
-	g_pd.pwd = getcwd(g_pd.pwd, 0);
-	printf("new: %s\n", g_pd.pwd);
-	unset("PWD");
-	str = ft_strjoin("PWD=", g_pd.pwd);
-	export(str);
-	free(str);
+	return (path);
 }
 
 void	replace_oldpwd(void)
 {
-	char *new_str;
+	char	*new_str;
 
 	free(g_pd.oldpwd);
 	g_pd.oldpwd = ft_strdup(g_pd.pwd);
