@@ -1,10 +1,10 @@
 #include "minishell.h"
 #include "libft.h"
 
-int		ft_expand_quotes(t_token *token, enum e_symbol type);
 void	ft_expand_dollar(t_token *token);
+int		ft_expand_quotes(t_token *token, enum e_symbol type);
 
-void	ft_expand(t_token *token)
+int	ft_expand(t_token *token)
 {
 	int	error;
 	int	type;
@@ -25,9 +25,16 @@ void	ft_expand(t_token *token)
 			ft_remove_token(token->next);
 		}
 		if (error)
-			return ;
+			return (error);
 		token = token->next;
 	}
+	return (0);
+}
+
+int	ft_return_error(char *str)
+{
+	ft_putendl_fd(str, 2);
+	return (1);
 }
 
 int	ft_expand_quotes(t_token *token, enum e_symbol type)
@@ -38,7 +45,7 @@ int	ft_expand_quotes(t_token *token, enum e_symbol type)
 	free(token->value);
 	token->value = ft_strdup("");
 	if (!token->next)
-		ft_error("Error: solo (d)quote");
+		return (ft_return_error("Error: solo (d)quote"));
 	while (token->next->type != type)
 	{
 		if (type == dquote && token->next->type == dollar)
@@ -48,7 +55,7 @@ int	ft_expand_quotes(t_token *token, enum e_symbol type)
 		free(tmp);
 		ft_remove_token(token->next);
 		if (!token->next)
-			ft_error("Error: solo (d)quote");
+			return (ft_return_error("Error: solo (d)quote"));
 	}
 	ft_remove_token(token->next);
 	return (0);
@@ -56,32 +63,34 @@ int	ft_expand_quotes(t_token *token, enum e_symbol type)
 
 void	ft_expand_dollar(t_token *token)
 {
+	t_token	*next;
 	char	*str;
 
+	next = token->next;
 	token->type = word;
 	free(token->value);
 	//	Temporary: $$ expands to pid
-	if (token->next && token->next->type == dollar)
+	if (next && next->type == dollar)
 	{
 		token->value = ft_itoa(getpid());
-		ft_remove_token(token->next);
+		ft_remove_token(next);
 		return ;
 	}
-	if (token->next && token->next->type == word)
+	if (next && next->type == word)
 	{
-		if (token->next->value[0] == '?')
+		if (next->value[0] == '?')
 		{
 			token->value = ft_itoa(WEXITSTATUS(g_pd.last_exit_status));
-			if (token->next->value[1])
+			if (next->value[1])
 			{
-				str = ft_strjoin(token->value, &token->next->value[1]);
+				str = ft_strjoin(token->value, &next->value[1]);
 				free(token->value);
 				token->value = str;
 			}
 		}
 		else
-			token->value = ft_get_env_from_pd(token->next->value);
-		ft_remove_token(token->next);
+			token->value = ft_get_env_from_pd(next->value);
+		ft_remove_token(next);
 	}
 	else
 		token->value = ft_strdup("$");

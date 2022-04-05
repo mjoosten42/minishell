@@ -24,9 +24,11 @@ int	main(void)
 			add_history(str);
 		ft_lexer(head, str);
 		free(str);
-		ft_expand(head);
+		if (!ft_expand(head))
+			ft_parse(head, STDIN_FILENO);
 		print_tokens(head);
-		ft_parse(head, STDIN_FILENO);
+		while (head->next)
+			ft_remove_token(head->next);
 		ft_remove_token(head);
 	}
 }
