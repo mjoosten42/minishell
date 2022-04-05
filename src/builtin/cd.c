@@ -10,6 +10,8 @@ void	cd(char *path)
 	char	*str;
 
 	path = cd_path(path);
+	if (!path)
+		return ;
 	replace_oldpwd();
 	free(g_pd.pwd);
 	g_pd.pwd = NULL;
