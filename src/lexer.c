@@ -4,7 +4,7 @@
 t_token	*special_char_token(char *str);
 t_token	*word_token(char *str);
 
-void	lexer(t_token *head, char *str)
+void	ft_lexer(t_token *head, char *str)
 {
 	t_token	*new;
 

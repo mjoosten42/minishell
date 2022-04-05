@@ -1,21 +1,22 @@
 #include "minishell.h"
 #include "libft.h"
 
-void	ft_expand_quotes(t_token *token, enum e_symbol type);
+int		ft_expand_quotes(t_token *token, enum e_symbol type);
 void	ft_expand_dollar(t_token *token);
-int		ft_isnumber(char *str);
 
 void	ft_expand(t_token *token)
 {
+	int	error;
 	int	type;
 
+	error = 0;
 	while (token)
 	{
 		type = token->type;
 		if (type == quote)
-			ft_expand_quotes(token, quote);
+			error = ft_expand_quotes(token, quote);
 		if (type == dquote)
-			ft_expand_quotes(token, dquote);
+			error = ft_expand_quotes(token, dquote);
 		if (type == dollar)
 			ft_expand_dollar(token);
 		if (type == space || type == tab)
@@ -23,11 +24,13 @@ void	ft_expand(t_token *token)
 			token = token->prev;
 			ft_remove_token(token->next);
 		}
+		if (error)
+			return ;
 		token = token->next;
 	}
 }
 
-void	ft_expand_quotes(t_token *token, enum e_symbol type)
+int	ft_expand_quotes(t_token *token, enum e_symbol type)
 {
 	char	*tmp;
 
@@ -48,6 +51,7 @@ void	ft_expand_quotes(t_token *token, enum e_symbol type)
 			ft_error("Error: solo (d)quote");
 	}
 	ft_remove_token(token->next);
+	return (0);
 }
 
 void	ft_expand_dollar(t_token *token)

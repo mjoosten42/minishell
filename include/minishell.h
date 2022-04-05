@@ -54,7 +54,7 @@ int		rl_on_new_line(void);
 pid_t	ft_exec(char **args, int fds[2]);
 
 //	Lexer
-void	lexer(t_token *head, char *str);
+void	ft_lexer(t_token *head, char *str);
 
 //	Expand
 void	ft_expand(t_token *token);

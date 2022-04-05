@@ -22,7 +22,7 @@ int	main(void)
 			ft_exit(NULL);
 		if (*str)
 			add_history(str);
-		lexer(head, str);
+		ft_lexer(head, str);
 		free(str);
 		ft_expand(head);
 		print_tokens(head);
