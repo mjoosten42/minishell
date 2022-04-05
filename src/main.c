@@ -50,7 +50,6 @@ void	ft_init(void)
 	g_pd.amount_env_lines = i;
 	g_pd.env = ft_malloc((i + 1) * sizeof(char *));
 	g_pd.env[i] = NULL;
-	g_pd.old_pwd = NULL;
 	while (i--)
 		g_pd.env[i] = ft_strdup(environ[i]);
 	rl_catch_signals = 0;
@@ -58,6 +57,7 @@ void	ft_init(void)
 	signal(SIGQUIT, ft_signal);
 	signal(SIGCHLD, ft_signal);
 	g_pd.pwd = getcwd(g_pd.pwd, 0);
+	g_pd.oldpwd = NULL;
 }
 
 void	ft_signal(int signum)
