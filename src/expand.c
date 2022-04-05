@@ -31,12 +31,6 @@ int	ft_expand(t_token *token)
 	return (0);
 }
 
-int	ft_return_error(char *str)
-{
-	ft_putendl_fd(str, 2);
-	return (1);
-}
-
 int	ft_expand_quotes(t_token *token, enum e_symbol type)
 {
 	char	*tmp;
@@ -45,7 +39,7 @@ int	ft_expand_quotes(t_token *token, enum e_symbol type)
 	free(token->value);
 	token->value = ft_strdup("");
 	if (!token->next)
-		return (ft_return_error("Error: solo (d)quote"));
+		return (ft_return_error("Syntax error: solo (d)quote"));
 	while (token->next->type != type)
 	{
 		if (type == dquote && token->next->type == dollar)
@@ -55,7 +49,7 @@ int	ft_expand_quotes(t_token *token, enum e_symbol type)
 		free(tmp);
 		ft_remove_token(token->next);
 		if (!token->next)
-			return (ft_return_error("Error: solo (d)quote"));
+			return (ft_return_error("Syntax error: solo (d)quote"));
 	}
 	ft_remove_token(token->next);
 	return (0);
@@ -110,5 +104,8 @@ char	*ft_get_env_from_pd(char *str)
 	free(tmp);
 	if (!g_pd.env[i])
 		return (ft_strdup(""));
-	return (ft_strdup(g_pd.env[i]));
+	len = 0;
+	while (g_pd.env[i][len] != '=')
+		len++;
+	return (ft_substr(g_pd.env[i], len + 1, ft_strlen(g_pd.env[i])));
 }

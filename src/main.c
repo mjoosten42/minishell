@@ -10,8 +10,8 @@ void	ft_signal(int signum);
 
 int	main(void)
 {
-	t_token		*head;
-	char		*str;
+	t_token	*head;
+	char	*str;
 
 	ft_init();
 	while (1)
@@ -26,11 +26,16 @@ int	main(void)
 		free(str);
 		if (!ft_expand(head))
 			ft_parse(head, STDIN_FILENO);
-		print_tokens(head);
 		while (head->next)
 			ft_remove_token(head->next);
 		ft_remove_token(head);
 	}
+}
+
+int	ft_return_error(char *str)
+{
+	ft_putendl_fd(str, 2);
+	return (-1);
 }
 
 void	ft_init(void)

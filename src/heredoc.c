@@ -4,7 +4,7 @@
 
 void	ft_heredoc_child(int fds[2], char *end);
 
-void	ft_heredoc(t_token *token, int *fd)
+int	ft_heredoc(t_token *token, int *fd)
 {
 	pid_t	pid;
 	int		fds[2];
@@ -12,8 +12,10 @@ void	ft_heredoc(t_token *token, int *fd)
 	token = token->prev;
 	ft_remove_token(token->next);
 	token = token->next;
+	if (*fd > STDERR_FILENO)
+		ft_close(*fd);
 	if (!token || token->type != word)
-		ft_error("Syntax error: expected redirect target");
+		return (ft_return_error("Syntax error: expected heredoc delimiter"));
 	ft_pipe(fds);
 	pid = ft_fork();
 	if (!pid)
@@ -21,9 +23,8 @@ void	ft_heredoc(t_token *token, int *fd)
 	close(fds[1]);
 	waitpid(pid, NULL, 0);
 	ft_remove_token(token);
-	if (*fd > STDERR_FILENO)
-		ft_close(*fd);
 	*fd = fds[0];
+	return (0);
 }
 
 void	ft_heredoc_child(int fds[2], char *end)
