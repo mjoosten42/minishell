@@ -51,12 +51,6 @@ void	ft_heredoc_child(int fds[2], char *end)
 
 void	ft_heredoc_signal(int signum)
 {
-	int	fd;
-
-	if (signum == SIGINT)
-	{
-		fd = ft_open("/dev/null", 0, 0);
-		printf("%d\n", fd);
-		ft_dup2(fd, STDIN_FILENO);
-	}
+	(void)signum;
+	exit(EXIT_SUCCESS);
 }

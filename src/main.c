@@ -87,5 +87,9 @@ void	ft_signal(int signum)
 		rl_redisplay();
 	}
 	if (signum == SIGCHLD)
+	{
 		wait(&g_pd.last_exit_status);
+		if (WIFSIGNALED(g_pd.last_exit_status))
+			ft_putchar('\n');
+	}
 }
