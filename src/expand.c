@@ -3,7 +3,6 @@
 
 void	ft_expand_quotes(t_token *token, enum e_symbol type);
 void	ft_expand_dollar(t_token *token);
-char	*ft_get_env_from_pd(char *str);
 int		ft_isnumber(char *str);
 
 void	ft_expand(t_token *token)

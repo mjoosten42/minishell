@@ -3,6 +3,12 @@
 
 void	cd(char *path)
 {
+	if (!path)
+	{
+		free(path);
+		path = ft_substr(ft_get_env_from_pd("HOME"), 5);
+		printf("%s", path);
+	}
 	chdir(path);
 	free(g_pd.dir);
 	g_pd.dir = NULL;
