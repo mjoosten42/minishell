@@ -23,12 +23,12 @@ int	main(void)
 		if (*str)
 			add_history(str);
 		ft_lexer(head, str);
-		free(str);
 		if (!ft_expand(head))
 			ft_parse(head, STDIN_FILENO);
 		while (head->next)
 			ft_remove_token(head->next);
 		ft_remove_token(head);
+		free(str);
 	}
 }
 

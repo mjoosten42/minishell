@@ -6,7 +6,7 @@
 #    By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/12 11:05:57 by rnijhuis          #+#    #+#              #
-#    Updated: 2022/04/04 15:13:20 by mjoosten         ###   ########.fr        #
+#    Updated: 2022/04/07 13:48:08 by mjoosten         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,6 +50,7 @@ SRCS :=	main.c					\
 		builtin/run_builtin.c	\
 		utils/token.c			\
 		utils/syscalls.c		\
+		utils/is_export_valid.c	\
 
 OBJS = $(addprefix $(OBJS_DIR)/,$(SRCS:.c=.o))
 

@@ -33,14 +33,15 @@ pid_t	ft_exec(char **args, int fds[2])
 
 char	*ft_getpath(char *str)
 {
-	static char	**paths;
-	char		*path;
-	int			i;
+	char	**paths;
+	char	*path;
+	int		i;
 
 	i = 0;
+	paths = ft_getpaths();
 	if (!paths)
-		paths = ft_getpaths();
-	if (!access(str, F_OK))
+		return (ft_strjoin("./", str));
+	if (!access(str, F_OK | X_OK))
 		return (ft_strdup(str));
 	while (paths[i])
 	{
@@ -60,7 +61,11 @@ char	**ft_getpaths(void)
 	int		i;
 
 	i = 0;
-	strs = ft_split(getenv("PATH"), ':');
+	str = ft_get_env_from_pd("PATH");
+	if (!str)
+		return (NULL);
+	strs = ft_split(str, ':');
+	free(str);
 	if (!strs)
 		ft_error(NULL);
 	while (strs[i])
