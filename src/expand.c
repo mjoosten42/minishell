@@ -4,12 +4,14 @@
 void	ft_expand_dollar(t_token *token);
 int		ft_expand_quotes(t_token *token, enum e_symbol type);
 
-int	ft_expand(t_token *token)
+int	ft_expand(t_token *head)
 {
-	int	error;
-	int	type;
+	t_token	*token;
+	int		error;
+	int		type;
 
 	error = 0;
+	token = head;
 	while (token)
 	{
 		type = token->type;
@@ -19,13 +21,18 @@ int	ft_expand(t_token *token)
 			error = ft_expand_quotes(token, dquote);
 		if (type == dollar)
 			ft_expand_dollar(token);
-		if (type == space || type == tab)
+		if (error)
+			return (error);
+		token = token->next;
+	}
+	token = head;
+	while (token)
+	{
+		if (token->type == space || token->type == tab)
 		{
 			token = token->prev;
 			ft_remove_token(token->next);
 		}
-		if (error)
-			return (error);
 		token = token->next;
 	}
 	return (0);
@@ -37,7 +44,13 @@ int	ft_expand_quotes(t_token *token, enum e_symbol type)
 
 	token->type = word;
 	free(token->value);
-	token->value = ft_strdup("");
+	if (token->prev->type == word)
+	{
+		token->value = ft_strdup(token->prev->value);
+		ft_remove_token(token->prev);
+	}
+	else
+		token->value = ft_strdup("");
 	if (!token->next)
 		return (ft_return_error("Syntax error: solo (d)quote"));
 	while (token->next->type != type)
@@ -52,6 +65,13 @@ int	ft_expand_quotes(t_token *token, enum e_symbol type)
 			return (ft_return_error("Syntax error: solo (d)quote"));
 	}
 	ft_remove_token(token->next);
+	if (token->next->type == word)
+	{
+		tmp = token->value;
+		token->value = ft_strjoin(token->value, token->next->value);
+		free(tmp);
+		ft_remove_token(token->next);
+	}
 	return (0);
 }
 

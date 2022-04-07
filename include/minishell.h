@@ -59,7 +59,7 @@ pid_t	ft_exec(char **args, int fds[2]);
 void	ft_lexer(t_token *head, char *str);
 
 //	Expand
-int		ft_expand(t_token *token);
+int		ft_expand(t_token *head);
 char	*ft_get_env_from_pd(char *str);
 
 //	Parser
