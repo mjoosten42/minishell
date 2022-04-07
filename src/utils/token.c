@@ -63,10 +63,10 @@ void	print_tokens(t_token *token)
 		"start"
 	};
 
-	printf(" - id ------------ type - value\n");
+	printf(" - id -------- type - value\n");
 	while (token)
 	{
-		printf(" | %2i | %15s | [%s]\n",
+		printf(" | %2i | %11s | [%s]\n",
 			token->position, types[token->type], token->value);
 		token = token->next;
 	}

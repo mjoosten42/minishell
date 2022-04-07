@@ -79,49 +79,34 @@ void	ft_expand_dollar(t_token *token)
 {
 	t_token	*next;
 	char	*str;
-	int		len;
 
 	next = token->next;
 	token->type = word;
-	free(token->value);
 	//	Temporary: $$ expands to pid
-	if (next && next->type == dollar)
+	if (next && next->type == dollar && !ft_strncmp(token->value, "$", 2))
 	{
+		free(token->value);
 		token->value = ft_itoa(getpid());
 		ft_remove_token(next);
-		return ;
+	}
+	else if (token->value[1] == '?')
+	{
+		free(token->value);
+		token->value = ft_itoa(WEXITSTATUS(g_pd.last_exit_status));
+	}
+	else if (token->value[1])
+	{
+		str = ft_get_env_from_pd(&token->value[1]);
+		free(token->value);
+		token->value = str;
 	}
 	if (next && next->type == word)
 	{
-		if (next->value[0] == '?')
-		{
-			token->value = ft_itoa(WEXITSTATUS(g_pd.last_exit_status));
-			if (next->value[1])
-			{
-				str = ft_strjoin(token->value, &next->value[1]);
-				free(token->value);
-				token->value = str;
-			}
-		}
-		else
-		{
-			len = is_export_valid(next->value);
-			str = ft_substr(next->value, 0, len);
-			token->value = ft_get_env_from_pd(str);
-			if (!token->value)
-				token->value = ft_strdup("");
-			free(str);
-			if (*next->value)
-			{
-				str = ft_strjoin(token->value, &next->value[len]);
-				free(token->value);
-				token->value = str;
-			}
-		}
+		str = token->value;
+		token->value = ft_strjoin(str, next->value);
+		free(str);
 		ft_remove_token(next);
 	}
-	else
-		token->value = ft_strdup("$");
 }
 
 char	*ft_get_env_from_pd(char *str)

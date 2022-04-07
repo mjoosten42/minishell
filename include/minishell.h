@@ -69,7 +69,7 @@ void	ft_parse(t_token *head, int pipefd);
 int		ft_heredoc(t_token *head, int *fd);
 
 //	Utils
-int		is_export_valid(char *str);
+int		export_name_len(char *str);
 
 
 //	Builtins

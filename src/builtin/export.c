@@ -2,7 +2,6 @@
 #include "libft.h"
 
 int	is_export_valid(char *str);
-int	export_name_len(char *str);
 
 void	export(char *variable)
 {
