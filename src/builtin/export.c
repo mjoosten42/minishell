@@ -26,6 +26,8 @@ int	is_export_valid(char *str)
 	int	eq_sign_pos;
 
 	eq_sign_pos = ft_strchr(str, '=') - str;
+	if (!eq_sign_pos)
+		return (0);
 	if (is_export_name_valid(str) != eq_sign_pos - 1)
 		return (0);
 	return (1);
