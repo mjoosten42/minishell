@@ -30,6 +30,8 @@ t_token	*special_char_token(char *str)
 	if (type == space || type == tab)
 		while (str[len] == ' ' || str[len] == '\t')
 			len++;
+	if (type == dollar)
+		len += export_name_len(&str[1]);
 	if ((type == red_in && str[1] == '<') || (type == red_out && str[1] == '>'))
 	{
 		len++;
