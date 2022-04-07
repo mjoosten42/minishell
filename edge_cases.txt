@@ -1,6 +1,19 @@
 To get open file descriptors:
 	lsof -p $$ -a -d 0-256
 
+Case:
+	Incorrect prompt return
+Descr:
+	The prompt should return one 'minishell$' when ctrl + c during 'cat -e'
+	but returns twice
+Command:
+	cat -e -> ctrl + c
+Output:
+	minishell$ cat -e
+	^C
+	minishell$
+	minishell$
+
 
 Case:
 	Command in qoutes

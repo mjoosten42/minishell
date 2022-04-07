@@ -68,6 +68,10 @@ void	ft_parse(t_token *head, int pipefd);
 //	Heredoc
 int		ft_heredoc(t_token *head, int *fd);
 
+//	Utils
+int		is_export_valid(char *str);
+
+
 //	Builtins
 int		is_builtin_unforked(char **strs);
 int		is_builtin_forked(char **strs);
