@@ -44,12 +44,18 @@ void	ft_increment_shlvl(void)
 	char	*str;
 	int		shlvl;
 
+	shlvl = 0;
 	str = ft_get_env_from_pd("SHLVL");
-	shlvl = ft_atoi(str);
+	unset("SHLVL");
+	if (str)
+		shlvl = ft_atoi(str);
 	free(str);
 	str = ft_itoa(shlvl + 1);
-	unset("SHLVL");
+	if (!str)
+		exit(EXIT_FAILURE);
 	join = ft_strjoin("SHLVL=", str);
+	if (!join)
+		exit(EXIT_FAILURE);
 	free(str);
 	export(join);
 	free(join);
@@ -74,7 +80,6 @@ void	ft_init(void)
 	signal(SIGQUIT, ft_signal);
 	signal(SIGCHLD, ft_signal);
 	g_pd.pwd = getcwd(g_pd.pwd, 0);
-	g_pd.oldpwd = ft_get_env_from_pd("OLDPWD");
 	ft_increment_shlvl();
 }
 

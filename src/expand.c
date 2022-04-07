@@ -83,7 +83,11 @@ void	ft_expand_dollar(t_token *token)
 			}
 		}
 		else
+		{
 			token->value = ft_get_env_from_pd(next->value);
+			if (!token->value)
+				token->value = ft_strdup("");
+		}
 		ft_remove_token(next);
 	}
 	else
@@ -103,9 +107,9 @@ char	*ft_get_env_from_pd(char *str)
 		i++;
 	free(tmp);
 	if (!g_pd.env[i])
-		return (ft_strdup(""));
+		return (NULL);
 	len = 0;
 	while (g_pd.env[i][len] != '=')
 		len++;
-	return (ft_substr(g_pd.env[i], len + 1, ft_strlen(g_pd.env[i])));
+	return (ft_substr(g_pd.env[i], len + 1, ft_strlen(g_pd.env[i]) - len));
 }

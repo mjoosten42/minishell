@@ -27,20 +27,20 @@ char	*cd_path(char *path)
 	if (!path)
 	{
 		path = ft_get_env_from_pd("HOME");
-		if (!*path)
-		{
-			free(path);
+		if (!path)
 			ft_putendl_fd("cd: HOME not set", 2);
-			return (NULL);
-		}
 	}
-	if (!ft_strncmp(path, "-", ft_strlen(path)))
-		path = g_pd.oldpwd;
-	if (chdir(path) < 0)
+	else if (!ft_strncmp(path, "-", ft_strlen(path)))
+	{
+		path = ft_get_env_from_pd("OLDPWD");
+		if (!path)
+			ft_putendl_fd("cd: OLDPWD not set", 2);
+	}
+	else if (chdir(path) < 0)
 	{
 		ft_putstr_fd("cd: ", 2);
 		perror(path);
-		return (NULL);
+		path = NULL;
 	}
 	return (path);
 }
@@ -49,8 +49,6 @@ void	replace_oldpwd(void)
 {
 	char	*new_str;
 
-	free(g_pd.oldpwd);
-	g_pd.oldpwd = ft_strdup(g_pd.pwd);
 	unset("OLDPWD");
 	new_str = ft_strjoin("OLDPWD=", g_pd.pwd);
 	export(new_str);
