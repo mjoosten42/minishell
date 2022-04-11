@@ -18,7 +18,7 @@ enum e_symbol {
 	space,
 	tab,
 	newline,
-	heredoc,
+	here_doc,
 	red_out_app,
 	word,
 	start
@@ -31,6 +31,7 @@ typedef struct s_program_data
 	char	*pwd;
 	int		amount_env_lines;
 	int		last_exit_status;
+	int		active_processes;
 }			t_program_data;
 
 // Token used for lexer
@@ -53,7 +54,7 @@ int		rl_on_new_line(void);
 int		ft_return_error(char *str);
 
 //	Exec
-pid_t	ft_exec(char **args, int fds[2]);
+void	ft_exec(char **args, int fds[2]);
 
 //	Lexer
 void	ft_lexer(t_token *head, char *str);
@@ -66,11 +67,10 @@ char	*ft_get_env_from_pd(char *str);
 void	ft_parse(t_token *head, int pipefd);
 
 //	Heredoc
-int		ft_heredoc(t_token *head, int *fd);
+int		ft_here_doc(t_token *head, int *fd);
 
 //	Utils
 int		export_name_len(char *str);
-
 
 //	Builtins
 int		is_builtin_unforked(char **strs);

@@ -5,6 +5,7 @@ pid_t	ft_fork(void)
 {
 	pid_t	pid;
 
+	g_pd.active_processes++;
 	pid = fork();
 	if (pid < 0)
 	{

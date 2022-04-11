@@ -88,14 +88,16 @@ void	ft_signal(int signum)
 	if (signum == SIGINT)
 	{
 		ft_putchar('\n');
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
+		if (!g_pd.active_processes)
+		{
+			rl_on_new_line();
+			rl_replace_line("", 0);
+			rl_redisplay();
+		}
 	}
 	if (signum == SIGCHLD)
 	{
 		wait(&g_pd.last_exit_status);
-		if (WIFSIGNALED(g_pd.last_exit_status))
-			ft_putchar('\n');
+		g_pd.active_processes--;
 	}
 }
