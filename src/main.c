@@ -77,6 +77,8 @@ void	ft_signal(int signum)
 		wait(&g_pd.last_exit_status);
 		g_pd.active_processes--;
 	}
+	if (signum == SIGQUIT && g_pd.active_processes)
+		ft_putendl_fd("Quit: 3", 2);
 }
 
 void	ft_init(void)
