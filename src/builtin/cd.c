@@ -2,7 +2,6 @@
 #include "libft.h"
 #include <libc.h>
 
-void	replace_oldpwd(void);
 char	*cd_path(char *path);
 
 void	cd(char *path)
@@ -12,12 +11,15 @@ void	cd(char *path)
 	path = cd_path(path);
 	if (!path)
 		return ;
-	replace_oldpwd();
 	free(g_pd.pwd);
 	g_pd.pwd = NULL;
 	g_pd.pwd = getcwd(g_pd.pwd, 0);
 	unset("PWD");
 	str = ft_strjoin("PWD=", g_pd.pwd);
+	export(str);
+	free(str);
+	unset("OLDPWD");
+	str = ft_strjoin("OLDPWD=", g_pd.pwd);
 	export(str);
 	free(str);
 }
@@ -43,14 +45,4 @@ char	*cd_path(char *path)
 		path = NULL;
 	}
 	return (path);
-}
-
-void	replace_oldpwd(void)
-{
-	char	*new_str;
-
-	unset("OLDPWD");
-	new_str = ft_strjoin("OLDPWD=", g_pd.pwd);
-	export(new_str);
-	free(new_str);
 }
