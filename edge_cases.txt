@@ -34,16 +34,6 @@ Output:
 	command not found
 
 Case:
-	last exit status of process that finished first despite being piped in to.
-Descr:
-	^
-Command:
-	lsof | ls nonexistingfile
-	echo $?
-Output:
-	1
-
-Case:
 Descr:
 Command:
 Output:
