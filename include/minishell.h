@@ -8,7 +8,7 @@
 # define META_CHARS "|<>$\"\' \t\n"
 
 // Token definitions
-enum e_symbol {
+typedef enum e_symbol {
 	pipe_char,
 	red_in,
 	red_out,
@@ -22,7 +22,7 @@ enum e_symbol {
 	red_out_app,
 	word,
 	start
-};
+}	t_symbol;
 
 // Program data
 typedef struct s_program_data
