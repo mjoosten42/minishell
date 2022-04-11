@@ -98,5 +98,6 @@ int		ft_close(int fildes);
 // Errors
 int		ft_return_error(char *str);
 int		nop(void);
+int		ft_exit_string(char *str, int exit_code);
 
 #endif
