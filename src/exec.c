@@ -23,7 +23,7 @@ void	ft_exec(char **args, int fds[2])
 		path = ft_getpath(*args);
 		if (!path)
 			ft_exit_string(ft_strjoin(*args, ": command not found"), 127);
-		execve(path, args, g_pd.env);
+		execve(path, args, pd->env);
 		perror("minishell");
 		exit(EXIT_FAILURE);
 	}
