@@ -22,7 +22,8 @@ void	ft_exec(char **args, int fds[2])
 		if (!path)
 			ft_error(ft_strjoin(*args, ": command not found"));
 		execve(path, args, g_pd.env);
-		ft_error(0);
+		perror("minishell");
+		exit(EXIT_FAILURE);
 	}
 	if (fds[0] > STDERR_FILENO)
 		ft_close(fds[0]);
@@ -40,7 +41,7 @@ char	*ft_getpath(char *str)
 	paths = ft_getpaths();
 	if (!paths)
 		return (ft_strjoin("./", str));
-	if (!access(str, F_OK | X_OK))
+	if (!access(str, F_OK))
 		return (ft_strdup(str));
 	while (paths[i])
 	{
