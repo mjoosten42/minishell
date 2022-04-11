@@ -3,7 +3,7 @@
 
 void	ft_join_words(t_token *token);
 void	ft_expand_dollar(t_token *token);
-int		ft_expand_quotes(t_token *token,t_type type);
+int		ft_expand_quotes(t_token *token, t_type type);
 
 int	ft_expand(t_token *head)
 {
@@ -55,7 +55,7 @@ void	ft_join_words(t_token *token)
 	}
 }
 
-int	ft_expand_quotes(t_token *token, t_symbol type)
+int	ft_expand_quotes(t_token *token, t_type type)
 {
 	char	*tmp;
 
