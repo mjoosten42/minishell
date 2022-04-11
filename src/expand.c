@@ -75,21 +75,29 @@ int	ft_expand_quotes(t_token *token, enum e_symbol type)
 	return (0);
 }
 
-void	ft_expand_dollar(t_token *token)
+int	expand_$$(t_token *token)
 {
-	char	*str;
-
-	print_tokens(token);
-	token->type = word;
-	if (token->next && token->next->type == dollar)
-		ft_expand_dollar(token->next);
-	//	Temporary: $$ expands to pid
-	if (token->next && token->next->type == dollar && !ft_strncmp(token->value, "$", 2))
+	if (!ft_strncmp(token->value, "$", 2)
+	&& token->next && token->next->type == dollar
+	&& !ft_strncmp(token->next->value, "$", 2))
 	{
 		free(token->value);
 		token->value = ft_itoa(getpid());
 		ft_remove_token(token->next);
+		return (1);
 	}
+	return (0);
+}
+
+void	ft_expand_dollar(t_token *token)
+{
+	char	*str;
+
+	token->type = word;
+	if (expand_$$(token))
+		return ;
+	if (token->next && token->next->type == dollar)
+		ft_expand_dollar(token->next);
 	else if (token->value[1] == '?')
 	{
 		free(token->value);
