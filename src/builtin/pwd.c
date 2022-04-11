@@ -3,5 +3,8 @@
 
 void	pwd(void)
 {
-	ft_putendl_fd(g_pd.pwd, 1);
+	t_program_data	*pd;
+
+	pd = pd_get();
+	ft_putendl_fd(pd->pwd, 1);
 }

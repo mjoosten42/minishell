@@ -6,20 +6,22 @@ char	*cd_path(char *path);
 
 void	cd(char *path)
 {
-	char	*str;
+	t_program_data	*pd;
+	char			*str;
 
+	pd = pd_get();
 	path = cd_path(path);
 	if (!path)
 		return ;
-	free(g_pd.pwd);
-	g_pd.pwd = NULL;
-	g_pd.pwd = getcwd(g_pd.pwd, 0);
+	free(pd->pwd);
+	pd->pwd = NULL;
+	pd->pwd = getcwd(pd->pwd, 0);
 	unset("PWD");
-	str = ft_strjoin("PWD=", g_pd.pwd);
+	str = ft_strjoin("PWD=", pd->pwd);
 	export(str);
 	free(str);
 	unset("OLDPWD");
-	str = ft_strjoin("OLDPWD=", g_pd.pwd);
+	str = ft_strjoin("OLDPWD=", pd->pwd);
 	export(str);
 	free(str);
 }

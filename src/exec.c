@@ -6,11 +6,13 @@ char	*ft_getpath(char *str);
 
 void	ft_exec(char **args, int fds[2])
 {
-	pid_t	pid;
-	char	*path;
+	t_program_data	*pd;
+	pid_t			pid;
+	char			*path;
 
 	if (!*args || is_builtin_unforked(args))
 		return ;
+	pd = pd_get();
 	pid = ft_fork();
 	if (!pid)
 	{

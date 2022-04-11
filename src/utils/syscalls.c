@@ -3,9 +3,11 @@
 
 pid_t	ft_fork(void)
 {
-	pid_t	pid;
+	t_program_data	*pd;
+	pid_t			pid;
 
-	g_pd.active_processes++;
+	pd = pd_get();
+	pd->active_processes++;
 	pid = fork();
 	if (pid < 0)
 	{
