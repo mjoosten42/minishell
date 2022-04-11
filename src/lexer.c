@@ -37,7 +37,7 @@ t_token	*special_char_token(char *str)
 	{
 		len++;
 		if (type == red_in)
-			type = heredoc;
+			type = here_doc;
 		else
 			type = red_out_app;
 	}

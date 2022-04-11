@@ -6,7 +6,7 @@ void	ft_heredoc_child(int fds[2], char *end);
 void	ft_heredoc_signal(int signum);
 void	ft_signal(int signum);
 
-int	ft_heredoc(t_token *token, int *fd)
+int	ft_here_doc(t_token *token, int *fd)
 {
 	pid_t	pid;
 	int		fds[2];
@@ -40,7 +40,6 @@ void	ft_heredoc_child(int fds[2], char *end)
 	while (1)
 	{
 		str = readline("> ");
-		printf("str: %s\n", str);
 		if (!str || !ft_strncmp(str, end, len))
 			break ;
 		write(fds[1], str, ft_strlen(str));

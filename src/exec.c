@@ -4,13 +4,13 @@
 char	**ft_getpaths(void);
 char	*ft_getpath(char *str);
 
-pid_t	ft_exec(char **args, int fds[2])
+void	ft_exec(char **args, int fds[2])
 {
 	pid_t	pid;
 	char	*path;
 
 	if (!*args || is_builtin_unforked(args))
-		return (0);
+		return ;
 	pid = ft_fork();
 	if (!pid)
 	{
@@ -28,7 +28,6 @@ pid_t	ft_exec(char **args, int fds[2])
 		ft_close(fds[0]);
 	if (fds[1] > STDERR_FILENO)
 		ft_close(fds[1]);
-	return (pid);
 }
 
 char	*ft_getpath(char *str)

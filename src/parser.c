@@ -9,7 +9,6 @@ int		ft_get_pipe(t_token *token, int fds[2]);
 
 void	ft_parse(t_token *head, int pipefd)
 {
-	pid_t	pid;
 	char	**strs;
 	int		fds[2];
 
@@ -19,7 +18,14 @@ void	ft_parse(t_token *head, int pipefd)
 	if (pipefd < 0)
 		return ;
 	strs = ft_get_args(head);
-	pid = ft_exec(strs, fds);
+	if (!*strs && fds[0] > STDERR_FILENO)
+	{
+		close(fds[0]);
+		if (fds[1] > STDERR_FILENO)
+			ft_close(fds[1]);
+		return (ft_putendl_fd("Syntax error: pipe missing commands", 2));
+	}
+	ft_exec(strs, fds);
 	ft_free_array(strs);
 	if (pipefd)
 	{
@@ -27,31 +33,31 @@ void	ft_parse(t_token *head, int pipefd)
 		ft_parse(head, pipefd);
 	}
 	else
-		waitpid(pid, NULL, 0);
+		wait(NULL);
 }
 
 int	ft_get_fds(t_token *token, int fds[2])
 {
-	int	error;
 	int	type;
+	int	ret;
 
-	error = 0;
+	ret = 0;
 	token = token->next;
 	while (token)
 	{
 		type = token->type;
 		if (type == pipe_char)
-			return (ft_get_pipe(token, fds));
-		if (type == heredoc)
-			error = ft_heredoc(token, &fds[0]);
+			ret = ft_get_pipe(token, fds);
+		if (type == here_doc)
+			ret = ft_here_doc(token, &fds[0]);
 		if (type == red_in)
-			error = ft_redirect(token, &fds[0], O_RDONLY);
+			ret = ft_redirect(token, &fds[0], O_RDONLY);
 		if (type == red_out)
-			error = ft_redirect(token, &fds[1], O_WRONLY | O_CREAT);
+			ret = ft_redirect(token, &fds[1], O_WRONLY | O_CREAT);
 		if (type == red_out_app)
-			error = ft_redirect(token, &fds[1], O_WRONLY | O_CREAT | O_APPEND);
-		if (error)
-			return (-1);
+			ret = ft_redirect(token, &fds[1], O_WRONLY | O_CREAT | O_APPEND);
+		if (ret)
+			return (ret);
 		token = token->next;
 	}
 	return (0);
@@ -77,7 +83,7 @@ int	ft_get_pipe(t_token *token, int fds[2])
 
 	if (fds[1] > STDERR_FILENO)
 		ft_close(fds[1]);
-	if (token->prev->type != word || !token->next || token->next->type != word)
+	if (token->prev->type != word || !token->next)
 	{
 		if (fds[0] > STDERR_FILENO)
 			ft_close(fds[0]);
