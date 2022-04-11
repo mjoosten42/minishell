@@ -3,9 +3,11 @@
 
 void	env(void)
 {
-	int	i;
+	t_program_data	*pd;
+	int				i;
 
 	i = 0;
-	while (g_pd.env[i])
-		ft_putendl_fd(g_pd.env[i++], 1);
+	pd = pd_get();
+	while (pd->env[i])
+		ft_putendl_fd(pd->env[i++], 1);
 }

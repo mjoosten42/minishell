@@ -6,6 +6,9 @@ int	ft_heredoc_loop(char *end);
 
 int	ft_here_doc(t_token *token, int *fd)
 {
+	t_program_data	*pd;
+
+	pd = pd_get();
 	token = token->prev;
 	ft_remove_token(token->next);
 	token = token->next;
@@ -13,9 +16,9 @@ int	ft_here_doc(t_token *token, int *fd)
 		ft_close(*fd);
 	if (!token || token->type != word)
 		return (ft_return_error("Syntax error: expected heredoc delimiter"));
-	g_pd.heredoc_sigint = 1;
+	pd->heredoc_sigint = 1;
 	*fd = ft_heredoc_loop(token->value);
-	g_pd.heredoc_sigint = 0;
+	pd->heredoc_sigint = 0;
 	if (*fd < 0)
 		return (-1);
 	ft_remove_token(token);
@@ -24,18 +27,20 @@ int	ft_here_doc(t_token *token, int *fd)
 
 int	ft_heredoc_loop(char *end)
 {
-	char	*str;
-	int		fds[2];
-	int		len;
+	t_program_data	*pd;
+	char			*str;
+	int				fds[2];
+	int				len;
 
+	pd = pd_get();
 	ft_pipe(fds);
 	len = ft_strlen(end);
 	while (1)
 	{
 		str = readline("> ");
-		if (g_pd.heredoc_sigint == 2)
+		if (pd->heredoc_sigint == 2)
 		{
-			g_pd.heredoc_sigint = 0;
+			pd->heredoc_sigint = 0;
 			return (-1);
 		}
 		if (!str || !ft_strncmp(str, end, len + 1))

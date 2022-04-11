@@ -6,11 +6,13 @@ char	*ft_getpath(char *str);
 
 void	ft_exec(char **args, int fds[2])
 {
-	pid_t	pid;
-	char	*path;
+	t_program_data	*pd;
+	pid_t			pid;
+	char			*path;
 
 	if (!*args || is_builtin_unforked(args))
 		return ;
+	pd = pd_get();
 	pid = ft_fork();
 	if (!pid)
 	{
@@ -21,7 +23,7 @@ void	ft_exec(char **args, int fds[2])
 		path = ft_getpath(*args);
 		if (!path)
 			ft_error(ft_strjoin(*args, ": command not found"));
-		execve(path, args, g_pd.env);
+		execve(path, args, pd->env);
 		perror("minishell");
 		exit(EXIT_FAILURE);
 	}

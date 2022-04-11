@@ -5,23 +5,25 @@ int	is_export_valid(char *str);
 
 void	export(char *variable)
 {
-	char	**new_env;
-	int		i;
+	t_program_data	*pd;
+	char			**new_env;
+	int				i;
 
 	i = 0;
+	pd = pd_get();
 	if (!is_export_valid(variable))
 		return ;
-	g_pd.amount_env_lines++;
-	new_env = ft_malloc((g_pd.amount_env_lines + 1) * sizeof(char *));
-	while (g_pd.env[i])
+	pd->amount_env_lines++;
+	new_env = ft_malloc((pd->amount_env_lines + 1) * sizeof(char *));
+	while (pd->env[i])
 	{
-		new_env[i] = g_pd.env[i];
+		new_env[i] = pd->env[i];
 		i++;
 	}
 	new_env[i] = ft_strdup(variable);
 	new_env[i + 1] = NULL;
-	free(g_pd.env);
-	g_pd.env = new_env;
+	free(pd->env);
+	pd->env = new_env;
 }
 
 int	is_export_valid(char *str)

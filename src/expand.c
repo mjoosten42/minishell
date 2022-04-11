@@ -96,15 +96,17 @@ int	expand_$$(t_token *token)
 
 void	ft_expand_dollar(t_token *token)
 {
-	char	*str;
+	t_program_data	*pd;
+	char		*str;
 
+	pd = pd_get();
 	token->type = word;
 	if (expand_$$(token))
 		return ;
 	else if (token->value[1] == '?')
 	{
 		free(token->value);
-		token->value = ft_itoa(WEXITSTATUS(g_pd.last_exit_status));
+		token->value = ft_itoa(WEXITSTATUS(pd->last_exit_status));
 	}
 	else if (token->value[1])
 	{
@@ -125,20 +127,22 @@ void	ft_expand_dollar(t_token *token)
 
 char	*ft_get_env_from_pd(char *str)
 {
-	char	*tmp;
-	int		len;
-	int		i;
+	t_program_data	*pd;
+	char			*tmp;
+	int				len;
+	int				i;
 
 	i = 0;
+	pd = pd_get();
 	tmp = ft_strjoin(str, "=");
 	len = ft_strlen(tmp);
-	while (g_pd.env[i] && ft_strncmp(g_pd.env[i], tmp, len))
+	while (pd->env[i] && ft_strncmp(pd->env[i], tmp, len))
 		i++;
 	free(tmp);
-	if (!g_pd.env[i])
+	if (!pd->env[i])
 		return (NULL);
 	len = 0;
-	while (g_pd.env[i][len] != '=')
+	while (pd->env[i][len] != '=')
 		len++;
-	return (ft_substr(g_pd.env[i], len + 1, ft_strlen(g_pd.env[i]) - len));
+	return (ft_substr(pd->env[i], len + 1, ft_strlen(pd->env[i]) - len));
 }

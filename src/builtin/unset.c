@@ -3,21 +3,23 @@
 
 void	unset(char *var)
 {
-	char	*str;
-	int		len;
-	int		i;
+	t_program_data	*pd;
+	char			*str;
+	int				len;
+	int				i;
 
 	i = 0;
+	pd = pd_get();
 	str = ft_strjoin(var, "=");
 	len = ft_strlen(str);
-	while (g_pd.env[i] && ft_strncmp(str, g_pd.env[i], len))
+	while (pd->env[i] && ft_strncmp(str, pd->env[i], len))
 		i++;
 	free(str);
-	if (!g_pd.env[i])
+	if (!pd->env[i])
 		return ;
-	free(g_pd.env[i]);
-	if (i != g_pd.amount_env_lines)
-		g_pd.env[i] = g_pd.env[g_pd.amount_env_lines - 1];
-	g_pd.env[g_pd.amount_env_lines - 1] = NULL;
-	g_pd.amount_env_lines--;
+	free(pd->env[i]);
+	if (i != pd->amount_env_lines)
+		pd->env[i] = pd->env[pd->amount_env_lines - 1];
+	pd->env[pd->amount_env_lines - 1] = NULL;
+	pd->amount_env_lines--;
 }
