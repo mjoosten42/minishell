@@ -3,10 +3,9 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+void	eof(void);
 void	ft_init(void);
-void	copy_env(void);
 void	ft_signal(int signum);
-void	ft_increment_shlvl(void);
 
 int	main(void)
 {
@@ -14,27 +13,27 @@ int	main(void)
 	char	*str;
 
 	ft_init();
+	head = token_start();
 	while (1)
 	{
-		head = token_start();
 		str = readline("minishell$ ");
 		if (!str)
-		{
-			ft_putstr("exit\n");
-			exit(EXIT_SUCCESS);
-		}
+			eof();
+		ft_lexer(head, str);
 		if (*str)
-		{
 			add_history(str);
-			ft_lexer(head, str);
-			if (!ft_expand(head))
-				ft_parse(head, STDIN_FILENO);
-			while (head->next)
-				ft_remove_token(head->next);
-		}
-		ft_remove_token(head);
+		if (!ft_expand(head))
+			ft_parse(head, STDIN_FILENO);
+		while (head->next)
+			ft_remove_token(head->next);
 		free(str);
 	}
+}
+
+void	eof(void)
+{
+	ft_putstr("exit\n");
+	exit(EXIT_SUCCESS);
 }
 
 void	ft_init(void)
