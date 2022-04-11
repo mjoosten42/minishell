@@ -110,7 +110,7 @@ void	ft_expand_dollar(t_token *token)
 	{
 		str = ft_get_env_from_pd(&token->value[1]);
 		if (!str)
-			str = ft_strdup("");
+			token->type = space;
 		free(token->value);
 		token->value = str;
 	}
