@@ -1,14 +1,15 @@
 #include "minishell.h"
 #include "libft.h"
 
+void	ft_join_words(t_token *token);
 void	ft_expand_dollar(t_token *token);
 int		ft_expand_quotes(t_token *token, enum e_symbol type);
 
 int	ft_expand(t_token *head)
 {
-	t_token	*token;
-	int		error;
-	int		type;
+	t_token		*token;
+	t_symbol	type;
+	int			error;
 
 	error = 0;
 	token = head;
@@ -25,32 +26,42 @@ int	ft_expand(t_token *head)
 			return (error);
 		token = token->next;
 	}
-	token = head;
+	ft_join_words(head);
+	return (0);
+}
+
+void	ft_join_words(t_token *token)
+{
+	t_symbol	type;
+	char		*tmp;
+
 	while (token)
 	{
-		if (token->type == space || token->type == tab)
+		type = token->type;
+		if (type == word && token->next && token->next->type == word)
+		{
+			tmp = token->value;
+			token->value = ft_strjoin(tmp, token->next->value);
+			free(tmp);
+			ft_remove_token(token->next);
+			token = token->prev;
+		}
+		if (type == space || type == tab)
 		{
 			token = token->prev;
 			ft_remove_token(token->next);
 		}
 		token = token->next;
 	}
-	return (0);
 }
 
-int	ft_expand_quotes(t_token *token, enum e_symbol type)
+int	ft_expand_quotes(t_token *token, t_symbol type)
 {
 	char	*tmp;
 
 	token->type = word;
 	free(token->value);
-	if (token->prev->type == word)
-	{
-		token->value = ft_strdup(token->prev->value);
-		ft_remove_token(token->prev);
-	}
-	else
-		token->value = ft_strdup("");
+	token->value = ft_strdup("");
 	if (!token->next)
 		return (ft_return_error("Syntax error: solo (d)quote"));
 	while (token->next->type != type)
@@ -65,16 +76,10 @@ int	ft_expand_quotes(t_token *token, enum e_symbol type)
 			return (ft_return_error("Syntax error: solo (d)quote"));
 	}
 	ft_remove_token(token->next);
-	if (token->next->type == word)
-	{
-		tmp = token->value;
-		token->value = ft_strjoin(token->value, token->next->value);
-		free(tmp);
-		ft_remove_token(token->next);
-	}
 	return (0);
 }
 
+//	Temporary: $$ expands to pid
 int	expand_$$(t_token *token)
 {
 	if (!ft_strncmp(token->value, "$", 2)
@@ -96,8 +101,6 @@ void	ft_expand_dollar(t_token *token)
 	token->type = word;
 	if (expand_$$(token))
 		return ;
-	if (token->next && token->next->type == dollar)
-		ft_expand_dollar(token->next);
 	else if (token->value[1] == '?')
 	{
 		free(token->value);
