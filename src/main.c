@@ -50,8 +50,8 @@ void	ft_init(void)
 	signal(SIGQUIT, ft_signal);
 	signal(SIGCHLD, ft_signal);
 	g_pd.pwd = getcwd(g_pd.pwd, 0);
-	copy_env();
 	ft_increment_shlvl();
+	copy_env();
 }
 
 void	copy_env(void)
