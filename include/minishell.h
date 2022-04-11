@@ -45,7 +45,9 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
+//	Programdata
 t_program_data	*pd_get(void);
+void			pd_clear(void);
 
 //	readline
 void			rl_replace_line(const char *text, int clear_undo);
