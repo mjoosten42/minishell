@@ -32,7 +32,7 @@ typedef struct s_program_data
 	int		amount_env_lines;
 	int		last_exit_status;
 	int		active_processes;
-	int		signalled;
+	int		heredoc_sigint;
 }			t_program_data;
 
 // Token used for lexer
@@ -97,7 +97,6 @@ int		ft_close(int fildes);
 
 // Errors
 int		ft_return_error(char *str);
-int		ft_heredoc_return(void);
 int		nop(void);
 
 #endif

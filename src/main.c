@@ -21,14 +21,19 @@ int	main(void)
 		head = token_start();
 		str = readline("minishell$ ");
 		if (!str)
-			ft_exit(NULL);
+		{
+			ft_putstr("exit\n");
+			exit(EXIT_SUCCESS);
+		}
 		if (*str)
+		{
 			add_history(str);
-		ft_lexer(head, str);
-		if (!ft_expand(head))
-			ft_parse(head, STDIN_FILENO);
-		while (head->next)
-			ft_remove_token(head->next);
+			ft_lexer(head, str);
+			if (!ft_expand(head))
+				ft_parse(head, STDIN_FILENO);
+			while (head->next)
+				ft_remove_token(head->next);
+		}
 		ft_remove_token(head);
 		free(str);
 	}
@@ -70,8 +75,8 @@ void	ft_signal(int signum)
 
 	if (signum == SIGINT)
 	{
-		if (g_pd.signalled == 1)
-			g_pd.signalled = 2;
+		if (g_pd.heredoc_sigint == 1)
+			g_pd.heredoc_sigint = 2;
 		if (g_pd.active_processes)
 			ft_putchar('\n');
 		rl_replace_line("", 0);

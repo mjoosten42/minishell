@@ -24,7 +24,7 @@ void	ft_parse(t_token *head, int pipefd)
 			ft_close(fds[0]);
 		if (fds[1] > STDERR_FILENO)
 			ft_close(fds[1]);
-		return (ft_putendl_fd("Syntax error: redirect missing commands", 2));
+		return ;
 	}
 	ft_exec(strs, fds);
 	ft_free_array(strs);
