@@ -18,12 +18,13 @@ void	ft_parse(t_token *head, int pipefd)
 	if (pipefd < 0)
 		return ;
 	strs = ft_get_args(head);
-	if (!*strs && fds[0] > STDERR_FILENO)
+	if (!*strs)
 	{
-		close(fds[0]);
+		if (fds[0] > STDERR_FILENO)
+			ft_close(fds[0]);
 		if (fds[1] > STDERR_FILENO)
 			ft_close(fds[1]);
-		return (ft_putendl_fd("Syntax error: pipe missing commands", 2));
+		return (ft_putendl_fd("Syntax error: redirect missing commands", 2));
 	}
 	ft_exec(strs, fds);
 	ft_free_array(strs);
@@ -71,17 +72,18 @@ int	ft_get_fds(t_token *token, int fds[2])
 		type = next->type;
 		if (type == pipe_char)
 			ret = ft_get_pipe(next, fds);
-		if (type == here_doc)
+		else if (type == here_doc)
 			ret = ft_here_doc(next, &fds[0]);
-		if (type == red_in)
+		else if (type == red_in)
 			ret = ft_redirect(next, &fds[0], O_RDONLY);
-		if (type == red_out)
+		else if (type == red_out)
 			ret = ft_redirect(next, &fds[1], O_WRONLY | O_CREAT);
-		if (type == red_out_app)
+		else if (type == red_out_app)
 			ret = ft_redirect(next, &fds[1], O_WRONLY | O_CREAT | O_APPEND);
+		else
+			token = token->next;
 		if (ret)
 			return (ret);
-		token = token->next;
 	}
 	return (0);
 }

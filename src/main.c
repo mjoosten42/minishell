@@ -6,6 +6,9 @@
 t_program_data	g_pd;
 
 void	ft_init(void);
+void	copy_env(void);
+void	ft_signal(int signum);
+void	ft_increment_shlvl(void);
 
 int	main(void)
 {
@@ -31,10 +34,56 @@ int	main(void)
 	}
 }
 
-int	ft_return_error(char *str)
+void	ft_init(void)
 {
-	ft_putendl_fd(str, 2);
-	return (-1);
+	extern int	(*rl_event_hook)(void);
+	extern int	rl_catch_signals;
+
+	rl_event_hook = nop;
+	rl_catch_signals = 0;
+	signal(SIGINT, ft_signal);
+	signal(SIGQUIT, ft_signal);
+	signal(SIGCHLD, ft_signal);
+	g_pd.pwd = getcwd(g_pd.pwd, 0);
+	copy_env();
+	ft_increment_shlvl();
+}
+
+void	copy_env(void)
+{
+	extern char	**environ;
+	int			i;
+
+	i = 0;
+	while (environ[i])
+		i++;
+	g_pd.amount_env_lines = i;
+	g_pd.env = ft_malloc((i + 1) * sizeof(char *));
+	g_pd.env[i] = NULL;
+	while (i--)
+		g_pd.env[i] = ft_strdup(environ[i]);
+}
+
+void	ft_signal(int signum)
+{
+	extern int	rl_done;
+
+	if (signum == SIGINT)
+	{
+		if (g_pd.signalled == 1)
+			g_pd.signalled = 2;
+		if (g_pd.active_processes)
+			ft_putchar('\n');
+		rl_replace_line("", 0);
+		rl_done = 1;
+	}
+	if (signum == SIGCHLD)
+	{
+		wait(&g_pd.last_exit_status);
+		g_pd.active_processes--;
+	}
+	if (signum == SIGQUIT && g_pd.active_processes)
+		ft_putendl_fd("Quit: 3", 2);
 }
 
 void	ft_increment_shlvl(void)
@@ -58,47 +107,4 @@ void	ft_increment_shlvl(void)
 	free(str);
 	export(join);
 	free(join);
-}
-
-void	ft_signal(int signum)
-{
-	if (signum == SIGINT)
-	{
-		ft_putchar('\n');
-		if (!g_pd.active_processes)
-		{
-			rl_on_new_line();
-			rl_replace_line("", 0);
-			rl_redisplay();
-		}
-	}
-	if (signum == SIGCHLD)
-	{
-		wait(&g_pd.last_exit_status);
-		g_pd.active_processes--;
-	}
-	if (signum == SIGQUIT && g_pd.active_processes)
-		ft_putendl_fd("Quit: 3", 2);
-}
-
-void	ft_init(void)
-{
-	extern int	rl_catch_signals;
-	extern char	**environ;
-	int			i;
-
-	i = 0;
-	while (environ[i])
-		i++;
-	g_pd.amount_env_lines = i;
-	g_pd.env = ft_malloc((i + 1) * sizeof(char *));
-	g_pd.env[i] = NULL;
-	while (i--)
-		g_pd.env[i] = ft_strdup(environ[i]);
-	rl_catch_signals = 0;
-	signal(SIGINT, ft_signal);
-	signal(SIGQUIT, ft_signal);
-	signal(SIGCHLD, ft_signal);
-	g_pd.pwd = getcwd(g_pd.pwd, 0);
-	ft_increment_shlvl();
 }

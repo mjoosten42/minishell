@@ -32,6 +32,7 @@ typedef struct s_program_data
 	int		amount_env_lines;
 	int		last_exit_status;
 	int		active_processes;
+	int		signalled;
 }			t_program_data;
 
 // Token used for lexer
@@ -50,8 +51,6 @@ extern t_program_data	g_pd;
 //	readline
 void	rl_replace_line(const char *text, int clear_undo);
 int		rl_on_new_line(void);
-
-int		ft_return_error(char *str);
 
 //	Exec
 void	ft_exec(char **args, int fds[2]);
@@ -95,5 +94,10 @@ int		ft_pipe(int fildes[2]);
 int		ft_dup2(int fildes, int fildes2);
 int		ft_open(const char *path, int oflag, mode_t mode);
 int		ft_close(int fildes);
+
+// Errors
+int		ft_return_error(char *str);
+int		ft_heredoc_return(void);
+int		nop(void);
 
 #endif
