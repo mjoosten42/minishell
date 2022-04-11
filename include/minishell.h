@@ -22,7 +22,7 @@ typedef enum e_symbol {
 	red_out_app,
 	word,
 	start
-}	t_symbol;
+}	t_type;
 
 // Program data
 typedef struct s_program_data

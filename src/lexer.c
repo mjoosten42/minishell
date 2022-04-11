@@ -22,7 +22,7 @@ void	ft_lexer(t_token *head, char *str)
 t_token	*special_char_token(char *str)
 {
 	t_token	*token;
-	int		type;
+	t_type	type;
 	int		len;
 
 	len = 1;

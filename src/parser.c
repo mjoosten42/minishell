@@ -38,8 +38,8 @@ void	ft_parse(t_token *head, int pipefd)
 
 int	ft_get_fds(t_token *token, int fds[2])
 {
-	t_symbol	type;
-	int			ret;
+	t_type	type;
+	int		ret;
 
 	ret = 0;
 	token = token->next;

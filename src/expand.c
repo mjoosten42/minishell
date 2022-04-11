@@ -3,13 +3,13 @@
 
 void	ft_join_words(t_token *token);
 void	ft_expand_dollar(t_token *token);
-int		ft_expand_quotes(t_token *token, enum e_symbol type);
+int		ft_expand_quotes(t_token *token,t_type type);
 
 int	ft_expand(t_token *head)
 {
-	t_token		*token;
-	t_symbol	type;
-	int			error;
+	t_token	*token;
+	t_type	type;
+	int		error;
 
 	error = 0;
 	token = head;
@@ -32,8 +32,8 @@ int	ft_expand(t_token *head)
 
 void	ft_join_words(t_token *token)
 {
-	t_symbol	type;
-	char		*tmp;
+	t_type	type;
+	char	*tmp;
 
 	while (token)
 	{

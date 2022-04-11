@@ -6,7 +6,6 @@
 t_program_data	g_pd;
 
 void	ft_init(void);
-void	ft_signal(int signum);
 
 int	main(void)
 {
@@ -61,6 +60,25 @@ void	ft_increment_shlvl(void)
 	free(join);
 }
 
+void	ft_signal(int signum)
+{
+	if (signum == SIGINT)
+	{
+		ft_putchar('\n');
+		if (!g_pd.active_processes)
+		{
+			rl_on_new_line();
+			rl_replace_line("", 0);
+			rl_redisplay();
+		}
+	}
+	if (signum == SIGCHLD)
+	{
+		wait(&g_pd.last_exit_status);
+		g_pd.active_processes--;
+	}
+}
+
 void	ft_init(void)
 {
 	extern int	rl_catch_signals;
@@ -81,23 +99,4 @@ void	ft_init(void)
 	signal(SIGCHLD, ft_signal);
 	g_pd.pwd = getcwd(g_pd.pwd, 0);
 	ft_increment_shlvl();
-}
-
-void	ft_signal(int signum)
-{
-	if (signum == SIGINT)
-	{
-		ft_putchar('\n');
-		if (!g_pd.active_processes)
-		{
-			rl_on_new_line();
-			rl_replace_line("", 0);
-			rl_redisplay();
-		}
-	}
-	if (signum == SIGCHLD)
-	{
-		wait(&g_pd.last_exit_status);
-		g_pd.active_processes--;
-	}
 }
