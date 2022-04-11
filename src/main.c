@@ -44,6 +44,7 @@ void	ft_init(void)
 	extern int	(*rl_event_hook)(void);
 	extern int	rl_catch_signals;
 
+	copy_env();
 	rl_event_hook = nop;
 	rl_catch_signals = 0;
 	signal(SIGINT, ft_signal);
@@ -51,7 +52,6 @@ void	ft_init(void)
 	signal(SIGCHLD, ft_signal);
 	g_pd.pwd = getcwd(g_pd.pwd, 0);
 	ft_increment_shlvl();
-	copy_env();
 }
 
 void	copy_env(void)
