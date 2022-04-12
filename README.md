@@ -17,5 +17,4 @@ Now you've got a shell running. You can use all the commands that you can use in
 
 Last updated at - 21/3/2022
 
-Edge cases <br>
-	[ ] - documentje <br>
+Exit codes
