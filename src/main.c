@@ -15,7 +15,10 @@ int	main(void)
 	head = token_start();
 	while (1)
 	{
-		str = readline("minishell$ ");
+		if (isatty(STDIN_FILENO))
+			str = readline("minishell$ ");
+		else
+			str = ft_get_next_line(STDIN_FILENO);
 		if (!str)
 			break ;
 		ft_lexer(head, str);
@@ -27,9 +30,10 @@ int	main(void)
 			ft_remove_token(head->next);
 		free(str);
 	}
-	pd_clear();
-	ft_putstr("exit\n");
-	return (0);
+	rl_clear_history();
+	if (isatty(STDIN_FILENO))
+		ft_putstr("exit\n");
+	return (pd_clear());
 }
 
 void	ft_init(void)

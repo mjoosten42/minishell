@@ -16,13 +16,16 @@ t_program_data	*pd_get(void)
 	return (NULL);
 }
 
-void	pd_clear(void)
+int	pd_clear(void)
 {
 	t_program_data	*pd;
+	int				exit;
 
 	pd = pd_get();
+	exit = WEXITSTATUS(pd->last_exit_status);
 	ft_free_array(pd->env);
 	free(pd->pwd);
+	return (exit);
 }
 
 void	copy_env(t_program_data *pd)

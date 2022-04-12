@@ -47,10 +47,11 @@ typedef struct s_token
 
 //	Programdata
 t_program_data	*pd_get(void);
-void			pd_clear(void);
+int				pd_clear(void);
 
 //	readline
 void			rl_replace_line(const char *text, int clear_undo);
+void			rl_clear_history(void);
 int				rl_on_new_line(void);
 
 //	Exec
@@ -85,7 +86,7 @@ void			pwd(void);
 void			export(char *variable);
 void			unset(char *str);
 void			env(void);
-void			ft_exit(char *str);
+void			ft_exit(char **strs);
 
 // Token
 t_token			*token_start(void);
@@ -102,7 +103,6 @@ int				ft_close(int fildes);
 
 // Errors
 int				ft_exit_string(char *str, int exit_code);
-int				ft_return_error(char *str);
 int				nop(void);
 
 #endif
