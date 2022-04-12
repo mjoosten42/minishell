@@ -68,6 +68,7 @@ void			ft_parse(t_token *head, int pipefd);
 
 //	Validate
 int				ft_validate(t_token *token);
+int				ft_put_syntax_error(char *str);
 
 //	Heredoc
 int				ft_here_doc(t_token *head, int *fd);

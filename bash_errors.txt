@@ -1,0 +1,44 @@
+Rules: <, >, <<, >> must be followed by a word.
+
+bash-3.2$ |
+bash: syntax error near unexpected token `|'
+
+bash-3.2$ ls |
+>
+
+bash-3.2$ | ls
+bash: syntax error near unexpected token `|'
+
+bash-3.2$ | |
+bash: syntax error near unexpected token `|'
+
+bash-3.2$ ls | |
+bash: syntax error near unexpected token `|'
+
+bash-3.2$ | ls |
+bash: syntax error near unexpected token `|'
+
+bash-3.2$ | | ls
+bash: syntax error near unexpected token `|'
+
+bash-3.2$ ls | | cat
+bash: syntax error near unexpected token `|'
+
+bash-3.2$ ls > log | cat
+	// output in log
+
+bash-3.2$ > log | cat
+	// no prompt
+
+bash-3.2$ < Makefile > log
+
+bash-3.2$ < Makefile | > log
+
+bash-3.2$ < | >
+bash: syntax error near unexpected token `|'
+
+bash-3.2$ < Makefile | >
+bash: syntax error near unexpected token `newline'
+
+bash-3.2$ < | > log
+bash: syntax error near unexpected token `|'
