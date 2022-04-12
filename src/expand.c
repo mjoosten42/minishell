@@ -111,10 +111,13 @@ void	ft_expand_dollar(t_token *token)
 	else if (token->value[1])
 	{
 		str = ft_get_env_from_pd(&token->value[1]);
-		if (!str)
-			token->type = space;
 		free(token->value);
 		token->value = str;
+		if (!str)
+		{
+			token->type = space;
+			token->value = ft_strdup("");
+		}
 	}
 	if (token->next && token->next->type == word)
 	{
