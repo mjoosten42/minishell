@@ -14,8 +14,6 @@ int	ft_here_doc(t_token *token, int *fd)
 	token = token->next;
 	if (*fd > STDERR_FILENO)
 		ft_close(*fd);
-	if (!token || token->type != word)
-		return (ft_return_error("Syntax error: expected heredoc delimiter"));
 	pd->heredoc_sigint = 1;
 	*fd = ft_heredoc_loop(token->value);
 	pd->heredoc_sigint = 0;

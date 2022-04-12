@@ -45,7 +45,9 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
+//	Programdata
 t_program_data	*pd_get(void);
+void			pd_clear(void);
 
 //	readline
 void			rl_replace_line(const char *text, int clear_undo);
@@ -63,6 +65,10 @@ char			*ft_get_env_from_pd(char *str);
 
 //	Parser
 void			ft_parse(t_token *head, int pipefd);
+
+//	Validate
+int				ft_validate(t_token *token);
+int				ft_put_syntax_error(char *str);
 
 //	Heredoc
 int				ft_here_doc(t_token *head, int *fd);

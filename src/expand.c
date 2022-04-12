@@ -46,7 +46,7 @@ void	ft_join_words(t_token *token)
 			ft_remove_token(token->next);
 			token = token->prev;
 		}
-		if (type == space || type == tab)
+		if (type == space || type == tab || type == newline)
 		{
 			token = token->prev;
 			ft_remove_token(token->next);
@@ -63,7 +63,7 @@ int	ft_expand_quotes(t_token *token, t_type type)
 	free(token->value);
 	token->value = ft_strdup("");
 	if (!token->next)
-		return (ft_return_error("Syntax error: solo (d)quote"));
+		return (ft_put_syntax_error("solo (d)quote"));
 	while (token->next->type != type)
 	{
 		if (type == dquote && token->next->type == dollar)
@@ -73,7 +73,7 @@ int	ft_expand_quotes(t_token *token, t_type type)
 		free(tmp);
 		ft_remove_token(token->next);
 		if (!token->next)
-			return (ft_return_error("Syntax error: solo (d)quote"));
+			return (ft_put_syntax_error("solo (d)quote"));
 	}
 	ft_remove_token(token->next);
 	return (0);

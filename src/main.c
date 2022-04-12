@@ -3,7 +3,6 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-void	eof(void);
 void	ft_init(void);
 void	ft_signal(int signum);
 
@@ -18,7 +17,7 @@ int	main(void)
 	{
 		str = readline("minishell$ ");
 		if (!str)
-			eof();
+			break ;
 		ft_lexer(head, str);
 		if (*str)
 			add_history(str);
@@ -28,12 +27,9 @@ int	main(void)
 			ft_remove_token(head->next);
 		free(str);
 	}
-}
-
-void	eof(void)
-{
+	pd_clear();
 	ft_putstr("exit\n");
-	exit(EXIT_SUCCESS);
+	return (0);
 }
 
 void	ft_init(void)

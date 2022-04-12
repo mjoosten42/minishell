@@ -16,6 +16,15 @@ t_program_data	*pd_get(void)
 	return (NULL);
 }
 
+void	pd_clear(void)
+{
+	t_program_data	*pd;
+
+	pd = pd_get();
+	ft_free_array(pd->env);
+	free(pd->pwd);
+}
+
 void	copy_env(t_program_data *pd)
 {
 	extern char	**environ;
