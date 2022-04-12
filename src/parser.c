@@ -17,6 +17,8 @@ void	ft_parse(t_token *head, int pipefd)
 	if (ft_validate(head) < 0)
 		return ;
 	pipefd = ft_get_fds(head, fds);
+	if (pipefd < 0)
+		return ;
 	strs = ft_get_args(head);
 	ft_exec(strs, fds);
 	ft_free_array(strs);
