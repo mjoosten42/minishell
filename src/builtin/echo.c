@@ -6,6 +6,11 @@ void	echo(char **strs)
 	int	nl;
 	int	i;
 
+	if (!strs[1])
+	{
+		ft_putchar('\n');
+		return ;
+	}
 	i = 1;
 	nl = ft_strncmp(strs[1], "-n", 3);
 	if (!nl)
@@ -18,5 +23,5 @@ void	echo(char **strs)
 		i++;
 	}
 	if (nl)
-		putchar('\n');
+		ft_putchar('\n');
 }
