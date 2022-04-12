@@ -1,0 +1,77 @@
+## Echo should output the last returned exit code of previously run program ##
+bash-3.2$ cat test eawdiajwij
+cat: test: No such file or directory
+cat: eawdiajwij: No such file or directory
+bash-3.2$ exit
+exit
+
+echo $?
+1
+
+------------
+
+## exit 
+
+bash-3.2$ exit 3 a
+exit
+bash: exit: too many arguments
+bash-3.2$ echo $?
+1
+
+-----------
+
+## BASH ##
+bash-3.2$ exit 2 a
+exit
+bash: exit: too many arguments
+bash-3.2$
+
+## MINSHELL ##
+minishell$ exit 2 a
+exit
+
+----------
+
+bash-3.2$ exit 7547648468468268768836a
+exit
+bash: exit: 7547648468468268768836a: numeric argument required
+
+minishell$ exit 7547648468468268768836a
+exit
+[1]    13472 segmentation fault  ./minishell
+
+---
+
+exit can only support
+MAX_LONG + & -
++ 9223372036854775807
+- 9223372036854775808
+
+input = [num str]
+bash: exit: too many arguments
+(no exit)
+
+input = [num num]
+bash: exit: too many arguments
+(no exit)
+
+input = [str num]
+bash: exit: input[0]: numeric argument required
+(exit)
+
+input = [overflow str]
+bash: exit: input[0]: numeric argument required
+
+input = [num (00000000002137812783)]
+(exit)
+$? = 47
+
+input = [num (92233720368547758079)]
+(exit)
+$? = 255
+
+input = [num (92233720368547758078)] (is prev but minus 1)
+(exit)
+$? = 254
+
+
