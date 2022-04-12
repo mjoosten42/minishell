@@ -1,6 +1,7 @@
 #include "minishell.h"
 #include "libft.h"
 
+void	ft_close_fds(int fds[2]);
 char	**ft_getpaths(void);
 char	*ft_getpath(char *str);
 
@@ -11,7 +12,7 @@ void	ft_exec(char **args, int fds[2])
 	char			*path;
 
 	if (!*args || is_builtin_unforked(args))
-		return ;
+		return (ft_close_fds(fds));
 	pd = pd_get();
 	pid = ft_fork();
 	if (!pid)
@@ -27,6 +28,11 @@ void	ft_exec(char **args, int fds[2])
 		perror("minishell");
 		exit(EXIT_FAILURE);
 	}
+	ft_close_fds(fds);
+}
+
+void	ft_close_fds(int fds[2])
+{
 	if (fds[0] > STDERR_FILENO)
 		ft_close(fds[0]);
 	if (fds[1] > STDERR_FILENO)

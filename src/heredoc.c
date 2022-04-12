@@ -37,10 +37,7 @@ int	ft_heredoc_loop(char *end)
 	{
 		str = readline("> ");
 		if (pd->heredoc_sigint == 2)
-		{
-			pd->heredoc_sigint = 0;
 			return (-1);
-		}
 		if (!str || !ft_strncmp(str, end, len + 1))
 			break ;
 		write(fds[1], str, ft_strlen(str));
