@@ -18,9 +18,13 @@ void	ft_exit(char **strs)
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(strs[1], 2);
 		ft_putendl_fd(": numeric argument required", 2);
+		pd->last_exit_status = 1;
 	}
 	else if (strs[2])
+	{
 		ft_putendl_fd("minishell: exit: too many arguments", 2);
+		pd->last_exit_status = 1;
+	}
 	else
 		exit(ft_char_atoi(strs[1]));
 }

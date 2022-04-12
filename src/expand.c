@@ -106,7 +106,7 @@ void	ft_expand_dollar(t_token *token)
 	else if (token->value[1] == '?')
 	{
 		free(token->value);
-		token->value = ft_itoa(WEXITSTATUS(pd->last_exit_status));
+		token->value = ft_itoa(pd->last_exit_status);
 	}
 	else if (token->value[1])
 	{
