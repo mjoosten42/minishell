@@ -1,6 +1,8 @@
 #include "libft.h"
 #include "limits.h"
 
+int		ft_isvalid(char *str);
+
 void	ft_exit(char *str)
 {
 	if (isatty(STDIN_FILENO))
