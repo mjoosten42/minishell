@@ -66,6 +66,9 @@ char			*ft_get_env_from_pd(char *str);
 //	Parser
 void			ft_parse(t_token *head, int pipefd);
 
+//	Validate
+int				ft_validate(t_token *token);
+
 //	Heredoc
 int				ft_here_doc(t_token *head, int *fd);
 

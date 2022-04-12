@@ -46,7 +46,7 @@ void	ft_join_words(t_token *token)
 			ft_remove_token(token->next);
 			token = token->prev;
 		}
-		if (type == space || type == tab)
+		if (type == space || type == tab || type == newline)
 		{
 			token = token->prev;
 			ft_remove_token(token->next);

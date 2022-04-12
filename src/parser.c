@@ -4,8 +4,8 @@
 
 char	**ft_get_args(t_token *token);
 int		ft_get_fds(t_token *token, int fds[2]);
-int		ft_get_pipe(t_token *token, int fds[2]);
 int		ft_redirect(t_token *token, int *fd, int flags);
+int		ft_get_pipe(int fds[2]);
 
 void	ft_parse(t_token *head, int pipefd)
 {
@@ -14,18 +14,10 @@ void	ft_parse(t_token *head, int pipefd)
 
 	fds[0] = pipefd;
 	fds[1] = STDOUT_FILENO;
+	if (ft_validate(head) < 0)
+		return ;
 	pipefd = ft_get_fds(head, fds);
-	if (pipefd < 0)
-		return ;
 	strs = ft_get_args(head);
-	if (!*strs)
-	{
-		if (fds[0] > STDERR_FILENO)
-			ft_close(fds[0]);
-		if (fds[1] > STDERR_FILENO)
-			ft_close(fds[1]);
-		return ;
-	}
 	ft_exec(strs, fds);
 	ft_free_array(strs);
 	if (pipefd)
@@ -71,7 +63,7 @@ int	ft_get_fds(t_token *token, int fds[2])
 		next = token->next;
 		type = next->type;
 		if (type == pipe_char)
-			ret = ft_get_pipe(next, fds);
+			return (ft_get_pipe(&fds[1]));
 		else if (type == here_doc)
 			ret = ft_here_doc(next, &fds[0]);
 		else if (type == red_in)
@@ -88,23 +80,6 @@ int	ft_get_fds(t_token *token, int fds[2])
 	return (0);
 }
 
-int	ft_get_pipe(t_token *token, int fds[2])
-{
-	int	pipefds[2];
-
-	if (fds[1] > STDERR_FILENO)
-		ft_close(fds[1]);
-	if (token->prev->type != word || !token->next)
-	{
-		if (fds[0] > STDERR_FILENO)
-			ft_close(fds[0]);
-		return (ft_return_error("Syntax error: pipe missing commands"));
-	}
-	ft_pipe(pipefds);
-	fds[1] = pipefds[1];
-	return (pipefds[0]);
-}
-
 int	ft_redirect(t_token *token, int *fd, int flags)
 {
 	token = token->prev;
@@ -112,9 +87,18 @@ int	ft_redirect(t_token *token, int *fd, int flags)
 	token = token->next;
 	if (*fd > STDERR_FILENO)
 		ft_close(*fd);
-	if (!token || token->type != word)
-		return (ft_return_error("Syntax error: expected redirect target"));
 	*fd = ft_open(token->value, flags, 0644);
 	ft_remove_token(token);
 	return (0);
+}
+
+int	ft_get_pipe(int *fd)
+{
+	int	pipefds[2];
+
+	if (*fd > STDERR_FILENO)
+		ft_close(*fd);
+	ft_pipe(pipefds);
+	*fd = pipefds[1];
+	return (pipefds[0]);
 }
