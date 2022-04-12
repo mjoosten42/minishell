@@ -96,9 +96,10 @@ int	ft_get_pipe(int *fd)
 {
 	int	pipefds[2];
 
-	if (*fd > STDERR_FILENO)
-		ft_close(*fd);
 	ft_pipe(pipefds);
-	*fd = pipefds[1];
+	if (*fd == STDOUT_FILENO)
+		*fd = pipefds[1];
+	else
+		ft_close(pipefds[1]);
 	return (pipefds[0]);
 }
