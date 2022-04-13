@@ -2,7 +2,7 @@
 #include "libft.h"
 #include <readline/readline.h>
 
-int	ft_heredoc_loop(char *end);
+int	ft_heredoc_loop(t_program_data *pd, char *end);
 
 int	ft_here_doc(t_token *token, int *fd)
 {
@@ -15,7 +15,7 @@ int	ft_here_doc(t_token *token, int *fd)
 	if (*fd > STDERR_FILENO)
 		ft_close(*fd);
 	pd->heredoc_sigint = 1;
-	*fd = ft_heredoc_loop(token->value);
+	*fd = ft_heredoc_loop(pd, token->value);
 	pd->heredoc_sigint = 0;
 	if (*fd < 0)
 		return (-1);
@@ -23,19 +23,17 @@ int	ft_here_doc(t_token *token, int *fd)
 	return (0);
 }
 
-int	ft_heredoc_loop(char *end)
+int	ft_heredoc_loop(t_program_data *pd, char *end)
 {
-	t_program_data	*pd;
-	char			*str;
-	int				fds[2];
-	int				len;
+	char	*str;
+	int		fds[2];
+	int		len;
 
-	pd = pd_get();
 	ft_pipe(fds);
 	len = ft_strlen(end);
 	while (1)
 	{
-		str = readline("> ");
+		str = ft_read("> ");
 		if (pd->heredoc_sigint == 2)
 		{
 			free(str);

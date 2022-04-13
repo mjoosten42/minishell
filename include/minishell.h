@@ -54,6 +54,8 @@ void			rl_replace_line(const char *text, int clear_undo);
 void			rl_clear_history(void);
 int				rl_on_new_line(void);
 
+char			*ft_read(char *prompt);
+
 //	Exec
 void			ft_exec(char **args, int fds[2]);
 

@@ -15,10 +15,7 @@ int	main(void)
 	head = token_start();
 	while (1)
 	{
-		if (isatty(STDIN_FILENO))
-			str = readline("minishell$ ");
-		else
-			str = ft_get_next_line(STDIN_FILENO);
+		str = ft_read("minishell$ ");
 		if (!str)
 			break ;
 		ft_lexer(head, str);
@@ -73,4 +70,20 @@ void	ft_signal(int signum)
 	}
 	if (signum == SIGQUIT && pd->active_processes)
 		ft_putendl_fd("Quit: 3", 2);
+}
+
+char	*ft_read(char *prompt)
+{
+	char	*str;
+	int		len;
+
+	if (isatty(STDIN_FILENO))
+		return (readline(prompt));
+	str = ft_get_next_line(STDIN_FILENO);
+	if (!str)
+		return (NULL);
+	len = ft_strlen(str);
+	if (str[len - 1] == '\n')
+		str[len - 1] = 0;
+	return (str);
 }
