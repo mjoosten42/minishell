@@ -12,7 +12,10 @@ void	export(char *variable)
 	i = 0;
 	pd = pd_get();
 	if (!is_export_valid(variable))
-		return ;
+	{
+		pd->last_exit_status = 1;
+		return;
+	}
 	pd->amount_env_lines++;
 	new_env = ft_malloc((pd->amount_env_lines + 1) * sizeof(char *));
 	while (pd->env[i])
@@ -58,7 +61,7 @@ int	export_name_len(char *str)
 
 	i = 0;
 	strlen = ft_strlen(str);
-	if (!(*str == '_' || ft_isalnum(*str)))
+	if (!(*str == '_' || ft_isalpha(*str)))
 		return (0);
 	while (i < strlen)
 	{
