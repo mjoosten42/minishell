@@ -22,7 +22,8 @@ int	main(void)
 		if (*str)
 			add_history(str);
 		if (!ft_expand(head))
-			ft_parse(head, STDIN_FILENO);
+			if (!ft_validate(head))
+				ft_parse(head, STDIN_FILENO);
 		while (head->next)
 			ft_remove_token(head->next);
 		free(str);
