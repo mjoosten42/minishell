@@ -34,6 +34,22 @@ int	main(void)
 	return (pd_clear());
 }
 
+char	*ft_read(char *prompt)
+{
+	char	*str;
+	int		len;
+
+	if (isatty(STDIN_FILENO))
+		return (readline(prompt));
+	str = ft_get_next_line(STDIN_FILENO);
+	if (!str)
+		return (NULL);
+	len = ft_strlen(str);
+	if (str[len - 1] == '\n')
+		str[len - 1] = 0;
+	return (str);
+}
+
 void	ft_init(void)
 {
 	extern int	(*rl_event_hook)(void);
@@ -71,20 +87,4 @@ void	ft_signal(int signum)
 	}
 	if (signum == SIGQUIT && pd->active_processes)
 		ft_putendl_fd("Quit: 3", 2);
-}
-
-char	*ft_read(char *prompt)
-{
-	char	*str;
-	int		len;
-
-	if (isatty(STDIN_FILENO))
-		return (readline(prompt));
-	str = ft_get_next_line(STDIN_FILENO);
-	if (!str)
-		return (NULL);
-	len = ft_strlen(str);
-	if (str[len - 1] == '\n')
-		str[len - 1] = 0;
-	return (str);
 }
