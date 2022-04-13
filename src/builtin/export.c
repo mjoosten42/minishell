@@ -1,32 +1,32 @@
 #include "minishell.h"
 #include "libft.h"
 
-int	is_export_valid(char *str);
+int		is_export_valid(char *str);
+void	print_sorted_env(void);
 
-void	export(char *variable)
+void	export(char **strs)
 {
 	t_program_data	*pd;
-	char			**new_env;
 	int				i;
 
-	i = 0;
+	i = 1;
 	pd = pd_get();
-	if (!is_export_valid(variable))
+	pd->last_exit_status = 0;
+	if (!strs[1])
+		print_sorted_env();
+	while (strs[i])
 	{
-		pd->last_exit_status = 1;
-		return ;
-	}
-	pd->amount_env_lines++;
-	new_env = ft_malloc((pd->amount_env_lines + 1) * sizeof(char *));
-	while (pd->env[i])
-	{
-		new_env[i] = pd->env[i];
+		if (is_export_valid(strs[i]))
+			add_to_env(strs[i]);
+		else
+			pd->last_exit_status = 1;
 		i++;
 	}
-	new_env[i] = ft_strdup(variable);
-	new_env[i + 1] = NULL;
-	free(pd->env);
-	pd->env = new_env;
+}
+
+void	print_sorted_env(void)
+{
+	env();
 }
 
 int	is_export_valid(char *str)
@@ -71,4 +71,25 @@ int	export_name_len(char *str)
 			break ;
 	}
 	return (i);
+}
+
+void	add_to_env(char *str)
+{
+	t_program_data	*pd;
+	char			**new_env;
+	int				i;
+
+	i = 0;
+	pd = pd_get();
+	pd->amount_env_lines++;
+	new_env = ft_malloc((pd->amount_env_lines + 1) * sizeof(char *));
+	while (pd->env[i])
+	{
+		new_env[i] = pd->env[i];
+		i++;
+	}
+	new_env[i] = ft_strdup(str);
+	new_env[i + 1] = NULL;
+	free(pd->env);
+	pd->env = new_env;
 }

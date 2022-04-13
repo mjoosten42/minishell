@@ -15,7 +15,7 @@ int	is_builtin_unforked(char **strs)
 	else if (!ft_strncmp(*strs, "exit", str_len))
 		ft_exit(strs);
 	else if (!ft_strncmp(*strs, "export", str_len))
-		export(strs[1]);
+		export(strs);
 	else
 		return (0);
 	return (1);

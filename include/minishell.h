@@ -78,6 +78,7 @@ int				ft_here_doc(t_token *head, int *fd);
 
 //	Utils
 int				export_name_len(char *str);
+void			add_to_env(char *str);
 
 //	Builtins
 int				is_builtin_unforked(char **strs);
@@ -85,7 +86,7 @@ int				is_builtin_forked(char **strs);
 void			echo(char **strs);
 void			cd(char *path);
 void			pwd(void);
-void			export(char *variable);
+void			export(char **strs);
 void			unset(char *str);
 void			env(void);
 void			ft_exit(char **strs);

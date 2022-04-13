@@ -18,11 +18,11 @@ void	cd(char *path)
 	pd->pwd = getcwd(pd->pwd, 0);
 	unset("PWD");
 	str = ft_strjoin("PWD=", pd->pwd);
-	export(str);
+	add_to_env(str);
 	free(str);
 	unset("OLDPWD");
 	str = ft_strjoin("OLDPWD=", pd->pwd);
-	export(str);
+	add_to_env(str);
 	free(str);
 }
 

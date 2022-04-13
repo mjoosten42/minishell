@@ -62,6 +62,6 @@ void	ft_increment_shlvl(void)
 	if (!join)
 		exit(EXIT_FAILURE);
 	free(str);
-	export(join);
+	add_to_env(join);
 	free(join);
 }
