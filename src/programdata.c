@@ -22,7 +22,7 @@ int	pd_clear(void)
 	int				exit;
 
 	pd = pd_get();
-	exit = WEXITSTATUS(pd->last_exit_status);
+	exit = pd->last_exit_status;
 	ft_free_array(pd->env);
 	free(pd->pwd);
 	return (exit);
