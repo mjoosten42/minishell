@@ -10,6 +10,7 @@ void	unset(char *var)
 
 	i = 0;
 	pd = pd_get();
+	pd->last_exit_status = 0;
 	str = ft_strjoin(var, "=");
 	len = ft_strlen(str);
 	while (pd->env[i] && ft_strncmp(str, pd->env[i], len))
