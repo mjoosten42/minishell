@@ -12,10 +12,7 @@ void	cd(char *path)
 	pd = pd_get();
 	path = cd_path(path);
 	if (!path)
-	{
-		pd->last_exit_status = 1;
 		return;
-	}
 	free(pd->pwd);
 	pd->pwd = NULL;
 	pd->pwd = getcwd(pd->pwd, 0);
@@ -31,23 +28,29 @@ void	cd(char *path)
 
 char	*cd_path(char *path)
 {
+	t_program_data	*pd;
+
+	pd = pd_get();
 	if (!path)
 	{
 		path = ft_get_env_from_pd("HOME");
 		if (!path)
 			ft_putendl_fd("cd: HOME not set", 2);
+		pd->last_exit_status = 1;
 	}
 	else if (!ft_strncmp(path, "-", ft_strlen(path)))
 	{
 		path = ft_get_env_from_pd("OLDPWD");
 		if (!path)
 			ft_putendl_fd("cd: OLDPWD not set", 2);
+		pd->last_exit_status = 1;
 	}
 	else if (chdir(path) < 0)
 	{
 		ft_putstr_fd("cd: ", 2);
 		perror(path);
 		path = NULL;
+		pd->last_exit_status = 1;
 	}
 	return (path);
 }
