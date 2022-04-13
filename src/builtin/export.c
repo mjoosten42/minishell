@@ -14,7 +14,7 @@ void	export(char *variable)
 	if (!is_export_valid(variable))
 	{
 		pd->last_exit_status = 1;
-		return;
+		return ;
 	}
 	pd->amount_env_lines++;
 	new_env = ft_malloc((pd->amount_env_lines + 1) * sizeof(char *));

@@ -2,7 +2,7 @@
 #include "libft.h"
 
 int				is_all_digits(char *str);
-unsigned char 	ft_char_atoi(char *str);
+unsigned char	ft_char_atoi(char *str);
 
 void	ft_exit(char **strs)
 {
@@ -32,8 +32,8 @@ void	ft_exit(char **strs)
 
 int	is_all_digits(char *str)
 {
-	int strlen;
-	int i;
+	int	strlen;
+	int	i;
 
 	if (*str == '-')
 		str++;
@@ -48,8 +48,7 @@ int	is_all_digits(char *str)
 	return (1);
 }
 
-
-unsigned char ft_char_atoi(char *str)
+unsigned char	ft_char_atoi(char *str)
 {
 	unsigned char	number;
 	int				min;
@@ -68,6 +67,4 @@ unsigned char ft_char_atoi(char *str)
 	if (min)
 		number = 256 - number;
 	return (number);
-	
-	
 }

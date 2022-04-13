@@ -4,9 +4,9 @@
 
 void	echo(char **strs)
 {
-	int	nl;
-	int	i;
 	t_program_data	*pd;
+	int				nl;
+	int				i;
 
 	pd = pd_get();
 	pd->last_exit_status = 0;

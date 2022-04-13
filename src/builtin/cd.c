@@ -12,7 +12,7 @@ void	cd(char *path)
 	pd = pd_get();
 	path = cd_path(path);
 	if (!path)
-		return;
+		return ;
 	free(pd->pwd);
 	pd->pwd = NULL;
 	pd->pwd = getcwd(pd->pwd, 0);
