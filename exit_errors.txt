@@ -75,3 +75,17 @@ input = [num (92233720368547758078)] (is prev but minus 1)
 $? = 254
 
 
+-----
+bash-3.2$ exit wrong_command
+exit
+bash: exit: wrong_command: numeric argument required
+(exit)
+
+minishell$ exit wrong_command
+exit
+minishell: exit: wrong_command: numeric argument required
+minishell$ echo $?
+1
+(exit niet)
+----
+
