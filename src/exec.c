@@ -22,7 +22,7 @@ void	ft_exec(char **args, int fds[2])
 		if (is_builtin_forked(args))
 			exit(EXIT_SUCCESS);
 		path = ft_getpath(*args);
-		if (!path)
+		if (!path || !**args)
 			ft_exit_string(ft_strjoin(*args, ": command not found"), 127);
 		execve(path, args, pd->env);
 		perror("execve");
