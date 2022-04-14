@@ -19,7 +19,7 @@ void	ft_exit(char **strs)
 		ft_putstr_fd(strs[1], 2);
 		ft_putendl_fd(": numeric argument required", 2);
 		pd->last_exit_status = 1;
-		exit(ft_char_atoi(strs[1]));
+		exit(255);
 	}
 	else if (strs[2])
 	{

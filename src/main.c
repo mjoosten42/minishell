@@ -19,8 +19,6 @@ int	main(void)
 		if (!str)
 			break ;
 		ft_lexer(head, str);
-		if (*str)
-			add_history(str);
 		if (!ft_expand(head))
 			if (!ft_validate(head))
 				ft_parse(head, STDIN_FILENO);
@@ -28,9 +26,11 @@ int	main(void)
 			ft_remove_token(head->next);
 		free(str);
 	}
-	rl_clear_history();
 	if (isatty(STDIN_FILENO))
+	{
 		ft_putstr("exit\n");
+		rl_clear_history();
+	}
 	return (pd_clear());
 }
 
@@ -40,13 +40,20 @@ char	*ft_read(char *prompt)
 	int		len;
 
 	if (isatty(STDIN_FILENO))
-		return (readline(prompt));
-	str = ft_get_next_line(STDIN_FILENO);
-	if (!str)
-		return (NULL);
-	len = ft_strlen(str);
-	if (str[len - 1] == '\n')
-		str[len - 1] = 0;
+	{
+		str = readline(prompt);
+		if (str && *str)
+			add_history(str);
+	}
+	else
+	{
+		str = ft_get_next_line(STDIN_FILENO);
+		if (!str)
+			return (NULL);
+		len = ft_strlen(str);
+		if (str[len - 1] == '\n')
+			str[len - 1] = 0;
+	}
 	return (str);
 }
 
@@ -67,7 +74,6 @@ void	ft_signal(int signum)
 {
 	t_program_data	*pd;
 	extern int		rl_done;
-	int				exit;
 
 	pd = pd_get();
 	if (signum == SIGINT)
@@ -81,8 +87,8 @@ void	ft_signal(int signum)
 	}
 	if (signum == SIGCHLD)
 	{
-		wait(&exit);
-		pd->last_exit_status = WEXITSTATUS(exit);
+		wait(&pd->last_exit_status);
+		pd->last_exit_status = WEXITSTATUS(pd->last_exit_status);
 		pd->active_processes--;
 	}
 	if (signum == SIGQUIT && pd->active_processes)
