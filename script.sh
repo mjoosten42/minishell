@@ -19,7 +19,7 @@ test()
 	echo $1 | bash > dir/bash_out 2> dir/tmp
 
 	#Bash gives line number with certain errors: we cut those
-	if grep -q 'line *:' dir/tmp
+	if grep -q "line " dir/tmp
 	then
 		cut -d ' ' -f 4- dir/tmp > dir/bash_error
 	else
@@ -47,14 +47,10 @@ test()
 		echo -e $GREEN[OK] $DEFAULT
 	fi
 
-	#rm dir/*
+	rm dir/*
 }
 
 echo -e "$CYAN---Starting tests...$DEFAULT"
-
-test 'ls'
-
-: << 'END'
 
 # basic tests
 test ''	
@@ -81,8 +77,6 @@ test './file' "# No exec permission"
 chmod a+x file
 test './file' "# git status"
 rm file
-
-END
 
 echo -e "$CYAN---Finished$DEFAULT"
 
