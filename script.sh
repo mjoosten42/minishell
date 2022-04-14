@@ -17,7 +17,7 @@ test()
 	echo -ne $CYAN [$1]: $2 $DEFAULT
 
 	echo $1 | bash > dir/bash_out 2> dir/tmp
-
+	x=$?
 	#Bash gives line number with certain errors: we cut those
 	if grep -q "line " dir/tmp
 	then
@@ -25,24 +25,25 @@ test()
 	else
 		cut -d ' ' -f 2- dir/tmp > dir/bash_error
 	fi
-	echo exit code: $? >> dir/bash_out
+	echo "exit code: $x" >> dir/bash_out
 
 	rm -f dir/tmp
 
 	echo $1 | ./minishell > dir/minishell_out 2> dir/tmp2
+	x=$?
 	cut -d ' ' -f 2- dir/tmp2 > dir/minishell_error
-	echo exit code: $? >> dir/minishell_out
+	echo "exit code: $x" >> dir/minishell_out
 
 	rm -f dir/tmp
-	diff dir/bash_out dir/minishell_out >> dir/tmp
-	diff dir/bash_error dir/minishell_error >> dir/tmp
+	diff dir/bash_out dir/minishell_out | tail -n +2 | grep -e "< " -e "> " >> dir/tmp
+	diff dir/bash_error dir/minishell_error | tail -n +2 | grep -e "< " -e "> " >> dir/tmp
 
 	if [ -s dir/tmp ]
 	then
+		echo $1 >> log
 		cat dir/tmp >> log
-		echo -e $RED
+		echo -e $RED[KO] $DEFAULT
 		cat < dir/tmp
-		echo -ne $DEFAULT
 	else
 		echo -e $GREEN[OK] $DEFAULT
 	fi
@@ -117,20 +118,33 @@ test 'exit wrong'
 test 'exit wrong_command'
 
 :<< test_word
+
 test '.'
 test './'
 test './minishell'
+test 'kill'
+
+FAIL
+
+# commands (absolute path)\
+test '/bin/bash'
+test '/usr/bin/git status'
 
 # custom binary
 test './file' "# Doesn't exist"
 echo '#!/bin/bash
-git status' > file
+ls' > file
 test './file' "# No exec permission"
 chmod a+x file
-test './file' "# git status"
+test './file' "# ls"
 rm file
-test_word
 
+# pipes
+test '|'
+test 'ls |'
+test '| ls'
 echo -e "$CYAN---Finished$DEFAULT"
+
+test_word
 
 rmdir dir

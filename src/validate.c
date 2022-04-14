@@ -29,30 +29,11 @@ int	ft_validate(t_token *token)
 
 int	ft_put_syntax_error(char *str)
 {
+	t_program_data	*pd;
+
+	pd = pd_get();
+	pd->last_exit_status = 2;
 	ft_putstr_fd("minishell: syntax error: ", 2);
 	ft_putendl_fd(str, 2);
 	return (-1);
-}
-
-void	ft_put_type_fd(t_type type, int fd)
-{
-	char	*types[13];
-
-	types[0] = "pipe_char";
-	types[1] = "red_in";
-	types[2] = "red_out";
-	types[3] = "dollar";
-	types[4] = "dquote";
-	types[5] = "quote";
-	types[6] = "space";
-	types[7] = "tab";
-	types[8] = "newline";
-	types[9] = "here_doc";
-	types[10] = "red_out_app";
-	types[11] = "word";
-	types[12] = "start";
-	ft_putchar_fd('`', fd);
-	ft_putstr_fd(types[type], fd);
-	ft_putchar_fd('\'', fd);
-	ft_putchar_fd('\n', fd);
 }
