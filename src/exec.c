@@ -29,6 +29,12 @@ void	ft_exec(char **args, int fds[2])
 			ft_putendl_fd( ": command not found", 2);
 			exit(127);
 		}
+		if (access(path, X_OK))
+		{
+			ft_putstr_fd("minishell: ", 2);
+			perror(*args);
+			exit(126);
+		}
 		execve(path, args, pd->env);
 		perror("execve");
 		exit(EXIT_FAILURE);
