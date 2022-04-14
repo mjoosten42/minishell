@@ -40,9 +40,8 @@ test()
 	if [ -s dir/tmp ]
 	then
 		cat dir/tmp >> log
-		echo -e $RED
+		echo -e $RED[KO] $DEFAULT
 		cat < dir/tmp
-		echo -ne $DEFAULT
 	else
 		echo -e $GREEN[OK] $DEFAULT
 	fi
@@ -51,10 +50,6 @@ test()
 }
 
 echo -e "$CYAN---Starting tests...$DEFAULT"
-
-test 'exit'
-
-test 'cd s'
 
 # basic tests
 test ''	
