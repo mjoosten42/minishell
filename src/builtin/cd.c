@@ -10,6 +10,7 @@ void	cd(char *path)
 	char			*str;
 
 	pd = pd_get();
+	pd->last_exit_status = 0;
 	path = cd_path(path);
 	if (!path)
 		return ;
