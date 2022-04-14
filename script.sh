@@ -1,6 +1,8 @@
 #!/bin/bash
 
-#lsof -p $$ -a -d 0-256
+# get pid:
+#'lsof -p $$ -a -d 0-256'
+#'ps | tail -1 | cut -d " " -f1'
 
 RED='\033[0;31m'
 CYAN='\033[0;36m'
@@ -14,7 +16,7 @@ rm -f log
 
 test()
 {
-	echo -ne $CYAN [$1]: $2 $DEFAULT
+	echo -ne $CYAN$1: $2 $DEFAULT
 
 	echo $1 | bash > dir/bash_out 2> dir/tmp
 	STATUS=$?
@@ -95,20 +97,17 @@ test 'pwd'
 echo
 echo -e "$CYAN---Lexer test suite...$DEFAULT"
 # Lexer tests
-test 'echo "''" "''" "a" "$" "$"'
-test 'ls -a | echo -n'
-test 'cat -e cat -e cat -e cat -e cat -e cat -e'
-test 'cat cat cat cat cat cat cat'
-test 'no_command'
-test '$PWD'
-
-echo
-echo -e "$CYAN---Basic test suite...$DEFAULT"
-# basic tests
 test ''	
 test ' '	#space
 test '	'	#tab
 test ' 	 '	#mixed
+test 'echo "''" "''" "a" "$" "$"'
+test 'echo -$PWD$?$PATH-'
+test 'echo -$a$.$PW$SHLVL"$P"WD'
+test 'ls -a | echo -n'
+test 'cat -e cat -e cat -e cat -e cat -e cat -e'
+test 'cat cat cat cat cat cat cat'
+test 'no_command'
 
 echo
 echo -e "$CYAN---General commands test suite...$DEFAULT"
@@ -121,10 +120,9 @@ test 'not_a_command'
 test 'git log --pretty="format:%H"'
 test 'bash'
 test 'sh'
-test 'ps | tail -1 | cut -d ' ' -f1'
 
 echo
-echo -e "$CYAN---Misc commands test suite...$DEFAULT"
+echo -e "$CYAN---Exit commands test suite...$DEFAULT"
 test 'exit 42'
 test 'exit 42 53 68'
 test 'exit 259'
@@ -136,6 +134,7 @@ test 'exit a 3'
 test 'exit -a 3'
 
 test '.'
+test '/'
 test './minishell'
 
 # commands (absolute path)
@@ -175,6 +174,8 @@ test '< Makefile cat | xargs > dir/outfile'
 test 'cat<Makefile|>dir/outfile xargs'
 test '<Makefile|>dir/outfile'
 #test 'sleep 1 | ls test'	subject requires most _recent_ exit code
+
+test 'echo "./minishell" | ./minishell'
 
 echo -e "$CYAN---Finished$DEFAULT"
 
