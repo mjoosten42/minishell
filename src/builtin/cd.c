@@ -48,6 +48,7 @@ char	*cd_path(char *path)
 	}
 	else if (chdir(path) < 0)
 	{
+		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd("cd: ", 2);
 		perror(path);
 		path = NULL;

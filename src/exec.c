@@ -60,7 +60,7 @@ char	*ft_getpath(char *str)
 	paths = ft_getpaths();
 	if (!paths)
 		return (ft_strjoin("./", str));
-	if (!access(str, F_OK))
+	if (!access(str, F_OK) || *str == '.')
 		return (ft_strdup(str));
 	while (paths[i])
 	{

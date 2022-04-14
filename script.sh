@@ -25,13 +25,13 @@ test()
 	else
 		cut -d ' ' -f 2- dir/tmp > dir/bash_error
 	fi
-	echo $? >> dir/bash_out
+	echo exit code: $? >> dir/bash_out
 
 	rm -f dir/tmp
 
 	echo $1 | ./minishell > dir/minishell_out 2> dir/tmp2
 	cut -d ' ' -f 2- dir/tmp2 > dir/minishell_error
-	echo $? >> dir/minishell_out
+	echo exit code: $? >> dir/minishell_out
 
 	rm -f dir/tmp
 	diff dir/bash_out dir/minishell_out >> dir/tmp
@@ -52,22 +52,29 @@ test()
 
 echo -e "$CYAN---Starting tests...$DEFAULT"
 
+test 'exit'
+
+test 'cd s'
+
 # basic tests
 test ''	
 test ' '	#space
 test '	'	#tab
 test ' 	 '	#mixed
 
-# commands
+# commands (PATH)
 test 'ls'
 test 'ls -a'
 test 'ls not_a_dir'
 test 'cat Makefile minishell'
 test 'not_a_command'
 test 'git log --pretty="format:%H"'
-test './minishell'
 test 'bash'
 test 'sh'
+
+test '.'
+test './'
+test './minishell'
 
 # custom binary
 test './file' "# Doesn't exist"
