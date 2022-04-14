@@ -83,6 +83,7 @@ test 'ls -a | echo -n'
 test 'cat -e cat -e cat -e cat -e cat -e cat -e'
 test 'cat cat cat cat cat cat cat'
 test 'no_command'
+test '$USER $USER'
 test '$PWD'
 test '$PATH'
 
@@ -118,11 +119,9 @@ test 'exit wrong'
 test 'exit wrong_command'
 
 :<< test_word
-
 test '.'
 test './'
 test './minishell'
-test 'kill'
 
 FAIL
 
@@ -144,7 +143,6 @@ test '|'
 test 'ls |'
 test '| ls'
 echo -e "$CYAN---Finished$DEFAULT"
-
 test_word
 
 rmdir dir
