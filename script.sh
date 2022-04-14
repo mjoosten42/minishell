@@ -91,8 +91,6 @@ echo
 echo -e "$CYAN---PWD test suite...$DEFAULT"
 # Pwd tests
 test 'pwd'
-test '/pwd'
-test '//pwd'
 
 echo
 echo -e "$CYAN---Lexer test suite...$DEFAULT"
@@ -103,7 +101,6 @@ test 'cat -e cat -e cat -e cat -e cat -e cat -e'
 test 'cat cat cat cat cat cat cat'
 test 'no_command'
 test '$PWD'
-test '$PATH'
 
 echo
 echo -e "$CYAN---Basic test suite...$DEFAULT"
@@ -134,9 +131,10 @@ test 'exit 9223372036854775807'
 test 'exit -4'
 test 'exit wrong'
 test 'exit wrong_command'
+test 'exit a 3'
+test 'exit -a 3'
 
 test '.'
-test './'
 test './minishell'
 
 # commands (absolute path)
@@ -173,8 +171,8 @@ test '| |'
 # pipes combined with redirects
 test '< Makefile cat | xargs > dir/outfile'
 test 'cat<Makefile|>dir/outfile xargs'
-test '> outfile'
-test '< outfile'
+test '> dir/outfile'
+test '< dir/outfile'
 #test 'sleep 1 | ls test'	subject requires most _recent_ exit code
 
 echo -e "$CYAN---Finished$DEFAULT"

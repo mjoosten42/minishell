@@ -82,12 +82,22 @@ int	ft_get_fds(t_token *token, int fds[2])
 
 int	ft_redirect(t_token *token, int *fd, int flags)
 {
+	t_program_data	*pd;
+
+	pd = pd_get();
 	token = token->prev;
 	ft_remove_token(token->next);
 	token = token->next;
 	if (*fd > STDERR_FILENO)
 		ft_close(*fd);
-	*fd = ft_open(token->value, flags, 0644);
+	*fd = open(token->value, flags, 0644);
+	if (*fd < 0)
+	{
+		pd->last_exit_status = 1;
+		ft_putstr_fd("minishell: ", 2);
+		perror(token->value);
+		return (-1);
+	}
 	ft_remove_token(token);
 	return (0);
 }
