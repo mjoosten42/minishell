@@ -52,6 +52,13 @@ test()
 
 echo -e "$CYAN---Starting tests...$DEFAULT"
 
+# cd tests
+test 'cd /'
+test 'cd $HOME'
+test 'cd nonexistent_dir'
+
+:<< test_word
+
 # basic tests
 test ''	
 test ' '	#space
@@ -77,6 +84,8 @@ test './file' "# No exec permission"
 chmod a+x file
 test './file' "# git status"
 rm file
+
+test_word
 
 echo -e "$CYAN---Finished$DEFAULT"
 
