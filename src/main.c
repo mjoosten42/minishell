@@ -74,6 +74,7 @@ void	ft_signal(int signum)
 {
 	t_program_data	*pd;
 	extern int		rl_done;
+	int				exit;
 
 	pd = pd_get();
 	if (signum == SIGINT)
@@ -87,8 +88,8 @@ void	ft_signal(int signum)
 	}
 	if (signum == SIGCHLD)
 	{
-		wait(&pd->last_exit_status);
-		pd->last_exit_status = WEXITSTATUS(pd->last_exit_status);
+		wait(&exit);
+		pd->last_exit_status = WEXITSTATUS(exit);
 		pd->active_processes--;
 	}
 	if (signum == SIGQUIT && pd->active_processes)

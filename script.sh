@@ -29,9 +29,12 @@ test()
 
 	rm -f dir/tmp
 
-	echo $1 | ./minishell > dir/minishell_out 2> dir/tmp2
+	echo $1 | ./minishell > dir/minishell_out 2> dir/tmp
 	STATUS=$?
-	cut -d ' ' -f 2- dir/tmp2 > dir/minishell_error
+	if ! grep -q "line " dir/tmp
+	then
+		cut -d ' ' -f 2- dir/tmp > dir/minishell_error
+	fi
 	echo "exit code: $STATUS" >> dir/minishell_out
 
 	rm -f dir/tmp
@@ -79,11 +82,17 @@ test 'echo'
 test 'echo -n'
 test 'echo $PWD'
 test 'echo forrest'
+test 'echo - a'
+test 'echo --n a'
+test 'echo n- a'
+test 'echo n a'
 
 echo
 echo -e "$CYAN---PWD test suite...$DEFAULT"
 # Pwd tests
 test 'pwd'
+test '/pwd'
+test '//pwd'
 
 echo
 echo -e "$CYAN---Lexer test suite...$DEFAULT"
@@ -115,7 +124,6 @@ test 'not_a_command'
 test 'git log --pretty="format:%H"'
 test 'bash'
 test 'sh'
-test 'kill'
 
 echo
 echo -e "$CYAN---Misc commands test suite...$DEFAULT"
@@ -127,16 +135,11 @@ test 'exit -4'
 test 'exit wrong'
 test 'exit wrong_command'
 
-:<< test_word
-
 test '.'
 test './'
 test './minishell'
-test 'kill'
 
-FAIL
-
-# commands (absolute path)\
+# commands (absolute path)
 test '/bin/bash'
 test '/usr/bin/git status'
 
@@ -149,9 +152,11 @@ chmod a+x file
 test './file' "# ls"
 rm file
 
+test 'type -a kill'
+
 #redirects
-test 'ls > outfile'
-test 'ls>outfile'
+test 'ls > dir/outfile'
+test 'ls>dir/outfile'
 
 # pipes
 test '|'
@@ -161,9 +166,17 @@ test ' |'
 test '| ls'
 test 'ls | cat'
 test 'ls|cat'
+test '||'
+test '| |'
+#test 'sleep 1 | ls'
+
+# pipes combined with redirects
+test '< Makefile cat | xargs > dir/outfile'
+test 'cat<Makefile|>dir/outfile xargs'
+test '> outfile'
+test '< outfile'
+#test 'sleep 1 | ls test'	subject requires most _recent_ exit code
 
 echo -e "$CYAN---Finished$DEFAULT"
-
-test_word
 
 rmdir dir
