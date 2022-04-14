@@ -51,20 +51,50 @@ test()
 }
 
 echo -e "$CYAN---Starting tests...$DEFAULT"
+echo
 
+echo -e "$CYAN---CD test suite...$DEFAULT"
 # cd tests
+test 'cd'
 test 'cd /'
 test 'cd $HOME'
 test 'cd nonexistent_dir'
+test 'cd cd cd'
 
-:<< test_word
+echo
+echo -e "$CYAN---Echo test suite...$DEFAULT"
+# Echo tests
+test 'echo'
+test 'echo -n'
+test 'echo $PWD'
+test 'echo forrest'
 
+echo
+echo -e "$CYAN---PWD test suite...$DEFAULT"
+# Pwd tests
+test 'pwd'
+
+echo
+echo -e "$CYAN---Lexer test suite...$DEFAULT"
+# Lexer tests
+test 'echo "''" "''" "a" "$" "$"'
+test 'ls -a | echo -n'
+test 'cat -e cat -e cat -e cat -e cat -e cat -e'
+test 'cat cat cat cat cat cat cat'
+test 'no_command'
+test '$PWD'
+test '$PATH'
+
+echo
+echo -e "$CYAN---Basic test suite...$DEFAULT"
 # basic tests
 test ''	
 test ' '	#space
 test '	'	#tab
 test ' 	 '	#mixed
 
+echo
+echo -e "$CYAN---General commands test suite...$DEFAULT"
 # commands (PATH)
 test 'ls'
 test 'ls -a'
@@ -74,7 +104,19 @@ test 'not_a_command'
 test 'git log --pretty="format:%H"'
 test 'bash'
 test 'sh'
+test 'kill'
 
+echo
+echo -e "$CYAN---Misc commands test suite...$DEFAULT"
+test 'exit 42'
+test 'exit 42 53 68'
+test 'exit 259'
+test 'exit 9223372036854775807'
+test 'exit -4'
+test 'exit wrong'
+test 'exit wrong_command'
+
+:<< test_word
 test '.'
 test './'
 test './minishell'
@@ -87,7 +129,6 @@ test './file' "# No exec permission"
 chmod a+x file
 test './file' "# git status"
 rm file
-
 test_word
 
 echo -e "$CYAN---Finished$DEFAULT"
