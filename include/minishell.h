@@ -105,7 +105,6 @@ int				ft_open(const char *path, int oflag, mode_t mode);
 int				ft_close(int fildes);
 
 // Errors
-int				ft_exit_string(char *str, int exit_code);
 int				nop(void);
 
 #endif
