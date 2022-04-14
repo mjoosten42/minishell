@@ -17,7 +17,7 @@ test()
 	echo -ne $CYAN [$1]: $2 $DEFAULT
 
 	echo $1 | bash > dir/bash_out 2> dir/tmp
-	x=$?
+	STATUS=$?
 	#Bash gives line number with certain errors: we cut those
 	if grep -q "line " dir/tmp
 	then
@@ -25,18 +25,28 @@ test()
 	else
 		cut -d ' ' -f 2- dir/tmp > dir/bash_error
 	fi
-	echo "exit code: $x" >> dir/bash_out
+	echo "exit code: $STATUS" >> dir/bash_out
 
 	rm -f dir/tmp
 
 	echo $1 | ./minishell > dir/minishell_out 2> dir/tmp2
-	x=$?
+	STATUS=$?
 	cut -d ' ' -f 2- dir/tmp2 > dir/minishell_error
-	echo "exit code: $x" >> dir/minishell_out
+	echo "exit code: $STATUS" >> dir/minishell_out
 
 	rm -f dir/tmp
+
 	diff dir/bash_out dir/minishell_out | tail -n +2 | grep -e "< " -e "> " >> dir/tmp
 	diff dir/bash_error dir/minishell_error | tail -n +2 | grep -e "< " -e "> " >> dir/tmp
+	
+	if head -1 dir/tmp | grep -q "syntax error"
+	then
+		sed -i '' '1,2d' dir/tmp
+		if grep -q "syntax error" dir/tmp
+		then
+			rm dir/tmp
+		fi
+	fi
 
 	if [ -s dir/tmp ]
 	then
@@ -138,10 +148,19 @@ chmod a+x file
 test './file' "# ls"
 rm file
 
+#redirects
+test 'ls > outfile'
+test 'ls>outfile'
+
 # pipes
 test '|'
 test 'ls |'
+test 'ls|'
+test ' |'
 test '| ls'
+test 'ls | cat'
+test 'ls|cat'
+
 echo -e "$CYAN---Finished$DEFAULT"
 test_word
 
