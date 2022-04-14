@@ -5,6 +5,7 @@
 
 void	ft_init(void);
 void	ft_signal(int signum);
+int		nop(void);
 
 int	main(void)
 {
@@ -94,4 +95,9 @@ void	ft_signal(int signum)
 	}
 	if (signum == SIGQUIT && pd->active_processes)
 		ft_putendl_fd("Quit: 3", 2);
+}
+
+int	nop(void)
+{
+	return (0);
 }

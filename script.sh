@@ -121,6 +121,7 @@ test 'not_a_command'
 test 'git log --pretty="format:%H"'
 test 'bash'
 test 'sh'
+test 'ps | tail -1 | cut -d ' ' -f1'
 
 echo
 echo -e "$CYAN---Misc commands test suite...$DEFAULT"
@@ -142,10 +143,10 @@ test '/bin/bash'
 test '/usr/bin/git status'
 
 # custom binary
-test './file' "# Doesn't exist"
+test './file' "#file doesn't exist"
 echo '#!/bin/bash
 ls' > file
-test './file' "# No exec permission"
+test './file' "# no exec permission"
 chmod a+x file
 test './file' "# ls"
 rm file
@@ -155,6 +156,8 @@ test 'type -a kill'
 #redirects
 test 'ls > dir/outfile'
 test 'ls>dir/outfile'
+test '> dir/outfile'
+test '< dir/outfile'
 
 # pipes
 test '|'
@@ -166,13 +169,11 @@ test 'ls | cat'
 test 'ls|cat'
 test '||'
 test '| |'
-#test 'sleep 1 | ls'
 
 # pipes combined with redirects
 test '< Makefile cat | xargs > dir/outfile'
 test 'cat<Makefile|>dir/outfile xargs'
-test '> dir/outfile'
-test '< dir/outfile'
+test '<Makefile|>dir/outfile'
 #test 'sleep 1 | ls test'	subject requires most _recent_ exit code
 
 echo -e "$CYAN---Finished$DEFAULT"
