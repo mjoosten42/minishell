@@ -80,6 +80,8 @@ chmod a+x file
 test './file' "# git status"
 rm file
 
+test_word
+
 echo -e "$CYAN---Finished$DEFAULT"
 
 rmdir dir
