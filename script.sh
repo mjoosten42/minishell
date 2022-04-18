@@ -198,6 +198,7 @@ echo
 echo -e "$CYAN---Multiline commands test suite...$DEFAULT"
 
 multiline_test 'echo $PWD' 'top -l 1 | head -3 | tail -1 | xargs'
+multiline_test 'echo $PWD' 'unset PWD' 'echo $PWD'
 
 echo -e "$CYAN---Finished$DEFAULT"
 

@@ -3,32 +3,51 @@
 #include <stdlib.h>
 #include <string.h>
 
-void    print_envs(char **envs)
+void	print_envs(char **envs)
+{
+	int	i;
+
+	i = 0;
+	while (envs[i])
+	{
+		printf("declare -x %s\n", envs[i]);
+		i++;
+	}
+}
+
+int	get_env_len(char **envs)
+{
+	int i = 0;
+	while (envs[i])
+		i++;
+	return (i);
+}
+
+int	is_sorted(char **envs)
 {
 	int i = 0;
 
 	while (envs[i])
 	{
-		printf("%s\n", envs[i]);
+		if (envs[i + 1] != NULL)
+			if (strcmp(envs[i], envs[i+1]) > 0)
+				return (0);
 		i++;
 	}
+	return (1);
 }
 
-void    sort(char **envs)
+void	sort(char **envs)
 {
-	int i = 0;
-	int list_len = 4;
-	// go through list
-	// [c, b, d, a]
-	// if (i != lastpos) strcpm(i, i+1)
-	// [c, b]
+	int		i;
+	int		env_len;
+	char	*tmp;
 
-	char *tmp = NULL;
-
-	while (i != 4)
+	env_len = get_env_len(envs);
+	while (is_sorted(envs) == 0)
 	{
 		i = 0;
-		if (i != list_len)
+		while (i < env_len - 1)
 		{
 			if (strcmp(envs[i], envs[i+1]) > 0)
 			{
@@ -38,25 +57,13 @@ void    sort(char **envs)
 			}
 			i++;
 		}
-		if (i == list_len) i = 0;
 	}
-	free(tmp);
 }
 
-int main()
+int main(int argc, char **argv, char **envs)
 {
-	char **envs;
-
-	envs = malloc(5 * sizeof(char *));
-
-	envs[0] = "dlast";
-	envs[1] = "afirst";
-	envs[2] = "cthird";
-	envs[3] = "bsecond";
-	envs[4] = NULL;
-
-	print_envs(envs);
-	printf("\n");
+	(void)argc;
+	(void)argv;
 	sort(envs);
 	print_envs(envs);
 }

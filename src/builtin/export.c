@@ -29,10 +29,9 @@ void	export(char **strs)
 void	print_sorted_env(void)
 {
 	t_program_data	*pd;
-	char			**env;
 	int				i;
 
-	i = 0
+	i = 0;
 	pd = pd_get();
 	while (pd->env[i])
 	{
