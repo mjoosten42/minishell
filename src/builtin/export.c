@@ -24,9 +24,21 @@ void	export(char **strs)
 	}
 }
 
+#include <stdio.h>
+
 void	print_sorted_env(void)
 {
-	env();
+	t_program_data	*pd;
+	char			**env;
+	int				i;
+
+	i = 0
+	pd = pd_get();
+	while (pd->env[i])
+	{
+		printf("declare -x %s\n",pd->env[i]);
+		i++;
+	}
 }
 
 int	is_export_valid(char *str)

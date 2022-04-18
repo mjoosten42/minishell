@@ -61,10 +61,10 @@ test()
 	rm dir/*
 }
 
-echo -e "$CYAN---Starting tests...$DEFAULT"
+echo -e "$CYAN--- Starting tests ---$DEFAULT"
 echo
 
-echo -e "$CYAN---CD test suite...$DEFAULT"
+echo -e "$CYAN--- CD test suite ---$DEFAULT"
 # cd tests
 test 'cd'
 test 'cd /'
@@ -73,7 +73,7 @@ test 'cd nonexistent_dir'
 test 'cd cd cd'
 
 echo
-echo -e "$CYAN---Echo test suite...$DEFAULT"
+echo -e "$CYAN--- Echo test suite ---$DEFAULT"
 # Echo tests
 test 'echo'
 test 'echo -n'
@@ -81,12 +81,12 @@ test 'echo $PWD'
 test 'echo forrest'
 
 echo
-echo -e "$CYAN---PWD test suite...$DEFAULT"
+echo -e "$CYAN--- PWD test suite ---$DEFAULT"
 # Pwd tests
 test 'pwd'
 
 echo
-echo -e "$CYAN---Lexer test suite...$DEFAULT"
+echo -e "$CYAN--- Lexer test suite ---$DEFAULT"
 # Lexer tests
 test 'echo "''" "''" "a" "$" "$"'
 test 'ls -a | echo -n'
@@ -98,7 +98,7 @@ test '$PWD'
 test '$PATH'
 
 echo
-echo -e "$CYAN---Basic test suite...$DEFAULT"
+echo -e "$CYAN--- Basic test suite ---$DEFAULT"
 # basic tests
 test ''	
 test ' '	#space
@@ -106,7 +106,7 @@ test '	'	#tab
 test ' 	 '	#mixed
 
 echo
-echo -e "$CYAN---General commands test suite...$DEFAULT"
+echo -e "$CYAN--- General commands test suite ---$DEFAULT"
 # commands (PATH)
 test 'ls'
 test 'ls -a'
@@ -119,7 +119,7 @@ test 'sh'
 test 'kill'
 
 echo
-echo -e "$CYAN---Misc commands test suite...$DEFAULT"
+echo -e "$CYAN--- Misc commands test suite ---$DEFAULT"
 test 'exit 42'
 test 'exit 42 53 68'
 test 'exit 259'
