@@ -137,6 +137,7 @@ echo -e "$CYAN--- General commands test suite ---$DEFAULT"
 # commands (PATH)
 test 'ls'
 test 'ls -a'
+test 'ls -l -a'
 test 'ls not_a_dir'
 test 'cat Makefile minishell'
 test 'not_a_command'
@@ -204,6 +205,7 @@ echo
 echo -e "$CYAN---Multiline commands test suite...$DEFAULT"
 
 multiline_test 'echo $PWD' 'top -l 1 | head -4 | tail -2 | xargs'
+multiline_test 'ls -la' 'ls .'
 
 echo -e "$CYAN---Finished$DEFAULT"
 
