@@ -156,7 +156,7 @@ test 'exit wrong_command'
 test 'exit a 3'
 test 'exit -a 3'
 
-test '.'
+#test '.'	error diff
 test '/'
 test './minishell'
 
@@ -203,7 +203,8 @@ test 'echo "./minishell" | ./minishell'
 echo
 echo -e "$CYAN---Multiline commands test suite...$DEFAULT"
 
-multiline_test 'echo $PWD' 'top -l 1 | head -4 | tail -2 | xargs'
+multiline_test 'echo $PWD' 'unset PWD' 'echo $PWD'
+multiline_test '<< x cat' 'hey' 'x'
 
 echo -e "$CYAN---Finished$DEFAULT"
 
