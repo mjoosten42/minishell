@@ -15,11 +15,17 @@ mkdir dir
 rm -f log
 
 EXIT_CODES=true
+SHOW_CMD=true
 
 test()
 {
 	if [ ! -s dir/infile ] ; then
-		echo -ne $CYAN$1: $2 $DEFAULT
+		echo -ne $CYAN
+		if [ "$SHOW_CMD" = true ] ; then
+			echo -ne "$1: "
+		fi
+		echo -ne $2
+		echo -ne $DEFAULT
 	fi
 
 	echo $1 | bash > dir/bash_out 2> dir/tmp
@@ -197,8 +203,7 @@ test 'echo "./minishell" | ./minishell'
 echo
 echo -e "$CYAN---Multiline commands test suite...$DEFAULT"
 
-multiline_test 'echo $PWD' 'top -l 1 | head -3 | tail -1 | xargs'
-multiline_test 'echo $PWD' 'unset PWD' 'echo $PWD'
+multiline_test 'echo $PWD' 'top -l 1 | head -4 | tail -2 | xargs'
 
 echo -e "$CYAN---Finished$DEFAULT"
 
