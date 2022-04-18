@@ -101,10 +101,6 @@ void			print_tokens(t_token *token);
 pid_t			ft_fork(void);
 int				ft_pipe(int fildes[2]);
 int				ft_dup2(int fildes, int fildes2);
-int				ft_open(const char *path, int oflag, mode_t mode);
 int				ft_close(int fildes);
-
-// Errors
-int				nop(void);
 
 #endif

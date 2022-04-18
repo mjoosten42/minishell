@@ -17,19 +17,6 @@ pid_t	ft_fork(void)
 	return (pid);
 }
 
-int	ft_open(const char *path, int oflag, mode_t mode)
-{
-	int	ret;
-
-	ret = open(path, oflag, mode);
-	if (ret < 0)
-	{
-		perror("open");
-		exit(EXIT_FAILURE);
-	}
-	return (ret);
-}
-
 int	ft_pipe(int fildes[2])
 {
 	int	ret;

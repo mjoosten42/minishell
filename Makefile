@@ -6,7 +6,7 @@
 #    By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/12 11:05:57 by rnijhuis          #+#    #+#              #
-#    Updated: 2022/04/12 11:38:50 by mjoosten         ###   ########.fr        #
+#    Updated: 2022/04/14 16:27:34 by mjoosten         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,6 @@ SRCS :=	main.c					\
 		builtin/run_builtin.c	\
 		utils/token.c			\
 		utils/syscalls.c		\
-		utils/errors.c			\
 
 OBJS = $(addprefix $(OBJS_DIR)/,$(SRCS:.c=.o))
 
