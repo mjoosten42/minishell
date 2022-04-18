@@ -18,10 +18,13 @@ EXIT_CODES=true
 
 test()
 {
-	echo -ne $CYAN$1: $2 $DEFAULT
+	if [ ! -s dir/infile ] ; then
+		echo -ne $CYAN$1: $2 $DEFAULT
+	fi
 
 	echo $1 | bash > dir/bash_out 2> dir/tmp
 	STATUS=$?
+
 	#Bash gives line number with certain errors: we cut those
 	if grep -q "line " dir/tmp ; then
 		cut -d ' ' -f 4- dir/tmp > dir/bash_error
@@ -67,6 +70,17 @@ test()
 	fi
 
 	rm dir/*
+}
+
+multiline_test()
+{
+	echo '#!/bin/bash' > dir/infile
+	chmod u+x dir/infile
+	for CMD in "$@" ; do
+		echo -e $CYAN$CMD $DEFAULT
+		echo $CMD >> dir/infile
+	done
+	test './dir/infile'
 }
 
 echo -e "$CYAN---Starting tests...$DEFAULT"
@@ -179,6 +193,11 @@ test '<Makefile|>dir/outfile'
 #test 'sleep 1 | ls test'	subject requires most _recent_ exit code
 
 test 'echo "./minishell" | ./minishell'
+
+echo
+echo -e "$CYAN---Multiline commands test suite...$DEFAULT"
+
+multiline_test 'echo $PWD' 'top -l 1 | head -3 | tail -1 | xargs'
 
 echo -e "$CYAN---Finished$DEFAULT"
 

@@ -2,7 +2,7 @@
 #include "libft.h"
 
 void	ft_close_fds(int fds[2]);
-char	**ft_getpaths(void);
+char	*ft_search_paths(char *str);
 char	*ft_getpath(char *str);
 
 void	ft_exec(char **args, int fds[2])
@@ -52,47 +52,59 @@ void	ft_close_fds(int fds[2])
 
 char	*ft_getpath(char *str)
 {
-	char	**paths;
 	char	*path;
-	int		i;
 
-	i = 0;
-	paths = ft_getpaths();
-	if (!paths)
-		return (ft_strjoin("./", str));
-	if (!access(str, F_OK) || *str == '.')
-		return (ft_strdup(str));
-	while (paths[i])
+	if (*str == '.' || ft_strchr(str, '/'))
 	{
-		path = ft_strjoin(paths[i], str);
-		if (!access(path, F_OK))
-			return (path);
-		free(path);
-		i++;
+		if (access(str, F_OK) < 0)
+		{
+			ft_putstr_fd("minishell: ", 2);
+			perror(str);
+			exit(127);
+		}
+		return (str);
 	}
-	return (NULL);
+	path = ft_search_paths(str);
+	if (!path)
+	{
+		if (access(str, F_OK) < 0)
+		{
+			ft_putstr_fd("minishell: ", 2);
+			perror(str);
+			exit(127);
+		}
+	}
+	return (path);
 }
 
-char	**ft_getpaths(void)
+char	*ft_search_paths(char *str)
 {
-	char	**strs;
-	char	*str;
+	char	**paths;
+	char	*tmp;
 	int		i;
 
 	i = 0;
-	str = ft_get_env_from_pd("PATH");
-	if (!str)
+	tmp = ft_get_env_from_pd("PATH");
+	if (!tmp)
 		return (NULL);
-	strs = ft_split(str, ':');
-	free(str);
-	if (!strs)
-		ft_error(NULL);
-	while (strs[i])
+	paths = ft_split(tmp, ':');
+	free(tmp);
+	while (paths[i])
 	{
-		str = ft_strjoin(strs[i], "/");
-		free(strs[i]);
-		strs[i] = str;
+		tmp = ft_strjoin(paths[i], "/");
+		free(paths[i]);
+		paths[i] = ft_strjoin(tmp, str);
+		free(tmp);
+		if (!access(paths[i], F_OK))
+		{
+			tmp = ft_strdup(paths[i]);
+			ft_free_array(paths);
+			return (tmp);
+		}
 		i++;
 	}
-	return (strs);
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd(": command not found", 2);
+	return (NULL);
 }
