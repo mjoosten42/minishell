@@ -61,7 +61,7 @@ int	is_export_valid(char *str)
 		return (0);
 	}
 	id = ft_substr(str, 0, len);
-	unset(id);
+	unset_single(id);
 	free(id);
 	return (1);
 }

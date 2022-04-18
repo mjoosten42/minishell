@@ -1,7 +1,7 @@
 #include "minishell.h"
 #include "libft.h"
 
-void	unset(char *var)
+void	unset_single(char *var)
 {
 	t_program_data	*pd;
 	char			*str;
@@ -23,4 +23,16 @@ void	unset(char *var)
 		pd->env[i] = pd->env[pd->amount_env_lines - 1];
 	pd->env[pd->amount_env_lines - 1] = NULL;
 	pd->amount_env_lines--;
+}
+
+void	unset(char **strs)
+{
+	int	i;
+
+	i = 1;
+	while (strs[i])
+	{
+		unset_single(strs[i]);
+		i++;
+	}
 }
