@@ -107,5 +107,4 @@ int				ft_pipe(int fildes[2]);
 int				ft_dup2(int fildes, int fildes2);
 int				ft_close(int fildes);
 
-
 #endif

@@ -19,16 +19,12 @@ SHOW_CMD=true
 
 test()
 {
-	if [ ! -s dir/infile ] ; then
-		echo -ne $CYAN
-		if [ "$SHOW_CMD" = true ] ; then
-			echo -ne "$1: "
-		fi
-		echo -ne $2
-		echo -ne $DEFAULT
-	fi
+	for CMD in "$@" ; do
+		echo -ne "$CYAN$CMD: $DEFAULT"
+		echo $CMD >> dir/infile
+	done
 
-	echo $1 | bash > dir/bash_out 2> dir/tmp
+	< dir/infile bash > dir/bash_out 2> dir/tmp
 	STATUS=$?
 
 	#Bash gives line number with certain errors: we cut those
@@ -44,7 +40,7 @@ test()
 
 	rm -f dir/tmp
 
-	echo $1 | ./minishell > dir/minishell_out 2> dir/tmp
+	< dir/infile ./minishell > dir/minishell_out 2> dir/tmp
 	STATUS=$?
 	if ! grep -q "line " dir/tmp ; then
 		cut -d ' ' -f 2- dir/tmp > dir/minishell_error
@@ -76,17 +72,6 @@ test()
 	fi
 
 	rm dir/*
-}
-
-multiline_test()
-{
-	echo '#!/bin/bash' > dir/infile
-	chmod u+x dir/infile
-	for CMD in "$@" ; do
-		echo -e $CYAN$CMD $DEFAULT
-		echo $CMD >> dir/infile
-	done
-	test './dir/infile'
 }
 
 echo -e "$CYAN---Starting tests...$DEFAULT"
@@ -164,17 +149,6 @@ test './minishell'
 test '/bin/bash'
 test '/usr/bin/git status'
 
-# custom binary
-test './file' "#file doesn't exist"
-echo '#!/bin/bash
-ls' > file
-test './file' "# no exec permission"
-chmod a+x file
-test './file' "# ls"
-rm file
-
-test 'type -a kill'
-
 #redirects
 test 'ls > dir/outfile'
 test 'ls>dir/outfile'
@@ -203,8 +177,10 @@ test 'echo "./minishell" | ./minishell'
 echo
 echo -e "$CYAN---Multiline commands test suite...$DEFAULT"
 
-multiline_test 'echo $PWD' 'unset PWD' 'echo $PWD'
-multiline_test '<< x cat' 'hey' 'x'
+test 'echo $PWD' 'unset PWD' 'echo $PWD'
+test '<< x cat' 'hey' 'x'
+test 'echo "#!/bin/bash
+/bin/ls" >> dir/infile2' 'chmod +x dir/infile2' './dir/infile2' 'rm dir/infile2'
 
 echo -e "$CYAN---Finished$DEFAULT"
 

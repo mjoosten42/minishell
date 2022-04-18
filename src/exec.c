@@ -103,16 +103,12 @@ char	*find_local(char *str)
 		ft_putendl_fd(": is a directory", 2);
 		exit((1 << 7) - 2);
 	}
-	if (access(str, F_OK) < 0)
+	if (access(str, F_OK | F_OK) < 0)
 	{
 		ft_putstr_fd("minishell: ", 2);
 		perror(str);
-		exit((1 << 7) - 1);
-	}
-	if (access(str, X_OK) < 0)
-	{
-		ft_putstr_fd("minishell: ", 2);
-		perror(str);
+		if (access(str, F_OK))
+			exit((1 << 7) - 1);
 		exit((1 << 7) - 2);
 	}
 	return (str);
