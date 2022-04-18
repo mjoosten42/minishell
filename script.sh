@@ -14,6 +14,8 @@ make | grep -v "make: Nothing"
 mkdir dir
 rm -f log
 
+EXIT_CODES=true
+
 test()
 {
 	echo -ne $CYAN$1: $2 $DEFAULT
@@ -21,40 +23,41 @@ test()
 	echo $1 | bash > dir/bash_out 2> dir/tmp
 	STATUS=$?
 	#Bash gives line number with certain errors: we cut those
-	if grep -q "line " dir/tmp
-	then
+	if grep -q "line " dir/tmp ; then
 		cut -d ' ' -f 4- dir/tmp > dir/bash_error
 	else
 		cut -d ' ' -f 2- dir/tmp > dir/bash_error
 	fi
-	echo "exit code: $STATUS" >> dir/bash_out
+	
+	if [ "$EXIT_CODES" = true ] ; then
+		echo "exit code: $STATUS" >> dir/bash_out
+	fi
 
 	rm -f dir/tmp
 
 	echo $1 | ./minishell > dir/minishell_out 2> dir/tmp
 	STATUS=$?
-	if ! grep -q "line " dir/tmp
-	then
+	if ! grep -q "line " dir/tmp ; then
 		cut -d ' ' -f 2- dir/tmp > dir/minishell_error
 	fi
-	echo "exit code: $STATUS" >> dir/minishell_out
+
+	if [ "$EXIT_CODES" = true ] ; then
+		echo "exit code: $STATUS" >> dir/minishell_out
+	fi
 
 	rm -f dir/tmp
 
 	diff dir/bash_out dir/minishell_out | tail -n +2 | grep -e "< " -e "> " >> dir/tmp
 	diff dir/bash_error dir/minishell_error | tail -n +2 | grep -e "< " -e "> " >> dir/tmp
 	
-	if head -1 dir/tmp | grep -q "syntax error"
-	then
+	if head -1 dir/tmp | grep -q "syntax error" ; then
 		sed -i '' '1,2d' dir/tmp
-		if grep -q "syntax error" dir/tmp
-		then
+		if grep -q "syntax error" dir/tmp ; then
 			rm dir/tmp
 		fi
 	fi
 
-	if [ -s dir/tmp ]
-	then
+	if [ -s dir/tmp ] ; then
 		echo $1 >> log
 		cat dir/tmp >> log
 		echo -e $RED[KO] $DEFAULT
