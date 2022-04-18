@@ -91,16 +91,20 @@ void			unset(char *str);
 void			env(void);
 void			ft_exit(char **strs);
 
-// Token
+//	Sort
+void			sort(char **envs);
+
+//	Token
 t_token			*token_start(void);
 int				token_add_back(t_token *token, t_token *new_token);
 void			ft_remove_token(t_token *token);
 void			print_tokens(t_token *token);
 
-// Syscalls
+//	Syscalls
 pid_t			ft_fork(void);
 int				ft_pipe(int fildes[2]);
 int				ft_dup2(int fildes, int fildes2);
 int				ft_close(int fildes);
+
 
 #endif

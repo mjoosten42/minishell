@@ -24,8 +24,6 @@ void	export(char **strs)
 	}
 }
 
-#include <stdio.h>
-
 void	print_sorted_env(void)
 {
 	t_program_data	*pd;
@@ -33,9 +31,12 @@ void	print_sorted_env(void)
 
 	i = 0;
 	pd = pd_get();
+	sort(pd->env);
 	while (pd->env[i])
 	{
-		printf("declare -x %s\n",pd->env[i]);
+		ft_putstr("declare -x ");
+		ft_putstr(pd->env[i]);
+		ft_putstr("\n");
 		i++;
 	}
 }

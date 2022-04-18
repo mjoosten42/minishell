@@ -6,7 +6,7 @@
 #    By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/12 11:05:57 by rnijhuis          #+#    #+#              #
-#    Updated: 2022/04/14 16:27:34 by mjoosten         ###   ########.fr        #
+#    Updated: 2022/04/18 13:53:36 by mjoosten         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,7 @@ SRCS :=	main.c					\
 		exec.c					\
 		programdata.c			\
 		validate.c				\
+		sort.c					\
 		builtin/echo.c			\
 		builtin/cd.c			\
 		builtin/pwd.c			\
