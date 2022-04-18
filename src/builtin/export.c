@@ -7,6 +7,8 @@ void	print_sorted_env(void);
 void	export(char **strs)
 {
 	t_program_data	*pd;
+	char			*str;
+	int				len;
 	int				i;
 
 	i = 1;
@@ -16,8 +18,14 @@ void	export(char **strs)
 		print_sorted_env();
 	while (strs[i])
 	{
-		if (is_export_valid(strs[i]))
+		len = is_export_valid(strs[i]);
+		if (len)
+		{
+			str = ft_substr(strs[i], 0, len);
+			unset(str);
+			free(str);
 			add_to_env(strs[i]);
+		}
 		else
 			pd->last_exit_status = 1;
 		i++;
@@ -43,27 +51,21 @@ void	print_sorted_env(void)
 
 int	is_export_valid(char *str)
 {
-	char	*id;
 	char	*eq;
 	int		eq_sign_pos;
 	int		len;
 
 	eq = ft_strchr(str, '=');
-	if (!eq)
-		return (0);
 	eq_sign_pos = eq - str;
 	len = export_name_len(str);
-	if (len != eq_sign_pos)
+	if (!eq_sign_pos || len != eq_sign_pos)
 	{
-		ft_putstr_fd("export: '", 2);
+		ft_putstr_fd("minishell: export: `", 2);
 		ft_putstr_fd(str, 2);
 		ft_putendl_fd("': not a valid identifier", 2);
 		return (0);
 	}
-	id = ft_substr(str, 0, len);
-	unset(id);
-	free(id);
-	return (1);
+	return (len);
 }
 
 int	export_name_len(char *str)

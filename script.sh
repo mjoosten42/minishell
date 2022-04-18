@@ -24,37 +24,33 @@ test()
 		echo $CMD >> dir/infile
 	done
 
-	< dir/infile bash > dir/bash_out 2> dir/tmp
+	< dir/infile bash > dir/bash_out 2> dir/tmp1
 	STATUS=$?
 
-	#Bash gives line number with certain errors: we cut those
-	if grep -q "line " dir/tmp ; then
-		cut -d ' ' -f 4- dir/tmp > dir/bash_error
+	if grep -q "line " dir/tmp1 ; then
+		cut -d ' ' -f 4- dir/tmp1 > dir/bash_error
 	else
-		cut -d ' ' -f 2- dir/tmp > dir/bash_error
+		cut -d ' ' -f 2- dir/tmp1 > dir/bash_error
 	fi
-	
+
 	if [ "$EXIT_CODES" = true ] ; then
-		echo "exit code: $STATUS" >> dir/bash_out
+		echo $STATUS >> dir/bash_out
 	fi
 
-	rm -f dir/tmp
-
-	< dir/infile ./minishell > dir/minishell_out 2> dir/tmp
+	< dir/infile ./minishell > dir/minishell_out 2> dir/tmp2
 	STATUS=$?
-	if ! grep -q "line " dir/tmp ; then
-		cut -d ' ' -f 2- dir/tmp > dir/minishell_error
+
+	if ! grep -q "line " dir/tmp2 ; then
+		cut -d ' ' -f 2- dir/tmp2 > dir/minishell_error
 	fi
 
 	if [ "$EXIT_CODES" = true ] ; then
-		echo "exit code: $STATUS" >> dir/minishell_out
+		echo $STATUS >> dir/minishell_out
 	fi
-
-	rm -f dir/tmp
 
 	diff dir/bash_out dir/minishell_out | tail -n +2 | grep -e "< " -e "> " >> dir/tmp
 	diff dir/bash_error dir/minishell_error | tail -n +2 | grep -e "< " -e "> " >> dir/tmp
-	
+
 	if head -1 dir/tmp | grep -q "syntax error" ; then
 		sed -i '' '1,2d' dir/tmp
 		if grep -q "syntax error" dir/tmp ; then
@@ -77,14 +73,6 @@ test()
 echo -e "$CYAN---Starting tests...$DEFAULT"
 echo
 
-echo -e "$CYAN--- CD test suite ---$DEFAULT"
-# cd tests
-test 'cd'
-test 'cd /'
-test 'cd $HOME'
-test 'cd nonexistent_dir'
-test 'cd cd cd'
-
 echo
 echo -e "$CYAN--- Echo test suite ---$DEFAULT"
 # Echo tests
@@ -97,10 +85,29 @@ test 'echo --n a'
 test 'echo n- a'
 test 'echo n a'
 
+echo -e "$CYAN--- CD test suite ---$DEFAULT"
+# cd tests
+test 'cd'
+test 'cd /'
+test 'cd $HOME'
+test 'cd nonexistent_dir'
+test 'cd cd cd'
+
 echo
 echo -e "$CYAN--- PWD test suite ---$DEFAULT"
 # Pwd tests
 test 'pwd'
+
+echo
+echo -e "$CYAN--- Export test suite ---$DEFAULT"
+# Pwd tests
+test 'export variable=1' 'env | grep variable'
+test 'export variable1=y variable2=x' 'env | grep -e variable1 -e variable2'
+test 'export v_ariable=4'
+test 'export _v_ariable=4'
+test 'export variable='
+test 'export ='
+test 'export =hey'
 
 echo
 echo -e "$CYAN--- Lexer test suite ---$DEFAULT"
@@ -122,7 +129,6 @@ echo -e "$CYAN--- General commands test suite ---$DEFAULT"
 # commands (PATH)
 test 'ls'
 test 'ls -a'
-test 'ls -l -a'
 test 'ls not_a_dir'
 test 'cat Makefile minishell'
 test 'not_a_command'
