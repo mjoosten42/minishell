@@ -19,6 +19,8 @@ void	echo(char **strs)
 	nl = ft_strncmp(strs[1], "-n", 3);
 	if (!nl)
 		i++;
+	while (!ft_strncmp(strs[i], "-n", 3))
+		i++;
 	while (strs[i])
 	{
 		ft_putstr(strs[i]);

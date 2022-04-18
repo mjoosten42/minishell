@@ -51,7 +51,7 @@ void	ft_increment_shlvl(void)
 
 	shlvl = 0;
 	str = ft_get_env_from_pd("SHLVL");
-	unset("SHLVL");
+	unset_single("SHLVL");
 	if (str)
 		shlvl = ft_atoi(str);
 	free(str);

@@ -9,7 +9,7 @@ int	is_builtin_unforked(char **strs)
 		return (0);
 	str_len = ft_strlen(*strs) + 1;
 	if (!ft_strncmp(*strs, "unset", str_len))
-		unset(strs[1]);
+		unset(strs);
 	else if (!ft_strncmp(*strs, "cd", str_len))
 		cd(strs[1]);
 	else if (!ft_strncmp(*strs, "exit", str_len))

@@ -87,7 +87,8 @@ void			echo(char **strs);
 void			cd(char *path);
 void			pwd(void);
 void			export(char **strs);
-void			unset(char *str);
+void			unset_single(char *str);
+void			unset(char **strs);
 void			env(void);
 void			ft_exit(char **strs);
 

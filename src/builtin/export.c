@@ -22,7 +22,7 @@ void	export(char **strs)
 		if (len)
 		{
 			str = ft_substr(strs[i], 0, len);
-			unset(str);
+			unset_single(str);
 			free(str);
 			add_to_env(strs[i]);
 		}

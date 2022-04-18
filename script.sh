@@ -14,45 +14,57 @@ make | grep -v "make: Nothing"
 mkdir dir
 rm -f log
 
-EXIT_CODES=true
+EXIT_CODES=false
 SHOW_CMD=true
+FD=true
 
 test()
 {
-	for CMD in "$@" ; do
-		echo -ne "$CYAN$CMD: $DEFAULT"
+	for CMD in "$@" ; do	
+		if [ "$SHOW_CMD" = true ] ; then
+			echo -ne "$CYAN$CMD: $DEFAULT"
+		fi
 		echo $CMD >> dir/infile
 	done
 
-	< dir/infile bash > dir/bash_out 2> dir/tmp1
+	if [ "$EXIT_CODES" = true ] ; then
+		echo 'echo $?' >> dir/infile
+	fi
+
+	< dir/infile ./minishell > dir/minishell_out 2> dir/minishell_error
 	STATUS=$?
 
-	if grep -q "line " dir/tmp1 ; then
-		cut -d ' ' -f 4- dir/tmp1 > dir/bash_error
-	else
-		cut -d ' ' -f 2- dir/tmp1 > dir/bash_error
+	if grep -q "minishell" dir/minishell_error ; then
+		cut -d ' ' -f 2- dir/minishell_error > dir/tmp2
+		cat dir/tmp2 > dir/minishell_error
 	fi
 
-	if [ "$EXIT_CODES" = true ] ; then
-		echo $STATUS >> dir/bash_out
+	if grep -q "line " dir/minishell_error ; then
+		cut -d ' ' -f 3- dir/minishell_error > dir/tmp2
+		cat dir/tmp2 > dir/minishell_error
 	fi
 
-	< dir/infile ./minishell > dir/minishell_out 2> dir/tmp2
+	echo 'set +e' | cat - dir/infile > dir/tmp3
+	cat dir/tmp3 > dir/infile
+
+	< dir/infile bash > dir/bash_out 2> dir/bash_error
 	STATUS=$?
 
-	if ! grep -q "line " dir/tmp2 ; then
-		cut -d ' ' -f 2- dir/tmp2 > dir/minishell_error
+	if grep -q "bash" dir/bash_error ; then
+		cut -d ' ' -f 2- dir/bash_error > dir/tmp1
+		cat dir/tmp1 > dir/bash_error
 	fi
 
-	if [ "$EXIT_CODES" = true ] ; then
-		echo $STATUS >> dir/minishell_out
+	if grep -q "line " dir/bash_error ; then
+		cut -d ' ' -f 3- dir/bash_error > dir/tmp1
+		cat dir/tmp1 > dir/bash_error
 	fi
 
 	diff dir/bash_out dir/minishell_out | tail -n +2 | grep -e "< " -e "> " >> dir/tmp
 	diff dir/bash_error dir/minishell_error | tail -n +2 | grep -e "< " -e "> " >> dir/tmp
 
 	if head -1 dir/tmp | grep -q "syntax error" ; then
-		sed -i '' '1,2d' dir/tmp
+		sed -in '1,2d' dir/tmp
 		if grep -q "syntax error" dir/tmp ; then
 			rm dir/tmp
 		fi
@@ -74,33 +86,50 @@ echo -e "$CYAN---Starting tests...$DEFAULT"
 echo
 
 echo
-echo -e "$CYAN--- Echo test suite ---$DEFAULT"
+echo -e "$CYAN--- echo test suite ---$DEFAULT"
 # Echo tests
+test 'ech'
 test 'echo'
 test 'echo -n'
 test 'echo $PWD'
+test 'echo $NONEXISTING'
+test 'echo a b c'
+test 'echo a b	c'
 test 'echo forrest'
 test 'echo - a'
 test 'echo --n a'
 test 'echo n- a'
 test 'echo n a'
+test 'echo -nABC'
+test 'echo -n -n'
+#test 'echo -nn' bash is stupid
+test 'ls | echo a b'
+test 'ls | echo'
+test 'ls | echo -n'
 
-echo -e "$CYAN--- CD test suite ---$DEFAULT"
+echo -e "$CYAN--- cd test suite ---$DEFAULT"
 # cd tests
-test 'cd'
+test 'c'
 test 'cd /'
-test 'cd $HOME'
+test 'cd $HOME' 'cd '
 test 'cd nonexistent_dir'
 test 'cd cd cd'
+test 'cd src/ ..'
+test 'cd pwd'
 
 echo
-echo -e "$CYAN--- PWD test suite ---$DEFAULT"
+echo -e "$CYAN--- pwd test suite ---$DEFAULT"
 # Pwd tests
+test 'pw'
 test 'pwd'
+test 'unset PWD' 'pwd'
+test '/pwd'
+test 'pwd' 'cd ..' 'pwd'
 
 echo
-echo -e "$CYAN--- Export test suite ---$DEFAULT"
+echo -e "$CYAN--- export test suite ---$DEFAULT"
 # Pwd tests
+test 'expor'
 test 'export variable=1' 'env | grep variable'
 test 'export variable1=y variable2=x' 'env | grep -e variable1 -e variable2'
 test 'export v_ariable=4'
@@ -108,6 +137,13 @@ test 'export _v_ariable=4'
 test 'export variable='
 test 'export ='
 test 'export =hey'
+
+echo
+echo -e "$CYAN--- unset test suite ---$DEFAULT"
+# Pwd tests
+test 'unse PWD' 'echo $PWD'
+test 'unset'
+test 'unset PWD' 'echo $PWD'
 
 echo
 echo -e "$CYAN--- Lexer test suite ---$DEFAULT"
@@ -123,6 +159,8 @@ test 'ls -a | echo -n'
 test 'cat -e cat -e cat -e cat -e cat -e cat -e'
 test 'cat cat cat cat cat cat cat'
 test 'no_command'
+test 'echo ""'
+test 'echo <<>><>|$|	'
 
 echo
 echo -e "$CYAN--- General commands test suite ---$DEFAULT"
@@ -163,7 +201,7 @@ test '> dir/outfile'
 test '< dir/outfile'
 
 # pipes
-test '|'
+test '|' 'echo hey'
 test 'ls |'
 test 'ls|'
 test ' |'
