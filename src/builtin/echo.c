@@ -11,10 +11,7 @@ void	echo(char **strs)
 	pd = pd_get();
 	pd->last_exit_status = 0;
 	if (!strs[1])
-	{
-		ft_putchar('\n');
-		return ;
-	}
+		return (ft_putchar_fd('\n', 1));
 	i = 1;
 	nl = ft_strncmp(strs[1], "-n", 3);
 	if (!nl)
