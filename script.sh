@@ -84,6 +84,7 @@ test()
 	rm dir/*
 }
 
+<< test_word
 echo -e "$YELLOW--- echo test suite ---$DEFAULT"
 # Echo tests
 test 'ech'
@@ -226,6 +227,7 @@ test 'ls | | cat'
 test 'ls > test_log | cat'
 test '> log | cat'
 test '< | >'
+test ''
 
 # pipes combined with redirects
 test '< Makefile cat | xargs > dir/outfile'
@@ -258,6 +260,42 @@ test './minishell'
 test 'zsh'
 
 fi
+
+
+test 'export bla="s -a"\nl$bla'
+test 'export bla="s -a"\nl"$bla"'
+
+# Generic tests
+test ''
+test '/bin/ls'
+
+# Echo tests
+test 'echo'
+test 'echo ""'
+test 'echo < |'
+test 'echo > |'
+test 'echo << |'
+test 'echo >> |'
+test 'echo -nABC'
+test 'echo $BLA$BLA=10$BLA'
+test 'echo a"bc"d'
+test 'echo a"bcd"e'
+test "echo 'hoi'"'"bla"'
+test 'echo -n'
+test 'echo bla -n'
+test 'echo -n -n -n'
+test 'echo -n -n -n bla'
+test 'ls | echo -n bla'
+
+test 'export ='
+test 'export =10'
+test 'export "|"=10'
+test 'export ">"=10'
+test 'export "$"=10'
+test 'export "["=10'
+test 'export "111"="222"'
+
+test_word
 
 echo
 echo -e "$YELLOW---Finished$DEFAULT"

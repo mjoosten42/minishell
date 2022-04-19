@@ -4,7 +4,6 @@ README.md
 dir
 include
 libs
-log
 minishell
 objs
 script.sh
