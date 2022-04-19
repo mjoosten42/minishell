@@ -4,8 +4,10 @@
 
 EXIT_CODES=true
 SHOW_CMD=true
-FD=true
+#$$ needs to expands to pid
+CHECK_FD=true
 MANUAL=false
+BASH=false
 
 RED='\033[0;31m'
 CYAN='\033[0;36m'
@@ -15,6 +17,7 @@ DEFAULT='\033[0m'
 
 make | grep -v "make: Nothing"
 
+rm -r dir
 mkdir dir
 rm -f log
 
@@ -31,11 +34,11 @@ test()
 		echo 'echo exit code: $?' >> dir/infile
 	fi
 
-	if [ "$FD" = true ] ; then
+	if [ "$CHECK_FD" = true ] ; then
 		echo "lsof -p \$\$ -a -d 0-256 | tail -n +2 | awk '{print \$4}'" >> dir/infile
 	fi
 
-	< dir/infile ./minishell > dir/minishell_out 2> dir/minishell_error
+	./minishell < dir/infile > dir/minishell_out 2> dir/minishell_error
 
 	if grep -q "minishell" dir/minishell_error ; then
 		cut -d ' ' -f 2- dir/minishell_error > dir/tmp
@@ -47,7 +50,7 @@ test()
 		cat dir/tmp > dir/minishell_error
 	fi
 
-	< dir/infile bash > dir/bash_out 2> dir/bash_error
+	bash < dir/infile > dir/bash_out 2> dir/bash_error
 
 	if grep -q "bash" dir/bash_error ; then
 		cut -d ' ' -f 2- dir/bash_error > dir/tmp
@@ -109,6 +112,7 @@ test 'echo a     b'
 test 'echo "a    b"'
 #test 'echo -nn' bash is stupid
 test 'ls | echo a b'
+test 'ls | cat -e | cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| echo a b'
 test 'ls | echo'
 test 'ls | echo -n'
 
@@ -143,6 +147,9 @@ test 'export variable='
 test 'export ='
 test 'export =hey'
 test 'export variable1=y 6variable=3 variable7=hey vari5albe=wrong'
+test 'export LS="ls -a"' '$LS'
+test 'export LS="s -"' '"l"$LS"a"'
+ 
 
 echo
 echo -e "$YELLOW--- unset test suite ---$DEFAULT"
@@ -151,6 +158,7 @@ test 'unse PWD' 'echo $PWD'
 test 'unset'
 test 'echo $PWD' 'unset PWD' 'echo $PWD'
 test 'pwd' 'cd ..' 'pwd' 'cd $HOME' 'pwd'
+test 'mkdir test' 'cd test' 'pwd' 'rmdir ../test' 'pwd' 'cd ..' 'pwd'
 
 echo
 echo -e "$YELLOW--- exit commands test suite...$DEFAULT"
@@ -188,6 +196,8 @@ test 'cat cat cat cat cat cat cat'
 test 'no_command'
 test 'echo ""'
 test 'echo <<>><>|$|	'
+test 'echo "<<">>dir/a"<">/dev/null"|$PWD|"	'
+test 'export x=' 'echo -$x-' 'export x=_' 'echo _$x_'
 
 echo
 echo -e "$YELLOW--- General commands test suite ---$DEFAULT"
@@ -198,14 +208,16 @@ test 'ls not_a_dir'
 test 'cat Makefile minishell'
 test 'not_a_command'
 test 'git log --pretty="format:%H"'
-test 'bash -c exit'
 test 'sh -c exit'
-
-#test '.'	error diff
+test 'bash -c exit'
+test 'export MSG="Hello "' 'bash -c "echo $MSG"'
 test '/'
-
-# commands (absolute path)
+test 'a/'
+test '/b'
+test 'a/b'
+test '/dir/infile'
 test '/usr/bin/git status'
+test 'sleep 100 | echo a'
 
 #redirects
 test 'ls > dir/outfile'
@@ -236,21 +248,29 @@ test '<Makefile|>dir/outfile'
 
 #test 'sleep 1 | ls test'	subject requires most _recent_ exit code
 
+test "head -10 <Makefile | sed -n '///'>dir/outfile"
 test 'echo "./minishell" | ./minishell'
-
-echo
-echo -e "$YELLOW---Multiline commands test suite...$DEFAULT"
-
-test '<< x cat' 'hey' 'x'
 test 'echo "#!/bin/bash
 /bin/ls" >> dir/infile2' 'chmod +x dir/infile2' './dir/infile2' 'rm dir/infile2'
+
+echo
+echo -e "$YELLOW--- heredoc test suite ---$DEFAULT"
+test '<< x cat' 'hey' 'not x' 'xpartway' 'x'
+test '<<x' 'now' 'without' 'space' 'x'
+test '<<'
+test '<< x'
+test '<<x'
+test '<<x <Makefile cat' 'x'
+test '<Makefile <<x cat' 'x'
+test 'export x=end' 'cat << $x' 'end' 'x' '$x'
+test 'export x=end' 'cat <<$x' 'end' 'x' '$x'
 
 if [ "$MANUAL" = true ] ; then
 
 echo
 echo -e "$YELLOW---The following should be done manually...$DEFAULT"
 #bash adds to env
-test '.env'
+test 'env'
 #bash tries to complete pipe
 test 'ls|'
 test 'ls |'
@@ -296,6 +316,18 @@ test 'export "["=10'
 test 'export "111"="222"'
 
 test_word
+if [ "$BASH" = true ] ; then
+
+echo
+echo -e "$YELLOW---The following should fail, unless you reverse engineered bash...$DEFAULT"
+test '.'
+test 'test sleep 1 | ls test'
+test 'echo hey | kill -QUIT $$'
+test 'kill -QUIT $$'
+test 'kill -INT $$'
+test 'echo -nn' bash is stupid
+
+fi
 
 echo
 echo -e "$YELLOW---Finished$DEFAULT"
