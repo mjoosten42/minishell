@@ -64,7 +64,6 @@ void			ft_lexer(t_token *head, char *str);
 
 //	Expand
 int				ft_expand(t_token *head);
-char			*ft_get_env_from_pd(char *str);
 
 //	Parser
 void			ft_parse(t_token *head, int pipefd);
@@ -90,6 +89,7 @@ void			export(char **strs);
 void			unset_single(char *str);
 void			unset(char **strs);
 void			env(void);
+char			*ft_get_env_from_pd(char *str);
 void			ft_exit(char **strs);
 
 //	Sort

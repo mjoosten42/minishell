@@ -239,6 +239,7 @@ test 'ls > test_log | cat'
 test '> log | cat'
 test '< | >'
 test ''
+test '<<$PWD_ cat' '$PWD_'
 
 # pipes combined with redirects
 test '< Makefile cat | xargs > dir/outfile'
@@ -277,6 +278,7 @@ test 'ls |'
 test 'bash'
 test './minishell'
 test 'zsh'
+test 'export WORD="a   b"' 'echo $WORD'
 
 fi
 

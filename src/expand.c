@@ -92,11 +92,11 @@ int	ft_expand_quotes(t_token *token, t_type type)
 }
 
 //	Temporary: $$ expands to pid
-int	expand_$$(t_token *token)
+int	expand_pid(t_token *token)
 {
 	if (!ft_strncmp(token->value, "$", 2)
-	&& token->next && token->next->type == dollar
-	&& !ft_strncmp(token->next->value, "$", 2))
+		&& token->next && token->next->type == dollar
+		&& !ft_strncmp(token->next->value, "$", 2))
 	{
 		free(token->value);
 		token->value = ft_itoa(getpid());
@@ -109,11 +109,11 @@ int	expand_$$(t_token *token)
 void	ft_expand_dollar(t_token *token)
 {
 	t_program_data	*pd;
-	char		*str;
+	char			*str;
 
 	pd = pd_get();
 	token->type = word;
-	if (expand_$$(token))
+	if (expand_pid(token))
 		return ;
 	else if (token->value[1] == '?')
 	{
@@ -135,26 +135,4 @@ void	ft_expand_dollar(t_token *token)
 		free(str);
 		ft_remove_token(token->next);
 	}
-}
-
-char	*ft_get_env_from_pd(char *str)
-{
-	t_program_data	*pd;
-	char			*tmp;
-	int				len;
-	int				i;
-
-	i = 0;
-	pd = pd_get();
-	tmp = ft_strjoin(str, "=");
-	len = ft_strlen(tmp);
-	while (pd->env[i] && ft_strncmp(pd->env[i], tmp, len))
-		i++;
-	free(tmp);
-	if (!pd->env[i])
-		return (NULL);
-	len = 0;
-	while (pd->env[i][len] != '=')
-		len++;
-	return (ft_substr(pd->env[i], len + 1, ft_strlen(pd->env[i]) - len));
 }
