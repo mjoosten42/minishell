@@ -17,9 +17,9 @@ DEFAULT='\033[0m'
 
 make | grep -v "make: Nothing"
 
-rm -r dir
+rm -rf dir
 mkdir dir
-rm -f log
+rm -rf log
 
 test()
 {
@@ -84,10 +84,11 @@ test()
 		echo -e $GREEN[OK] $DEFAULT
 	fi
 
-	rm dir/*
+	rm -rf dir/*
 }
 
 << test_word
+test_word
 echo -e "$YELLOW--- echo test suite ---$DEFAULT"
 # Echo tests
 test 'ech'
@@ -315,7 +316,6 @@ test 'export "$"=10'
 test 'export "["=10'
 test 'export "111"="222"'
 
-test_word
 if [ "$BASH" = true ] ; then
 
 echo
