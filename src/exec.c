@@ -3,7 +3,7 @@
 #include <sys/stat.h>
 
 void	ft_close_fds(int fds[2]);
-char	*ft_search_paths(char *str);
+char	*ft_search_paths(char *str, char **paths);
 char	*ft_getpath(char *str);
 char	*find_local(char *str);
 
@@ -43,28 +43,34 @@ void	ft_close_fds(int fds[2])
 
 char	*ft_getpath(char *str)
 {
+	char	**paths;
+	char	*env_path;
 	char	*path;
 
 	path = NULL;
 	if (*str != '.' && !ft_strchr(str, '/'))
-		path = ft_search_paths(str);
+	{
+		env_path = ft_get_env_from_pd("PATH");
+		if (!env_path)
+			return (find_local(str));
+		paths = ft_split(env_path, ':');
+		free(env_path);
+		if (!paths)
+			ft_error(NULL);
+		path = ft_search_paths(str, paths);
+		ft_free_array(paths);
+	}
 	else
 		path = find_local(str);
 	return (path);
 }
 
-char	*ft_search_paths(char *str)
+char	*ft_search_paths(char *str, char **paths)
 {
-	char	**paths;
 	char	*tmp;
 	int		i;
 
 	i = 0;
-	tmp = ft_get_env_from_pd("PATH");
-	if (!tmp)
-		return (find_local(str));
-	paths = ft_split(tmp, ':');
-	free(tmp);
 	while (paths[i])
 	{
 		tmp = ft_strjoin(paths[i], "/");
@@ -72,11 +78,7 @@ char	*ft_search_paths(char *str)
 		paths[i] = ft_strjoin(tmp, str);
 		free(tmp);
 		if (!access(paths[i], F_OK))
-		{
-			tmp = ft_strdup(paths[i]);
-			ft_free_array(paths);
-			return (tmp);
-		}
+			return (ft_strdup(paths[i]));
 		i++;
 	}
 	ft_putstr_fd("minishell: ", 2);

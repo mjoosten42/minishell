@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#lsof -p $$ -a -d 0-256 | tail -n +2 | awk '{print $4}'
+
 EXIT_CODES=true
 SHOW_CMD=true
 FD=true
@@ -36,25 +38,25 @@ test()
 	< dir/infile ./minishell > dir/minishell_out 2> dir/minishell_error
 
 	if grep -q "minishell" dir/minishell_error ; then
-		cut -d ' ' -f 2- dir/minishell_error > dir/tmp2
-		cat dir/tmp2 > dir/minishell_error
+		cut -d ' ' -f 2- dir/minishell_error > dir/tmp
+		cat dir/tmp > dir/minishell_error
 	fi
 
 	if grep -q "line " dir/minishell_error ; then
-		cut -d ' ' -f 3- dir/minishell_error > dir/tmp2
-		cat dir/tmp2 > dir/minishell_error
+		cut -d ' ' -f 3- dir/minishell_error > dir/tmp
+		cat dir/tmp > dir/minishell_error
 	fi
 
 	< dir/infile bash > dir/bash_out 2> dir/bash_error
 
 	if grep -q "bash" dir/bash_error ; then
-		cut -d ' ' -f 2- dir/bash_error > dir/tmp1
-		cat dir/tmp1 > dir/bash_error
+		cut -d ' ' -f 2- dir/bash_error > dir/tmp
+		cat dir/tmp > dir/bash_error
 	fi
 
 	if grep -q "line " dir/bash_error ; then
-		cut -d ' ' -f 3- dir/bash_error > dir/tmp1
-		cat dir/tmp1 > dir/bash_error
+		cut -d ' ' -f 3- dir/bash_error > dir/tmp
+		cat dir/tmp > dir/bash_error
 	fi
 
 	if grep -q "syntax error" dir/bash_error ; then
@@ -66,15 +68,15 @@ test()
 		echo -n > dir/minishell_out 
 	fi
 
-	diff dir/bash_out dir/minishell_out | tail -n +2 | grep -e "< " -e "> " >> dir/tmp
-	diff dir/bash_error dir/minishell_error | tail -n +2 | grep -e "< " -e "> " >> dir/tmp
+	diff dir/bash_out dir/minishell_out | tail -n +2 | grep -e "< " -e "> " >> dir/diff
+	diff dir/bash_error dir/minishell_error | tail -n +2 | grep -e "< " -e "> " >> dir/diff
 
 
-	if [ -s dir/tmp ] ; then
+	if [ -s dir/diff ] ; then
 		echo $1 >> log
-		cat dir/tmp >> log
+		cat dir/diff >> log
 		echo -e $RED[KO] $DEFAULT
-		cat < dir/tmp
+		cat < dir/diff
 	else
 		echo -e $GREEN[OK] $DEFAULT
 	fi
@@ -87,15 +89,19 @@ echo -e "$YELLOW--- echo test suite ---$DEFAULT"
 test 'ech'
 test 'echo'
 test 'echo -n'
+test 'echo -1'
 test 'echo $PWD'
 test 'echo $NONEXISTING'
 test 'echo a b c'
 test 'echo a b	c'
+test 'echo "a b  c"'
 test 'echo forrest'
 test 'echo - a'
+test 'echo a -n'
 test 'echo --n a'
 test 'echo n- a'
 test 'echo n a'
+test 'echo -n a'
 test 'echo -nABC'
 test 'echo -n -n'
 test 'echo a     b'
@@ -143,6 +149,7 @@ echo -e "$YELLOW--- unset test suite ---$DEFAULT"
 test 'unse PWD' 'echo $PWD'
 test 'unset'
 test 'echo $PWD' 'unset PWD' 'echo $PWD'
+test 'pwd' 'cd ..' 'pwd' 'cd $HOME' 'pwd'
 
 echo
 echo -e "$YELLOW--- exit commands test suite...$DEFAULT"
@@ -155,6 +162,8 @@ test 'exit wrong'
 test 'exit wrong_command'
 test 'exit a 3'
 test 'exit -a 3'
+test 'exit 3 a'
+test 'exit -3 a'
 
 echo
 echo -e "$YELLOW--- env commands test suite...$DEFAULT"
@@ -195,7 +204,6 @@ test 'sh -c exit'
 test '/'
 
 # commands (absolute path)
-test '/bin/bash'
 test '/usr/bin/git status'
 
 #redirects
@@ -236,14 +244,22 @@ test 'echo "#!/bin/bash
 /bin/ls" >> dir/infile2' 'chmod +x dir/infile2' './dir/infile2' 'rm dir/infile2'
 
 if [ "$MANUAL" = true ] ; then
+
 echo
 echo -e "$YELLOW---The following should be done manually...$DEFAULT"
-test './minishell'
+#bash adds to env
 test '.env'
+#bash tries to complete pipe
 test 'ls|'
 test 'ls |'
+#infile gets taken over
+test 'bash'
+test './minishell'
+test 'zsh'
+
 fi
 
+echo
 echo -e "$YELLOW---Finished$DEFAULT"
 
-rmdir dir
+rm -r dir
