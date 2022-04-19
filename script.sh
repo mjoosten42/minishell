@@ -17,9 +17,9 @@ DEFAULT='\033[0m'
 
 make | grep -v "make: Nothing"
 
-rm -r dir
+rm -rf dir
 mkdir dir
-rm -f log
+rm -rf log
 
 test()
 {
@@ -84,7 +84,7 @@ test()
 		echo -e $GREEN[OK] $DEFAULT
 	fi
 
-	rm dir/*
+	rm -rf dir/*
 }
 
 echo -e "$YELLOW--- echo test suite ---$DEFAULT"
