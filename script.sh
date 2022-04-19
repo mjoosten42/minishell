@@ -57,12 +57,18 @@ test()
 		cat dir/tmp1 > dir/bash_error
 	fi
 
+	if grep -q "syntax error" dir/bash_error ; then
+		echo "syntax error" > dir/bash_error
+	fi
+
+	if grep -q "syntax error" dir/minishell_error ; then
+		echo "syntax error" > dir/minishell_error
+		echo -n > dir/minishell_out 
+	fi
+
 	diff dir/bash_out dir/minishell_out | tail -n +2 | grep -e "< " -e "> " >> dir/tmp
 	diff dir/bash_error dir/minishell_error | tail -n +2 | grep -e "< " -e "> " >> dir/tmp
 
-	if grep "syntax error" dir/tmp ; then
-		cat dir/tmp
-	fi
 
 	if [ -s dir/tmp ] ; then
 		echo $1 >> log
@@ -198,8 +204,6 @@ test '< dir/outfile'
 
 # pipes
 test '|'
-test 'ls |'
-test 'ls|'
 test ' |'
 test '| ls'
 test 'ls | cat'
@@ -227,6 +231,8 @@ echo
 echo -e "$YELLOW---The following should be done manually...$DEFAULT"
 test './minishell'
 test '.env'
+test 'ls|'
+test 'ls |'
 fi
 
 echo -e "$YELLOW---Finished$DEFAULT"
