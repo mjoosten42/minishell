@@ -1,22 +1,20 @@
 #!/bin/bash
 
-# get pid:
-#'lsof -p $$ -a -d 0-256'
-#'ps | tail -1 | cut -d " " -f1'
+EXIT_CODES=true
+SHOW_CMD=true
+FD=true
+MANUAL=false
 
 RED='\033[0;31m'
 CYAN='\033[0;36m'
 GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
 DEFAULT='\033[0m'
 
 make | grep -v "make: Nothing"
 
 mkdir dir
 rm -f log
-
-EXIT_CODES=false
-SHOW_CMD=true
-FD=true
 
 test()
 {
@@ -28,11 +26,14 @@ test()
 	done
 
 	if [ "$EXIT_CODES" = true ] ; then
-		echo 'echo $?' >> dir/infile
+		echo 'echo exit code: $?' >> dir/infile
+	fi
+
+	if [ "$FD" = true ] ; then
+		echo "lsof -p \$\$ -a -d 0-256 | tail -n +2 | awk '{print \$4}'" >> dir/infile
 	fi
 
 	< dir/infile ./minishell > dir/minishell_out 2> dir/minishell_error
-	STATUS=$?
 
 	if grep -q "minishell" dir/minishell_error ; then
 		cut -d ' ' -f 2- dir/minishell_error > dir/tmp2
@@ -44,11 +45,7 @@ test()
 		cat dir/tmp2 > dir/minishell_error
 	fi
 
-	echo 'set +e' | cat - dir/infile > dir/tmp3
-	cat dir/tmp3 > dir/infile
-
 	< dir/infile bash > dir/bash_out 2> dir/bash_error
-	STATUS=$?
 
 	if grep -q "bash" dir/bash_error ; then
 		cut -d ' ' -f 2- dir/bash_error > dir/tmp1
@@ -63,11 +60,8 @@ test()
 	diff dir/bash_out dir/minishell_out | tail -n +2 | grep -e "< " -e "> " >> dir/tmp
 	diff dir/bash_error dir/minishell_error | tail -n +2 | grep -e "< " -e "> " >> dir/tmp
 
-	if head -1 dir/tmp | grep -q "syntax error" ; then
-		sed -in '1,2d' dir/tmp
-		if grep -q "syntax error" dir/tmp ; then
-			rm dir/tmp
-		fi
+	if grep "syntax error" dir/tmp ; then
+		cat dir/tmp
 	fi
 
 	if [ -s dir/tmp ] ; then
@@ -82,11 +76,7 @@ test()
 	rm dir/*
 }
 
-echo -e "$CYAN---Starting tests...$DEFAULT"
-echo
-
-echo
-echo -e "$CYAN--- echo test suite ---$DEFAULT"
+echo -e "$YELLOW--- echo test suite ---$DEFAULT"
 # Echo tests
 test 'ech'
 test 'echo'
@@ -107,18 +97,18 @@ test 'ls | echo a b'
 test 'ls | echo'
 test 'ls | echo -n'
 
-echo -e "$CYAN--- cd test suite ---$DEFAULT"
+echo -e "$YELLOW--- cd test suite ---$DEFAULT"
 # cd tests
 test 'c'
 test 'cd /'
-test 'cd $HOME' 'cd '
+test 'cd $HOME' 'cd ..'
 test 'cd nonexistent_dir'
 test 'cd cd cd'
 test 'cd src/ ..'
 test 'cd pwd'
 
 echo
-echo -e "$CYAN--- pwd test suite ---$DEFAULT"
+echo -e "$YELLOW--- pwd test suite ---$DEFAULT"
 # Pwd tests
 test 'pw'
 test 'pwd'
@@ -127,7 +117,7 @@ test '/pwd'
 test 'pwd' 'cd ..' 'pwd'
 
 echo
-echo -e "$CYAN--- export test suite ---$DEFAULT"
+echo -e "$YELLOW--- export test suite ---$DEFAULT"
 # Pwd tests
 test 'expor'
 test 'export variable=1' 'env | grep variable'
@@ -137,16 +127,35 @@ test 'export _v_ariable=4'
 test 'export variable='
 test 'export ='
 test 'export =hey'
+test 'export variable1=y 6variable=3 variable7=hey vari5albe=wrong'
 
 echo
-echo -e "$CYAN--- unset test suite ---$DEFAULT"
+echo -e "$YELLOW--- unset test suite ---$DEFAULT"
 # Pwd tests
 test 'unse PWD' 'echo $PWD'
 test 'unset'
-test 'unset PWD' 'echo $PWD'
+test 'echo $PWD' 'unset PWD' 'echo $PWD'
 
 echo
-echo -e "$CYAN--- Lexer test suite ---$DEFAULT"
+echo -e "$YELLOW--- exit commands test suite...$DEFAULT"
+test 'exit 42'
+test 'exit 42 53 68'
+test 'exit 259'
+test 'exit 9223372036854775807'
+test 'exit -4'
+test 'exit wrong'
+test 'exit wrong_command'
+test 'exit a 3'
+test 'exit -a 3'
+
+echo
+echo -e "$YELLOW--- env commands test suite...$DEFAULT"
+test 'en'
+test 'env | grep PWD'
+test 'env | grep PWD' 'unset PWD' 'env | grep PWD'
+
+echo
+echo -e "$YELLOW--- Lexer test suite ---$DEFAULT"
 # Lexer tests
 test ''	
 test ' '	#space
@@ -163,7 +172,7 @@ test 'echo ""'
 test 'echo <<>><>|$|	'
 
 echo
-echo -e "$CYAN--- General commands test suite ---$DEFAULT"
+echo -e "$YELLOW--- General commands test suite ---$DEFAULT"
 # commands (PATH)
 test 'ls'
 test 'ls -a'
@@ -171,24 +180,11 @@ test 'ls not_a_dir'
 test 'cat Makefile minishell'
 test 'not_a_command'
 test 'git log --pretty="format:%H"'
-test 'bash'
-test 'sh'
-
-echo
-echo -e "$CYAN---Exit commands test suite...$DEFAULT"
-test 'exit 42'
-test 'exit 42 53 68'
-test 'exit 259'
-test 'exit 9223372036854775807'
-test 'exit -4'
-test 'exit wrong'
-test 'exit wrong_command'
-test 'exit a 3'
-test 'exit -a 3'
+test 'bash -c exit'
+test 'sh -c exit'
 
 #test '.'	error diff
 test '/'
-test './minishell'
 
 # commands (absolute path)
 test '/bin/bash'
@@ -201,7 +197,7 @@ test '> dir/outfile'
 test '< dir/outfile'
 
 # pipes
-test '|' 'echo hey'
+test '|'
 test 'ls |'
 test 'ls|'
 test ' |'
@@ -220,13 +216,19 @@ test '<Makefile|>dir/outfile'
 test 'echo "./minishell" | ./minishell'
 
 echo
-echo -e "$CYAN---Multiline commands test suite...$DEFAULT"
+echo -e "$YELLOW---Multiline commands test suite...$DEFAULT"
 
-test 'echo $PWD' 'unset PWD' 'echo $PWD'
 test '<< x cat' 'hey' 'x'
 test 'echo "#!/bin/bash
 /bin/ls" >> dir/infile2' 'chmod +x dir/infile2' './dir/infile2' 'rm dir/infile2'
 
-echo -e "$CYAN---Finished$DEFAULT"
+if [ "$MANUAL" = true ] ; then
+echo
+echo -e "$YELLOW---The following should be done manually...$DEFAULT"
+test './minishell'
+test '.env'
+fi
+
+echo -e "$YELLOW---Finished$DEFAULT"
 
 rmdir dir
