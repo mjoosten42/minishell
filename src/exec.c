@@ -81,7 +81,7 @@ char	*ft_search_paths(char *str)
 	}
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(str, 2);
-	ft_putstr_fd(": command not found", 2);
+	ft_putendl_fd(": command not found", 2);
 	exit((1 << 7) - 1);
 }
 
