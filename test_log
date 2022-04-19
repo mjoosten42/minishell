@@ -1,0 +1,13 @@
+LICENSE
+Makefile
+README.md
+dir
+include
+libs
+log
+minishell
+objs
+script.sh
+somedir
+src
+test_log

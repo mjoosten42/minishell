@@ -107,6 +107,9 @@ test 'echo n a'
 test 'echo -n a'
 test 'echo -nABC'
 test 'echo -n -n'
+test 'echo a     b'
+test 'echo "a    b"'
+#test 'echo -nn' bash is stupid
 test 'ls | echo a b'
 test 'ls | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | ls'
 test 'ls | echo'
@@ -223,17 +226,27 @@ test '< dir/outfile'
 
 # pipes
 test '|'
+test '| ls |'
 test ' |'
 test '| ls'
 test 'ls | cat'
 test 'ls|cat'
 test '||'
 test '| |'
+test '| | ls'
+test 'ls | | cat'
+test 'ls > test_log | cat'
+test '> log | cat'
+test '< | >'
+test ''
 
 # pipes combined with redirects
 test '< Makefile cat | xargs > dir/outfile'
 test 'cat<Makefile|>dir/outfile xargs'
 test '<Makefile|>dir/outfile'
+
+#test 'sleep 1 | ls test'	subject requires most _recent_ exit code
+
 test "head -10 <Makefile | sed -n '///'>dir/outfile"
 test 'echo "./minishell" | ./minishell'
 test 'echo "#!/bin/bash
@@ -267,7 +280,39 @@ test 'zsh'
 
 fi
 
-BASH=true
+test 'export bla="s -a"\nl$bla'
+test 'export bla="s -a"\nl"$bla"'
+
+# Generic tests
+test ''
+test '/bin/ls'
+
+# Echo tests
+test 'echo'
+test 'echo ""'
+test 'echo < |'
+test 'echo > |'
+test 'echo << |'
+test 'echo >> |'
+test 'echo -nABC'
+test 'echo $BLA$BLA=10$BLA'
+test 'echo a"bc"d'
+test 'echo a"bcd"e'
+test "echo 'hoi'"'"bla"'
+test 'echo -n'
+test 'echo bla -n'
+test 'echo -n -n -n'
+test 'echo -n -n -n bla'
+test 'ls | echo -n bla'
+
+test 'export ='
+test 'export =10'
+test 'export "|"=10'
+test 'export ">"=10'
+test 'export "$"=10'
+test 'export "["=10'
+test 'export "111"="222"'
+
 if [ "$BASH" = true ] ; then
 
 echo
