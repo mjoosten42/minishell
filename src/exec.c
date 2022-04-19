@@ -7,14 +7,17 @@ char	*ft_search_paths(char *str, char **paths);
 char	*ft_getpath(char *str);
 char	*find_local(char *str);
 
-void	ft_exec(char **args, int fds[2])
+pid_t	ft_exec(char **args, int fds[2])
 {
 	t_program_data	*pd;
 	pid_t			pid;
 	char			*path;
 
 	if (!*args || is_builtin_unforked(args))
-		return (ft_close_fds(fds));
+	{
+		ft_close_fds(fds);
+		return (0);
+	}
 	pd = pd_get();
 	pid = ft_fork();
 	if (!pid)
@@ -24,13 +27,12 @@ void	ft_exec(char **args, int fds[2])
 		if (is_builtin_forked(args))
 			exit(EXIT_SUCCESS);
 		path = ft_getpath(*args);
-		if (!path)
-			return ;
 		execve(path, args, pd->env);
 		perror("execve");
 		exit(EXIT_FAILURE);
 	}
 	ft_close_fds(fds);
+	return (pid);
 }
 
 void	ft_close_fds(int fds[2])

@@ -4,6 +4,7 @@
 void	ft_join_words(t_token *token);
 void	ft_expand_dollar(t_token *token);
 int		ft_expand_quotes(t_token *token, t_type type);
+void	ft_check(t_token *token);
 
 int	ft_expand(t_token *head)
 {
@@ -22,12 +23,23 @@ int	ft_expand(t_token *head)
 			error = ft_expand_quotes(token, dquote);
 		if (type == dollar)
 			ft_expand_dollar(token);
+		if (type == here_doc)
+			ft_check(token);
 		if (error)
 			return (error);
 		token = token->next;
 	}
 	ft_join_words(head);
 	return (0);
+}
+
+void	ft_check(t_token *token)
+{
+	if (token->next && token->next->type == dollar)
+		token->next->type = word;
+	if (token->next && token->next->type == space
+		&& token->next->next && token->next->next->type == dollar)
+		token->next->next->type = word;
 }
 
 void	ft_join_words(t_token *token)
