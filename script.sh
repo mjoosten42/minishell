@@ -87,8 +87,6 @@ test()
 	rm -rf dir/*
 }
 
-<< test_word
-test_word
 echo -e "$YELLOW--- echo test suite ---$DEFAULT"
 # Echo tests
 test 'ech'
@@ -113,7 +111,7 @@ test 'echo a     b'
 test 'echo "a    b"'
 #test 'echo -nn' bash is stupid
 test 'ls | echo a b'
-test 'ls | cat -e | cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| echo a b'
+test 'ls | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | ls'
 test 'ls | echo'
 test 'ls | echo -n'
 
@@ -218,7 +216,7 @@ test '/b'
 test 'a/b'
 test '/dir/infile'
 test '/usr/bin/git status'
-test 'sleep 100 | echo a'
+test 'cat | ls'
 
 #redirects
 test 'ls > dir/outfile'
@@ -282,7 +280,6 @@ test 'zsh'
 
 fi
 
-
 test 'export bla="s -a"\nl$bla'
 test 'export bla="s -a"\nl"$bla"'
 
@@ -319,13 +316,14 @@ test 'export "111"="222"'
 if [ "$BASH" = true ] ; then
 
 echo
-echo -e "$YELLOW---The following should fail, unless you reverse engineered bash...$DEFAULT"
+echo -e "$YELLOW---The following should fail...$DEFAULT"
 test '.'
 test 'test sleep 1 | ls test'
 test 'echo hey | kill -QUIT $$'
 test 'kill -QUIT $$'
 test 'kill -INT $$'
-test 'echo -nn' bash is stupid
+test 'echo -nn'
+#test 'lsof | echo a'
 
 fi
 

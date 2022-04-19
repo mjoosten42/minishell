@@ -2,22 +2,19 @@
 #include "libft.h"
 #include <sys/stat.h>
 
-void	ft_close_fds(int fds[2]);
 char	*ft_search_paths(char *str, char **paths);
 char	*ft_getpath(char *str);
 char	*find_local(char *str);
+void	ft_close_fds(int fds[2]);
 
-pid_t	ft_exec(char **args, int fds[2])
+void	ft_exec(char **args, int fds[2])
 {
 	t_program_data	*pd;
 	pid_t			pid;
 	char			*path;
 
 	if (!*args || is_builtin_unforked(args))
-	{
-		ft_close_fds(fds);
-		return (0);
-	}
+		return (ft_close_fds(fds));
 	pd = pd_get();
 	pid = ft_fork();
 	if (!pid)
@@ -32,7 +29,6 @@ pid_t	ft_exec(char **args, int fds[2])
 		exit(EXIT_FAILURE);
 	}
 	ft_close_fds(fds);
-	return (pid);
 }
 
 void	ft_close_fds(int fds[2])

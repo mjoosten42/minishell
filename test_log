@@ -8,5 +8,6 @@ log
 minishell
 objs
 script.sh
+somedir
 src
 test_log
