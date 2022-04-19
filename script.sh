@@ -108,7 +108,7 @@ test 'echo -n a'
 test 'echo -nABC'
 test 'echo -n -n'
 test 'ls | echo a b'
-test 'ls | cat -e | cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| echo a b'
+test 'ls | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | ls'
 test 'ls | echo'
 test 'ls | echo -n'
 
@@ -213,7 +213,7 @@ test '/b'
 test 'a/b'
 test '/dir/infile'
 test '/usr/bin/git status'
-test 'sleep 100 | echo a'
+test 'cat | ls'
 
 #redirects
 test 'ls > dir/outfile'
@@ -267,16 +267,18 @@ test 'zsh'
 
 fi
 
+BASH=true
 if [ "$BASH" = true ] ; then
 
 echo
-echo -e "$YELLOW---The following should fail, unless you reverse engineered bash...$DEFAULT"
+echo -e "$YELLOW---The following should fail...$DEFAULT"
 test '.'
 test 'test sleep 1 | ls test'
 test 'echo hey | kill -QUIT $$'
 test 'kill -QUIT $$'
 test 'kill -INT $$'
-test 'echo -nn' bash is stupid
+test 'echo -nn'
+#test 'lsof | echo a'
 
 fi
 

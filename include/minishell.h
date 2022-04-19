@@ -57,7 +57,7 @@ int				rl_on_new_line(void);
 char			*ft_read(char *prompt);
 
 //	Exec
-pid_t			ft_exec(char **args, int fds[2]);
+void			ft_exec(char **args, int fds[2]);
 
 //	Lexer
 void			ft_lexer(t_token *head, char *str);
