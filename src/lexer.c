@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 10:11:32 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/04/21 10:37:43 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/04/21 13:08:23 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 
 t_token	*special_char_token(char *str);
 t_token	*word_token(char *str);
+int		dollar_len(char *str);
 
 void	ft_lexer(t_token *head, char *str)
 {
@@ -46,7 +47,7 @@ t_token	*special_char_token(char *str)
 		while (str[len] == ' ' || str[len] == '\t')
 			len++;
 	if (type == dollar)
-		len += export_name_len(&str[1]);
+		len += dollar_len(&str[1]);
 	if ((type == red_in && str[1] == '<') || (type == red_out && str[1] == '>'))
 	{
 		len++;
@@ -72,4 +73,11 @@ t_token	*word_token(char *str)
 		i++;
 	token->value = ft_substr(str, 0, i);
 	return (token);
+}
+
+int	dollar_len(char *str)
+{
+	if (*str == '?')
+		return (1);
+	return (export_name_len(str));
 }
