@@ -84,7 +84,7 @@ test()
 		echo -e $GREEN[OK] $DEFAULT
 	fi
 
-	rm -rf dir/*
+	rm -f dir/*
 }
 
 echo -e "$YELLOW--- echo test suite ---$DEFAULT"
@@ -282,8 +282,9 @@ test 'export WORD="a   b"' 'echo $WORD'
 
 fi
 
-test 'export bla="s -a"\nl$bla'
-test 'export bla="s -a"\nl"$bla"'
+test 'export bla="s -a"' 'l$bla'
+test 'export bla="s -a"' '"$bla"'
+test 'export PIPE="|"' 'ls $PIPE cat'
 
 # Generic tests
 test ''
@@ -325,7 +326,7 @@ test 'echo hey | kill -QUIT $$'
 test 'kill -QUIT $$'
 test 'kill -INT $$'
 test 'echo -nn'
-#test 'lsof | echo a'
+test 'echo $SHLVL'
 
 fi
 
