@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 10:09:40 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/04/21 10:09:44 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/04/21 13:48:51 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	ft_exit(char **strs)
 	if (isatty(STDIN_FILENO))
 		ft_putstr("exit\n");
 	if (!strs[1])
-		exit(WEXITSTATUS(pd->last_exit_status));
+		exit(pd->last_exit_status);
 	if (!is_all_digits(strs[1]) || ft_strlen(strs[1]) > 19)
 	{
 		ft_putstr_fd("minishell: exit: ", 2);
