@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 10:13:10 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/04/21 10:18:35 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/04/21 10:45:50 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,7 @@ typedef struct s_program_data
 // Token used for lexer
 typedef struct s_token
 {
-	enum e_symbol	type;
-	int				position;
+	t_type			type;
 	char			*value;
 	struct s_token	*prev;
 	struct s_token	*next;
