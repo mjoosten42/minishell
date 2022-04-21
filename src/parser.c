@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/21 10:12:05 by mjoosten          #+#    #+#             */
+/*   Updated: 2022/04/21 10:12:17 by mjoosten         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "libft.h"
-#include "fcntl.h"
+#include <fcntl.h>
 
 char	**ft_get_args(t_token *token);
 int		ft_get_fds(t_token *token, int fds[2]);

@@ -1,11 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/21 10:13:10 by mjoosten          #+#    #+#             */
+/*   Updated: 2022/04/21 10:18:35 by mjoosten         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
 // Includes
 # include <unistd.h>
-
-// Special chars
-# define META_CHARS "|<>$\"\' \t\n"
 
 // Token definitions
 typedef enum e_symbol {
@@ -52,7 +61,6 @@ int				pd_clear(void);
 //	readline
 void			rl_replace_line(const char *text, int clear_undo);
 void			rl_clear_history(void);
-int				rl_on_new_line(void);
 
 char			*ft_read(char *prompt);
 
@@ -99,7 +107,6 @@ void			sort(char **envs);
 t_token			*token_start(void);
 int				token_add_back(t_token *token, t_token *new_token);
 void			ft_remove_token(t_token *token);
-void			print_tokens(t_token *token);
 
 //	Syscalls
 pid_t			ft_fork(void);

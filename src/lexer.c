@@ -1,5 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/21 10:11:32 by mjoosten          #+#    #+#             */
+/*   Updated: 2022/04/21 10:13:35 by mjoosten         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "libft.h"
+
+// Special chars
+#define META_CHARS "|<>$\"\' \t\n"
 
 t_token	*special_char_token(char *str);
 t_token	*word_token(char *str);

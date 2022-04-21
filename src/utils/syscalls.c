@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   syscalls.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/21 10:10:15 by mjoosten          #+#    #+#             */
+/*   Updated: 2022/04/21 10:10:23 by mjoosten         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include <libc.h>
 
@@ -7,13 +19,13 @@ pid_t	ft_fork(void)
 	pid_t			pid;
 
 	pd = pd_get();
-	pd->active_processes++;
 	pid = fork();
 	if (pid < 0)
 	{
 		perror("fork");
 		exit(EXIT_FAILURE);
 	}
+	pd->active_processes++;
 	return (pid);
 }
 

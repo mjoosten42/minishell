@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   token.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/21 10:10:27 by mjoosten          #+#    #+#             */
+/*   Updated: 2022/04/21 10:10:29 by mjoosten         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "libft.h"
 
@@ -41,34 +53,4 @@ void	ft_remove_token(t_token *token)
 		token->next->prev = token->prev;
 	free(token->value);
 	free(token);
-}
-
-#include <stdio.h>
-
-void	print_tokens(t_token *token)
-{
-	char	*types[] = {
-		"pipe_char",
-		"red_in",
-		"red_out",
-		"dollar",
-		"dquote",
-		"quote",
-		"space",
-		"tab",
-		"newline",
-		"here_doc",
-		"red_out_app",
-		"word",
-		"start"
-	};
-
-	printf(" - id -------- type - value\n");
-	while (token)
-	{
-		printf(" | %2i | %11s | [%s]\n",
-			token->position, types[token->type], token->value);
-		token = token->next;
-	}
-	printf("\n");
 }
