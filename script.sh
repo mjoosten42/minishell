@@ -26,6 +26,8 @@ test()
 		echo $CMD >> dir/cmdlist
 	done
 
+	echo 'exit' >> dir/cmdlist
+
 	if [ "$EXIT_CODES" = true ] ; then
 		echo 'echo exit code: $?' >> dir/cmdlist
 	fi
