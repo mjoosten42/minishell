@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 10:09:23 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/04/21 10:09:35 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/04/26 10:23:42 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,9 @@
 
 void	echo(char **strs)
 {
-	t_program_data	*pd;
-	int				nl;
-	int				i;
+	int		nl;
+	int		i;
 
-	pd = pd_get();
-	pd->last_exit_status = 0;
 	if (!strs[1])
 		return (ft_putchar_fd('\n', 1));
 	i = 1;
