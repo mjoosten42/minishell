@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
-#                                                         ::::::::             #
-#    Makefile                                           :+:    :+:             #
-#                                                      +:+                     #
-#    By: mjoosten <mjoosten@student.42.fr>            +#+                      #
-#                                                    +#+                       #
-#    Created: 2022/03/12 11:05:57 by rnijhuis      #+#    #+#                  #
-#    Updated: 2022/04/19 15:54:20 by rnijhuis      ########   odam.nl          #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2022/03/12 11:05:57 by rnijhuis          #+#    #+#              #
+#    Updated: 2022/04/21 14:08:37 by mjoosten         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,7 +61,7 @@ OBJS = $(addprefix $(OBJS_DIR)/,$(SRCS:.c=.o))
 #=====================================#
 
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra $(INC) -g
+CFLAGS = -Wall -Werror -Wextra $(INC)
 LDFLAGS = $(READLINE_DIR) -lreadline
 
 #=====================================#

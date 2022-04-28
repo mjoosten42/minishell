@@ -2,7 +2,7 @@
 
 EXIT_CODES=true
 SHOW_CMD=true
-CHECK_FD=false
+CHECK_FD=true
 MANUAL=false
 PROMPT="minishell"
 
@@ -37,11 +37,14 @@ test()
 	fi
 
 	./minishell < dir/cmdlist > dir/minishell_out 2> dir/minishell_error
+<<<<<<< HEAD
 
 	if grep -q $PROMPT dir/minishell_out ; then
 		cut -d ' ' -f 2- dir/minishell_out > dir/tmp
 		cat dir/tmp > dir/minishell_out
 	fi
+=======
+>>>>>>> master
 
 	if grep -q $PROMPT dir/minishell_error ; then
 		cut -d ' ' -f 2- dir/minishell_error > dir/tmp
@@ -203,7 +206,7 @@ echo -e "$YELLOW--- General commands test suite ---$DEFAULT"
 test 'ls'
 test 'ls -a'
 test 'ls not_a_dir'
-test 'cat Makefile minishell'
+test 'cat Makefile src'
 test 'not_a_command'
 test 'git log -5 --pretty="format:%H"'
 test 'sh -c exit'
@@ -233,8 +236,11 @@ test "echo \"''\" \"''\" \"a\" \"$\" \"$\""
 test 'echo -$PWD$?$PATH-'
 test 'echo -$a$.$PW$SHLVL"$P"WD'
 test 'export WORD="a   b"' 'echo $WORD'
+<<<<<<< HEAD
 test 'export LS="ls -a"' '$LS'
 test 'export LS="s -a' 'l$LS'
+=======
+>>>>>>> master
 test 'export PIPE="|"' 'ls $PIPE cat'
 test 'echo "a$PWD-b"'
 
@@ -245,7 +251,10 @@ test '<< x cat' 'hey' 'not x' 'xpartway' 'x'
 test '<<x' 'now' 'without' 'space' 'x'
 test '<< x'
 test '<<x'
+<<<<<<< HEAD
 test '<<x <Makefile cat' 'x'
+=======
+>>>>>>> master
 test '<Makefile <<x cat' 'x'
 test 'export x=end' 'cat << $x' 'end' 'x' '$x'
 test 'export x=end' 'cat <<$x' 'end' 'x' '$x'
@@ -264,6 +273,10 @@ test '>'
 test '>>'
 test 'touch dir/infile' '< dir/infile'
 test 'echo a > dir/infile b' '< dir/infile cat'
+<<<<<<< HEAD
+=======
+test 'ls > dir/outfile' '> dir/outfile' 'cat dir/oufile'
+>>>>>>> master
 
 echo
 echo -e "$YELLOW--- pipe test suite ---$DEFAULT"

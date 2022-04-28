@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/21 10:10:54 by mjoosten          #+#    #+#             */
+/*   Updated: 2022/04/28 16:05:23 by mjoosten         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "libft.h"
 #include <sys/stat.h>
@@ -5,9 +17,9 @@
 char	*ft_search_paths(char *str, char **paths);
 char	*ft_getpath(char *str);
 char	*find_local(char *str);
-void	ft_close_fds(int fds[2]);
+int		ft_close_fds(int fds[2]);
 
-void	ft_exec(char **args, int fds[2])
+pid_t	ft_exec(char **args, int fds[2])
 {
 	t_program_data	*pd;
 	pid_t			pid;
@@ -29,14 +41,16 @@ void	ft_exec(char **args, int fds[2])
 		exit(EXIT_FAILURE);
 	}
 	ft_close_fds(fds);
+	return (pid);
 }
 
-void	ft_close_fds(int fds[2])
+int	ft_close_fds(int fds[2])
 {
 	if (fds[0] > STDERR_FILENO)
 		ft_close(fds[0]);
 	if (fds[1] > STDERR_FILENO)
 		ft_close(fds[1]);
+	return (0);
 }
 
 char	*ft_getpath(char *str)
