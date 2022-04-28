@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 10:12:05 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/04/21 10:12:17 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/04/28 16:05:53 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int		ft_get_pipe(int fds[2]);
 
 void	ft_parse(t_token *head, int pipefd)
 {
+	pid_t	pid;
 	char	**strs;
 	int		fds[2];
 
@@ -30,7 +31,7 @@ void	ft_parse(t_token *head, int pipefd)
 	if (pipefd < 0)
 		return ;
 	strs = ft_get_args(head);
-	ft_exec(strs, fds);
+	pid = ft_exec(strs, fds);
 	ft_free_array(strs);
 	if (pipefd)
 	{
@@ -38,7 +39,7 @@ void	ft_parse(t_token *head, int pipefd)
 		ft_parse(head, pipefd);
 	}
 	else
-		wait(NULL);
+		waitpid(pid, NULL, 0);
 }
 
 char	**ft_get_args(t_token *token)
@@ -81,7 +82,7 @@ int	ft_get_fds(t_token *token, int fds[2])
 		else if (type == red_in)
 			ret = ft_redirect(next, &fds[0], O_RDONLY);
 		else if (type == red_out)
-			ret = ft_redirect(next, &fds[1], O_WRONLY | O_CREAT);
+			ret = ft_redirect(next, &fds[1], O_WRONLY | O_CREAT | O_TRUNC);
 		else if (type == red_out_app)
 			ret = ft_redirect(next, &fds[1], O_WRONLY | O_CREAT | O_APPEND);
 		else

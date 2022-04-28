@@ -6,7 +6,7 @@
 /*   By: mjoosten <mjoosten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 10:13:10 by mjoosten          #+#    #+#             */
-/*   Updated: 2022/04/21 10:45:50 by mjoosten         ###   ########.fr       */
+/*   Updated: 2022/04/28 16:05:33 by mjoosten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void			rl_clear_history(void);
 char			*ft_read(char *prompt);
 
 //	Exec
-void			ft_exec(char **args, int fds[2]);
+pid_t			ft_exec(char **args, int fds[2]);
 
 //	Lexer
 void			ft_lexer(t_token *head, char *str);
