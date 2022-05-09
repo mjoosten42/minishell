@@ -4,7 +4,8 @@ EXIT_CODES=true
 SHOW_CMD=true
 CHECK_FD=true
 MANUAL=false
-PROMPT="minishell"
+PROMPT="minishell$ "
+ERR_ID="minishell: "
 
 DEFAULT='\033[0m'
 RED='\033[0;31m'
@@ -26,8 +27,6 @@ test()
 		echo $CMD >> dir/cmdlist
 	done
 
-	echo 'exit' >> dir/cmdlist
-
 	if [ "$EXIT_CODES" = true ] ; then
 		echo 'echo exit code: $?' >> dir/cmdlist
 	fi
@@ -37,38 +36,17 @@ test()
 	fi
 
 	./minishell < dir/cmdlist > dir/minishell_out 2> dir/minishell_error
-<<<<<<< HEAD
 
-	if grep -q $PROMPT dir/minishell_out ; then
-		cut -d ' ' -f 2- dir/minishell_out > dir/tmp
-		cat dir/tmp > dir/minishell_out
-	fi
-=======
->>>>>>> master
+	sed -i '' "s/^$PROMPT//" dir/minishell_out
+	sed -i '' "s/^$ERR_ID//" dir/minishell_error
+	sed -i '' "s/^line [[:digit:]]://" dir/minishell_error
 
-	if grep -q $PROMPT dir/minishell_error ; then
-		cut -d ' ' -f 2- dir/minishell_error > dir/tmp
-		cat dir/tmp > dir/minishell_error
-	fi
-
-	if grep -q "line " dir/minishell_error ; then
-		cut -d ' ' -f 3- dir/minishell_error > dir/tmp
-		cat dir/tmp > dir/minishell_error
-	fi
-
-	sed -in 's/-c minishell/-p $$/' dir/cmdlist
+	sed -i '' 's/-c minishell/-p $$/' dir/cmdlist
 
 	bash < dir/cmdlist > dir/bash_out 2> dir/bash_error
 
-	if grep -q "bash" dir/bash_error ; then
-		cut -d ' ' -f 2- dir/bash_error > dir/tmp
-		cat dir/tmp > dir/bash_error
-	fi
-
-	if grep -q "line " dir/bash_error ; then
-		cut -d ' ' -f 3- dir/bash_error > dir/tmp
-		cat dir/tmp > dir/bash_error
-	fi
+	sed -i '' "s/^bash: //" dir/bash_error
+	sed -i '' "s/^line [[:digit:]]: //" dir/bash_error
 
 	if grep -q "syntax error" dir/bash_error ; then
 		echo "syntax error" > dir/bash_error
@@ -182,7 +160,6 @@ echo -e "$YELLOW--- env commands test suite...$DEFAULT"
 test 'en'
 test 'env | grep PWD'
 test 'env | grep PWD' 'unset PWD' 'env | grep PWD'
-test 'ls notadir' 'env'
 
 echo
 echo -e "$YELLOW--- Lexer test suite ---$DEFAULT"
@@ -236,11 +213,8 @@ test "echo \"''\" \"''\" \"a\" \"$\" \"$\""
 test 'echo -$PWD$?$PATH-'
 test 'echo -$a$.$PW$SHLVL"$P"WD'
 test 'export WORD="a   b"' 'echo $WORD'
-<<<<<<< HEAD
 test 'export LS="ls -a"' '$LS'
 test 'export LS="s -a' 'l$LS'
-=======
->>>>>>> master
 test 'export PIPE="|"' 'ls $PIPE cat'
 test 'echo "a$PWD-b"'
 
@@ -251,10 +225,7 @@ test '<< x cat' 'hey' 'not x' 'xpartway' 'x'
 test '<<x' 'now' 'without' 'space' 'x'
 test '<< x'
 test '<<x'
-<<<<<<< HEAD
 test '<<x <Makefile cat' 'x'
-=======
->>>>>>> master
 test '<Makefile <<x cat' 'x'
 test 'export x=end' 'cat << $x' 'end' 'x' '$x'
 test 'export x=end' 'cat <<$x' 'end' 'x' '$x'
@@ -273,10 +244,7 @@ test '>'
 test '>>'
 test 'touch dir/infile' '< dir/infile'
 test 'echo a > dir/infile b' '< dir/infile cat'
-<<<<<<< HEAD
-=======
-test 'ls > dir/outfile' '> dir/outfile' 'cat dir/oufile'
->>>>>>> master
+test 'ls > dir/outfile' '> dir/outfile' 'cat dir/outfile'
 
 echo
 echo -e "$YELLOW--- pipe test suite ---$DEFAULT"
